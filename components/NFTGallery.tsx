@@ -19,18 +19,18 @@ function NFTCard({ tokenId }: { tokenId: bigint }) {
   });
 
   if (!meta) return null;
-  const m = meta as readonly [bigint, string, number, bigint, bigint, boolean, string, number];
+  const m = meta as any;
 
-  const tier  = TIER_STYLE[m[2]] ?? TIER_STYLE[0];
-  const score = Number(m[4]);
+  const tier  = TIER_STYLE[Number(m?.tier ?? m?.[2] ?? 0)] ?? TIER_STYLE[0];
+  const score = Number(m?.impactScore ?? m?.[4] ?? 0);
 
   return (
     <div className={`border-2 ${tier.border} rounded-xl p-4 text-center`}>
       <div className="text-3xl mb-2">
-        {m[2] === 2 ? "🥇" : m[2] === 1 ? "🥈" : "🥉"}
+        {Number(m[2]) === 2 ? "🥇" : Number(m[1]) === 1 ? "🥈" : "🥉"}
       </div>
       <p className={`font-bold text-sm ${tier.color}`}>{tier.label} Donor</p>
-      <p className="text-xs text-gray-500 mt-1">Campaign #{Number(m[0])}</p>
+      <p className="text-xs text-gray-500 mt-1">Campaign #{Number(m?.campaignId ?? m?.[0] ?? 0)}</p>
       {score > 0 && (
         <p className="text-xs text-gray-400 mt-1">Impact Score: {score}</p>
       )}

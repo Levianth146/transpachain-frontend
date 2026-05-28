@@ -58,13 +58,10 @@ export const GOVERNANCE_DAO_ABI = [
 ] as const;
 
 export const IMPACT_NFT_ABI = [
-  // Functions
-  "function getCampaignNFTs(uint256) view returns (uint256[])",
-  "function getDonorNFTs(address) view returns (uint256[])",
-  "function getNFTMetadata(uint256) view returns (tuple(uint256,address,uint8,uint256,uint256,bool,string,uint8))",
-  "function hasMintedForCampaign(address,uint256) view returns (bool)",
-  "function upgradeTier(uint256)",
-  
-  // Events
-  "event ImpactNFTMinted(uint256 indexed,address indexed,uint256 indexed,uint8)",
+  { name: "getCampaignNFTs", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "uint256[]" }] },
+  { name: "getDonorNFTs", type: "function", stateMutability: "view", inputs: [{ name: "donor", type: "address" }], outputs: [{ name: "", type: "uint256[]" }] },
+  { name: "getNFTMetadata", type: "function", stateMutability: "view", inputs: [{ name: "tokenId", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "campaignId", type: "uint256" }, { name: "donor", type: "address" }, { name: "tier", type: "uint8" }, { name: "donatedAmount", type: "uint256" }, { name: "impactScore", type: "uint256" }, { name: "campaignCompleted", type: "bool" }, { name: "metadataCID", type: "string" }, { name: "paymentToken", type: "uint8" }] }] },
+  { name: "hasMintedForCampaign", type: "function", stateMutability: "view", inputs: [{ name: "donor", type: "address" }, { name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "bool" }] },
+  { name: "upgradeTier", type: "function", stateMutability: "nonpayable", inputs: [{ name: "tokenId", type: "uint256" }], outputs: [] },
+  { name: "ImpactNFTMinted", type: "event", inputs: [{ name: "tokenId", type: "uint256", indexed: true }, { name: "donor", type: "address", indexed: true }, { name: "campaignId", type: "uint256", indexed: true }, { name: "tier", type: "uint8", indexed: false }] },
 ] as const;
