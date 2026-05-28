@@ -19,17 +19,18 @@ function NFTCard({ tokenId }: { tokenId: bigint }) {
   });
 
   if (!meta) return null;
+  const m = meta as readonly [bigint, string, number, bigint, bigint, boolean, string, number];
 
-  const tier  = TIER_STYLE[meta[2]] ?? TIER_STYLE[0];
-  const score = Number(meta[4]);
+  const tier  = TIER_STYLE[m[2]] ?? TIER_STYLE[0];
+  const score = Number(m[4]);
 
   return (
     <div className={`border-2 ${tier.border} rounded-xl p-4 text-center`}>
       <div className="text-3xl mb-2">
-        {meta[2] === 2 ? "🥇" : meta[2] === 1 ? "🥈" : "🥉"}
+        {m[2] === 2 ? "🥇" : m[2] === 1 ? "🥈" : "🥉"}
       </div>
       <p className={`font-bold text-sm ${tier.color}`}>{tier.label} Donor</p>
-      <p className="text-xs text-gray-500 mt-1">Campaign #{Number(meta[0])}</p>
+      <p className="text-xs text-gray-500 mt-1">Campaign #{Number(m[0])}</p>
       {score > 0 && (
         <p className="text-xs text-gray-400 mt-1">Impact Score: {score}</p>
       )}
@@ -41,13 +42,14 @@ export function NFTGallery({ address }: { address: string }) {
   const { address: connectedAddress } = useAccount();
   const walletAddress = (address ?? connectedAddress) as `0x${string}` | undefined;
 
-  const { data: tokenIds } = useReadContract({
+  const { data: tokenIdsRaw } = useReadContract({
     address:      ADDRESSES.impactNFT,
     abi:          IMPACT_NFT_ABI,
     functionName: "getDonorNFTs",
     args:         walletAddress ? [walletAddress] : undefined,
     query:        { enabled: !!walletAddress },
   });
+  const tokenIds = tokenIdsRaw as bigint[] | undefined;
 
   if (!walletAddress) return (
     <div className="bg-white border rounded-xl p-5">

@@ -5,18 +5,19 @@ import type { Campaign } from "@/types";
 
 function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: number }) {
   const { data: m } = useMilestone(campaignId, index);
+  const milestone = m as any;
 
   return (
-    <div className={`flex gap-3 items-start p-3 rounded-lg ${m?.released ? "bg-emerald-50" : "bg-gray-50"}`}>
+    <div className={`flex gap-3 items-start p-3 rounded-lg ${milestone?.released ? "bg-emerald-50" : "bg-gray-50"}`}>
       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0
-        ${m?.released ? "bg-emerald-500 text-white" : "bg-gray-300 text-gray-600"}`}>
+        ${milestone?.released ? "bg-emerald-500 text-white" : "bg-gray-300 text-gray-600"}`}>
         {index + 1}
       </div>
       <div>
-        <p className="text-sm font-medium">{m?.released ? "Released" : "Pending"}</p>
-        {m?.proofCID && (
+        <p className="text-sm font-medium">{milestone?.released ? "Released" : "Pending"}</p>
+        {milestone?.proofCID && (
           <a
-            href={`https://ipfs.io/ipfs/${m.proofCID}`}
+            href={`https://ipfs.io/ipfs/${milestone?.proofCID}`}
             target="_blank"
             rel="noreferrer"
             className="text-xs text-blue-600 hover:underline"
@@ -24,8 +25,8 @@ function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: numbe
             View Proof on IPFS ↗
           </a>
         )}
-        {m?.releaseAmount != null && (
-          <p className="text-xs text-gray-500">{formatEther(m.releaseAmount)} ETH</p>
+        {milestone?.releaseAmount != null && (
+          <p className="text-xs text-gray-500">{formatEther(milestone?.releaseAmount ?? BigInt(0))} ETH</p>
         )}
       </div>
     </div>

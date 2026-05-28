@@ -58,7 +58,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* NFT Gallery */}
-        <NFTGallery address={address} />
+        <NFTGallery address={address as string} />
 
         {/* Donation History */}
         <div className="bg-white border rounded-xl p-5">
