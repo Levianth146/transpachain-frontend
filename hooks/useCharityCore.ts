@@ -52,15 +52,6 @@ export function useCharityProgress(campaignId: bigint) {
   });
 }
 
-export function useCharities(fromId: bigint, toId: bigint) {
-  return useReadContract({
-    address:      ADDRESSES.charityCore,
-    abi:          CHARITY_CORE_ABI,
-    functionName: "getCharities",
-    args:         [fromId, toId],
-  });
-}
-
 // ─── Write hooks ───────────────────────────────────────────────
 
 export function useCreateCampaign() {
