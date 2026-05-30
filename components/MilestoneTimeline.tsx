@@ -15,7 +15,7 @@ function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: numbe
       </div>
       <div>
         <p className="text-sm font-medium">{milestone?.released ? "Released" : "Pending"}</p>
-        {milestone?.proofCID && (
+        {milestone?.proofCID && milestone.proofCID.length > 30 && milestone.proofCID.startsWith("Qm") && (
           <a
             href={`https://gateway.pinata.cloud/ipfs/${milestone?.proofCID}`}
             target="_blank"
