@@ -17,7 +17,7 @@ function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: numbe
         <p className="text-sm font-medium">{milestone?.released ? "Released" : "Pending"}</p>
         {milestone?.proofCID && (
           <a
-            href={`https://ipfs.io/ipfs/${milestone?.proofCID}`}
+            href={`https://gateway.pinata.cloud/ipfs/${milestone?.proofCID}`}
             target="_blank"
             rel="noreferrer"
             className="text-xs text-blue-600 hover:underline"
