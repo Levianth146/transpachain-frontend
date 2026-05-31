@@ -1,17 +1,18 @@
 # Stage 1 — Build
 FROM node:20-alpine AS builder
 WORKDIR /app
+ENV NODE_OPTIONS="--max-old-space-size=768"
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 
 # Stage 2 — Production
 FROM node:20-alpine
 WORKDIR /app
-COPY package*.json ./
-RUN npm install --omit=dev
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
+ENV NODE_ENV=production
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+RUN mkdir -p public
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]
