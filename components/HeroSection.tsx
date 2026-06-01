@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import Link from "next/link";
+import { Target, Gem, Users } from "lucide-react";
 import { api } from "@/lib/api";
 
 function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
@@ -46,7 +47,7 @@ export function HeroSection() {
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 min-h-[560px] flex items-center">
       {/* Grid pattern overlay */}
       <div
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0 opacity-10" suppressHydrationWarning
         style={{
           backgroundImage: `linear-gradient(rgba(16,185,129,0.3) 1px, transparent 1px),
             linear-gradient(90deg, rgba(16,185,129,0.3) 1px, transparent 1px)`,

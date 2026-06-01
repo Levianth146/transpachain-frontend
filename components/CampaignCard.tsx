@@ -3,67 +3,144 @@ import Link from "next/link";
 import { formatEther } from "viem";
 import type { Campaign } from "@/types";
 import { CampaignStatus } from "@/types";
+import { BookOpen, Heart, AlertTriangle, Leaf, Users, Lightbulb, Clock, TrendingUp } from "lucide-react";
 
 const STATUS_BADGE: Record<CampaignStatus, { label: string; color: string }> = {
-  [CampaignStatus.Active]:     { label: "Active",     color: "bg-emerald-100 text-emerald-800" },
-  [CampaignStatus.Successful]: { label: "Completed",  color: "bg-blue-100 text-blue-800"       },
-  [CampaignStatus.Failed]:     { label: "Failed",     color: "bg-red-100 text-red-800"         },
-  [CampaignStatus.Cancelled]:  { label: "Cancelled",  color: "bg-gray-100 text-gray-800"       },
+  [CampaignStatus.Active]:     { label: "Active",    color: "bg-emerald-100 text-emerald-800" },
+  [CampaignStatus.Successful]: { label: "Completed", color: "bg-blue-100 text-blue-800"      },
+  [CampaignStatus.Failed]:     { label: "Failed",    color: "bg-red-100 text-red-800"        },
+  [CampaignStatus.Cancelled]:  { label: "Cancelled", color: "bg-gray-100 text-gray-800"      },
 };
 
-interface Props { campaign: Campaign; title?: string }
+const CATEGORY_COLORS: Record<string, string> = {
+  education:   "bg-blue-100 text-blue-700",
+  healthcare:  "bg-red-100 text-red-700",
+  disaster:    "bg-orange-100 text-orange-700",
+  environment: "bg-green-100 text-green-700",
+  community:   "bg-purple-100 text-purple-700",
+  general:     "bg-gray-100 text-gray-700",
+};
 
-export function CampaignCard({ campaign, title }: Props) {
-  const raised   = Number(formatEther(BigInt(campaign.raisedAmount ?? "0")));
-  const goal     = Number(formatEther(BigInt(campaign.goalAmount ?? "0")));
-  const progress = goal > 0 ? Math.min((raised / goal) * 100, 100) : 0;
-  const badge    = STATUS_BADGE[campaign.status as CampaignStatus];
+const CATEGORY_ICONS: Record<string, any> = {
+  education:   BookOpen,
+  healthcare:  Heart,
+  disaster:    AlertTriangle,
+  environment: Leaf,
+  community:   Users,
+  general:     Lightbulb,
+};
+
+function getTimeLeft(deadline: number): string {
+  const now = Math.floor(Date.now() / 1000);
+  const diff = deadline - now;
+  if (diff <= 0) return "Ended";
+  const days = Math.floor(diff / 86400);
+  if (days > 0) return `${days}d left`;
+  const hours = Math.floor(diff / 3600);
+  return `${hours}h left`;
+}
+
+export function CampaignCard({ campaign }: { campaign: any }) {
+  const raised      = Number(formatEther(BigInt(campaign.raisedAmount ?? "0")));
+  const goal        = Number(formatEther(BigInt(campaign.goalAmount ?? "0")));
+  const progress    = goal > 0 ? Math.min((raised / goal) * 100, 100) : 0;
+  const badge       = STATUS_BADGE[campaign.status as CampaignStatus];
+  const CategoryIcon = CATEGORY_ICONS[campaign.category] || Lightbulb;
+  const categoryColor = CATEGORY_COLORS[campaign.category] || CATEGORY_COLORS.general;
+  const timeLeft    = campaign.deadline ? getTimeLeft(campaign.deadline) : null;
+  const isUrgent    = timeLeft && timeLeft !== "Ended" && parseInt(timeLeft) <= 3;
 
   return (
     <Link href={`/campaigns/${campaign.campaignId}`}>
-      <div className="bg-white rounded-xl border hover:shadow-md transition-shadow cursor-pointer overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden group h-full flex flex-col">
         {/* Image */}
-        {campaign.imageUrl && (
-          <img src={campaign.imageUrl} alt={campaign.title}
-            className="w-full h-48 object-cover" />
-        )}
-        <div className="p-5">
-          {/* Header */}
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-semibold text-gray-900 line-clamp-2">
-              {campaign.title ?? `Campaign #${campaign.campaignId}`}
-            </h3>
-            <span className={`text-xs px-2 py-1 rounded-full font-medium ml-2 shrink-0 ${badge?.color}`}>
+        {campaign.imageUrl ? (
+          <div className="relative overflow-hidden h-48">
+            <img src={campaign.imageUrl} alt={campaign.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+            {/* Status badge on image */}
+            <span className={`absolute top-3 right-3 text-xs px-2.5 py-1 rounded-full font-semibold backdrop-blur-sm ${badge?.color}`}>
               {badge?.label}
             </span>
+            {/* Urgent timer */}
+            {isUrgent && (
+              <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full font-medium bg-red-500 text-white flex items-center gap-1">
+                <Clock size={10} /> {timeLeft}
+              </span>
+            )}
           </div>
+        ) : (
+          <div className="h-48 bg-gradient-to-br from-emerald-50 to-teal-100 flex items-center justify-center">
+            <CategoryIcon size={48} className="text-emerald-300" />
+          </div>
+        )}
+
+        <div className="p-5 flex flex-col flex-1">
+          {/* Category + time */}
+          <div className="flex items-center justify-between mb-2">
+            <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium ${categoryColor}`}>
+              <CategoryIcon size={10} />
+              {campaign.category || "general"}
+            </span>
+            {timeLeft && !isUrgent && (
+              <span className="flex items-center gap-1 text-xs text-gray-400">
+                <Clock size={10} /> {timeLeft}
+              </span>
+            )}
+          </div>
+
+          {/* Title */}
+          <h3 className="font-bold text-gray-900 line-clamp-2 mb-1 text-base leading-snug">
+            {campaign.title ?? `Campaign #${campaign.campaignId}`}
+          </h3>
 
           {/* Org name */}
           {campaign.orgName && (
-            <p className="text-xs text-gray-500 mb-2">by {campaign.orgName}</p>
+            <p className="text-xs text-gray-500 mb-2 flex items-center gap-1">
+              <Users size={10} /> {campaign.orgName}
+            </p>
           )}
 
           {/* Description */}
           {campaign.description && (
-            <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+            <p className="text-sm text-gray-500 line-clamp-2 mb-4 flex-1">
               {campaign.description}
             </p>
           )}
 
-          {/* Progress bar */}
-          <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
-            <div className="bg-emerald-500 h-2 rounded-full transition-all"
-              style={{ width: `${progress}%` }} />
-          </div>
-          <div className="flex justify-between text-sm text-gray-500 mb-2">
-            <span className="font-medium text-gray-900">{raised.toFixed(3)} ETH raised</span>
-            <span>{progress.toFixed(0)}%</span>
-          </div>
+          {/* Progress */}
+          <div className="mt-auto">
+            <div className="flex justify-between text-xs mb-1.5">
+              <span className="font-bold text-gray-900 flex items-center gap-1">
+                <TrendingUp size={11} className="text-emerald-500" />
+                {raised.toFixed(3)} ETH
+              </span>
+              <span className="text-emerald-600 font-semibold">{progress.toFixed(0)}%</span>
+            </div>
 
-          {/* Footer */}
-          <div className="flex justify-between text-xs text-gray-400">
-            <span>Goal: {goal.toFixed(3)} ETH</span>
-            <span>Milestones: {campaign.completedMilestones}/{campaign.totalMilestones}</span>
+            {/* Gradient progress bar */}
+            <div className="w-full bg-gray-100 rounded-full h-2 mb-3">
+              <div
+                className="h-2 rounded-full transition-all duration-500"
+                style={{
+                  width: `${progress}%`,
+                  background: progress >= 100
+                    ? "linear-gradient(90deg, #059669, #10b981)"
+                    : "linear-gradient(90deg, #10b981, #34d399)",
+                }}
+              />
+            </div>
+
+            {/* Footer stats */}
+            <div className="flex justify-between items-center text-xs text-gray-400">
+              <span>Goal: <span className="font-medium text-gray-600">{goal.toFixed(3)} ETH</span></span>
+              <span className="flex items-center gap-1">
+                <Users size={10} />
+                {campaign.donorCount ?? 0} donors
+              </span>
+            </div>
           </div>
         </div>
       </div>
