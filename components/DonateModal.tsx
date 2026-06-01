@@ -1,46 +1,26 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useAccount } from "wagmi";
 import { useDonate } from "@/hooks/useDonationVault";
-import { addToast } from "@/components/Toast";
+import { addToast, removeToast, updateToast } from "@/components/Toast";
 
 export function DonateModal({ campaignId }: { campaignId: bigint }) {
   const { isConnected } = useAccount();
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount]   = useState("");
+  const [open, setOpen]       = useState(false);
   const { donate, isPending, isConfirming, isSuccess, error } = useDonate();
-  const prevPending = useRef(false);
-  const prevConfirming = useRef(false);
-
-  useEffect(() => {
-    if (isPending && !prevPending.current) {
-      addToast({ type: "pending", title: "Confirm in MetaMask...", message: "Waiting for signature" });
-    }
-    prevPending.current = isPending;
-  }, [isPending]);
-
-  useEffect(() => {
-    if (isConfirming && !prevConfirming.current) {
-      addToast({ type: "info", title: "Transaction submitted", message: "Waiting for confirmation..." });
-    }
-    prevConfirming.current = isConfirming;
-  }, [isConfirming]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      addToast({ type: "success", title: "Donation confirmed!", message: "Impact NFT minted 🎉" });
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (error) {
-      addToast({ type: "error", title: "Transaction failed", message: error.message.slice(0, 80) });
-    }
-  }, [error]);
 
   const handleDonate = () => {
     if (!amount || isNaN(Number(amount))) return;
+    const toastId = addToast({ type: "pending", title: "Transaction pending...", message: "Confirm in MetaMask" });
     donate(campaignId, amount);
   };
+
+  if (isSuccess) return (
+    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+      <p className="text-emerald-700 font-medium">✓ Donation confirmed! Impact NFT minted.</p>
+    </div>
+  );
 
   return (
     <div className="bg-white border rounded-xl p-5">
@@ -65,6 +45,7 @@ export function DonateModal({ campaignId }: { campaignId: bigint }) {
         </button>
       </div>
       {!isConnected && <p className="text-xs text-amber-600 mt-2">Connect wallet to donate</p>}
+      {error && <p className="text-xs text-red-500 mt-2">{error.message}</p>}
     </div>
   );
 }
