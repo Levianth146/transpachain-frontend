@@ -15,19 +15,31 @@ const NAV_LINKS = [
 ];
 
 const ADMIN_ROLE = keccak256(toBytes("ADMIN_ROLE"));
+const DEFAULT_ADMIN_ROLE =
+  "0x0000000000000000000000000000000000000000000000000000000000000000" as const;
 
 export function ClientNav() {
   const mounted  = useMounted();
   const pathname = usePathname();
   const { address } = useAccount();
 
-  const { data: isAdmin } = useReadContract({
+  const { data: isAdminRole } = useReadContract({
     address:      ADDRESSES.charityCore,
     abi:          CHARITY_CORE_ABI,
     functionName: "hasRole",
     args:         address ? [ADMIN_ROLE, address] : undefined,
     query:        { enabled: !!address, staleTime: 0 },
   });
+
+  const { data: isDefaultAdminRole } = useReadContract({
+    address:      ADDRESSES.charityCore,
+    abi:          CHARITY_CORE_ABI,
+    functionName: "hasRole",
+    args:         address ? [DEFAULT_ADMIN_ROLE, address] : undefined,
+    query:        { enabled: !!address, staleTime: 0 },
+  });
+
+  const isAdmin = Boolean(isAdminRole || isDefaultAdminRole);
 
   if (!mounted) return null;
 

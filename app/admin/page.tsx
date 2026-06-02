@@ -21,6 +21,8 @@ import { motion, AnimatePresence } from "framer-motion";
 const ORG_ROLE      = keccak256(toBytes("ORG_ROLE"));
 const ADMIN_ROLE    = keccak256(toBytes("ADMIN_ROLE"));
 const VERIFIER_ROLE = keccak256(toBytes("VERIFIER_ROLE"));
+const DEFAULT_ADMIN_ROLE =
+  "0x0000000000000000000000000000000000000000000000000000000000000000" as const;
 
 function truncate(addr: string) {
   return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
@@ -146,11 +148,19 @@ export default function AdminPage() {
   useEffect(() => setMounted(true), []);
 
   // ── Role checks ──────────────────────────────────────────────
-  const { data: isAdmin } = useReadContract({
+  const { data: isAdminRole } = useReadContract({
     address:      ADDRESSES.charityCore,
     abi:          CHARITY_CORE_ABI,
     functionName: "hasRole",
     args:         address ? [ADMIN_ROLE, address] : undefined,
+    query:        { enabled: !!address },
+  });
+
+  const { data: isDefaultAdminRole } = useReadContract({
+    address:      ADDRESSES.charityCore,
+    abi:          CHARITY_CORE_ABI,
+    functionName: "hasRole",
+    args:         address ? [DEFAULT_ADMIN_ROLE, address] : undefined,
     query:        { enabled: !!address },
   });
 
@@ -161,6 +171,8 @@ export default function AdminPage() {
     args:         address ? [VERIFIER_ROLE, address] : undefined,
     query:        { enabled: !!address },
   });
+
+  const isAdmin = Boolean(isAdminRole || isDefaultAdminRole);
 
   // ── Target org status ────────────────────────────────────────
   const validOrg = orgAddress.startsWith("0x") && orgAddress.length === 42;
