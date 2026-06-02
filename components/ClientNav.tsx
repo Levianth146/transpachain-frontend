@@ -14,7 +14,8 @@ const NAV_LINKS = [
   { href: "/dashboard",        label: "Dashboard", icon: SquaresFour },
 ];
 
-const ADMIN_ROLE = keccak256(toBytes("ADMIN_ROLE"));
+const ADMIN_ROLE    = keccak256(toBytes("ADMIN_ROLE"));
+const VERIFIER_ROLE = keccak256(toBytes("VERIFIER_ROLE"));
 const DEFAULT_ADMIN_ROLE =
   "0x0000000000000000000000000000000000000000000000000000000000000000" as const;
 
@@ -39,7 +40,17 @@ export function ClientNav() {
     query:        { enabled: !!address, staleTime: 0 },
   });
 
-  const isAdmin = Boolean(isAdminRole || isDefaultAdminRole);
+  const { data: isVerifierRole } = useReadContract({
+    address:      ADDRESSES.charityCore,
+    abi:          CHARITY_CORE_ABI,
+    functionName: "hasRole",
+    args:         address ? [VERIFIER_ROLE, address] : undefined,
+    query:        { enabled: !!address, staleTime: 0 },
+  });
+
+  const isAdmin    = Boolean(isAdminRole || isDefaultAdminRole);
+  const isVerifier = Boolean(isVerifierRole);
+  const showAdmin  = isAdmin || isVerifier;
 
   if (!mounted) return null;
 
@@ -63,7 +74,7 @@ export function ClientNav() {
             </Link>
           );
         })}
-        {isAdmin && (
+        {showAdmin && (
           <Link
             href="/admin"
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
