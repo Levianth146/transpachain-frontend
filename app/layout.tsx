@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "TranspaChain — Transparent Charity Platform",
   description:
     "Blockchain-powered charity with milestone-based fund release and DAO governance",
+  icons: {
+    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
