@@ -26,7 +26,7 @@ export function ClientNav() {
     abi:          CHARITY_CORE_ABI,
     functionName: "hasRole",
     args:         address ? [ADMIN_ROLE, address] : undefined,
-    query:        { enabled: !!address },
+    query:        { enabled: !!address, staleTime: 0 },
   });
 
   if (!mounted) return null;
@@ -56,8 +56,8 @@ export function ClientNav() {
             href="/admin"
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
               pathname === "/admin"
-                ? "bg-emerald-50 text-emerald-700"
-                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                ? "bg-purple-50 text-purple-700"
+                : "text-gray-600 hover:bg-purple-50 hover:text-purple-700"
             }`}
           >
             <Shield size={15} />
