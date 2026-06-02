@@ -75,6 +75,7 @@ export function useDonate() {
       functionName: "donate",
       args:         [campaignId],
       value:        parseEther(amountEth),
+      gas:          300000n,   // fix: Sepolia block gas limit too low for auto-estimate
     });
   };
 
@@ -91,6 +92,7 @@ export function useDonateUSDC() {
       abi:          DONATION_VAULT_ABI,
       functionName: "donateUSDC",
       args:         [campaignId, amountUSDC],
+      gas:          300000n,   // fix: Sepolia block gas limit too low for auto-estimate
     });
   };
 
@@ -107,6 +109,7 @@ export function useClaimRefund() {
       abi:          DONATION_VAULT_ABI,
       functionName: "claimRefund",
       args:         [campaignId],
+      gas:          200000n,
     });
   };
 
@@ -123,6 +126,7 @@ export function useSubmitMilestoneProof() {
       abi:          DONATION_VAULT_ABI,
       functionName: "submitMilestoneProof",
       args:         [campaignId, milestoneIndex, proofCID],
+      gas:          300000n,
     });
   };
   

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
-import { useCreateCampaign } from "@/hooks/useCharityCore";
+import { useCreateCampaign, useIsOrgVerified } from "@/hooks/useCharityCore";
 import { api } from "@/lib/api";
 import { ConnectWallet } from "@/components/ConnectWallet";
 
@@ -11,6 +11,8 @@ export default function CreateCampaignPage() {
   const router = useRouter();
   const { isConnected } = useAccount();
   const { createCampaign, isPending, isConfirming, isSuccess, error } = useCreateCampaign();
+  const { address } = useAccount();
+  const { data: isVerified } = useIsOrgVerified(address);
 
   const [form, setForm] = useState({
     title:       "",
@@ -159,6 +161,15 @@ export default function CreateCampaignPage() {
           </div>
         </div>
 
+        {!isVerified && address && (
+          <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+            <span>⚠️</span>
+            <div>
+              <p className="font-medium">Your wallet is not verified as an organization.</p>
+              <p className="text-xs mt-0.5 text-amber-600">Contact admin to get verified before creating campaigns.</p>
+            </div>
+          </div>
+        )}
         {error && <p className="text-sm text-red-500">{error.message}</p>}
 
         <button type="submit" disabled={isPending || isConfirming}

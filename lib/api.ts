@@ -65,4 +65,13 @@ export const api = {
     const res = await fetch(`${BACKEND_URL}/ipfs/${cid}`);
     return res.json();
   },
+
+  getVerifiedOrgs: async (): Promise<{
+    orgs: Array<{ address: string; updatedAt: string; blockNumber?: number; txHash?: string }>;
+    total: number;
+  }> => {
+    const res = await fetch(`${BACKEND_URL}/admin/verified-orgs`);
+    if (!res.ok) throw new Error("Failed to fetch verified orgs");
+    return res.json();
+  },
 };
