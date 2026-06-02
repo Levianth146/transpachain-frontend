@@ -4,14 +4,14 @@ import { usePathname } from "next/navigation";
 import { useAccount, useReadContract } from "wagmi";
 import { ConnectWallet } from "./ConnectWallet";
 import { useMounted } from "@/hooks/useMounted";
-import { Globe, PlusCircle, LayoutDashboard, Shield } from "lucide-react";
+import { GlobeHemisphereWest, PlusCircle, SquaresFour, ShieldCheck } from "@phosphor-icons/react";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { keccak256, toBytes } from "viem";
 
 const NAV_LINKS = [
-  { href: "/",                 label: "Campaigns", icon: Globe },
+  { href: "/",                 label: "Campaigns", icon: GlobeHemisphereWest },
   { href: "/campaigns/create", label: "Create",    icon: PlusCircle },
-  { href: "/dashboard",        label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard",        label: "Dashboard", icon: SquaresFour },
 ];
 
 const ADMIN_ROLE = keccak256(toBytes("ADMIN_ROLE"));
@@ -72,7 +72,7 @@ export function ClientNav() {
                 : "text-gray-600 hover:bg-purple-50 hover:text-purple-700"
             }`}
           >
-            <Shield size={15} />
+            <ShieldCheck size={15} weight="duotone" />
             Admin
           </Link>
         )}

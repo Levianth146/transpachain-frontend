@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cream-50 text-ink-900 antialiased;
+  }
+
+  .dark body {
+    @apply bg-ink-950 text-cream-100;
+  }
+}
+
+@layer utilities {
+  .hero-grain {
+    @apply relative;
+  }
+
+  .hero-grain::after {
+    content: "";
+    @apply pointer-events-none absolute inset-0 bg-grain opacity-40 mix-blend-overlay;
+  }
+}

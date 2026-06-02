@@ -4,6 +4,8 @@ import { api } from "@/lib/api";
 import { CampaignCard } from "./CampaignCard";
 import { CampaignListSkeleton } from "./CampaignCardSkeleton";
 import { CampaignFilter, FilterState } from "./CampaignFilter";
+import { useSocketEvents } from "@/hooks/useSocket";
+import { motion } from "framer-motion";
 
 export function CampaignList() {
   const [allCampaigns, setAllCampaigns] = useState<any[]>([]);
@@ -11,15 +13,24 @@ export function CampaignList() {
   const [loading, setLoading]     = useState(true);
   const [mounted, setMounted]     = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
+  const load = () => {
     api.getCampaigns().then((data) => {
       const valid = (data.campaigns ?? []).filter((c: any) => c.title && c.title.length > 0);
       setAllCampaigns(valid);
       setFiltered(valid);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    setMounted(true);
+    load();
   }, []);
+
+  useSocketEvents({
+    donationReceived: () => load(),
+    campaignCreated: () => load(),
+  });
 
   const handleFilter = (filters: FilterState) => {
     let result = [...allCampaigns];
@@ -57,8 +68,15 @@ export function CampaignList() {
         <div className="text-center py-20 text-gray-400">No campaigns found.</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((campaign) => (
-            <CampaignCard key={campaign.campaignId} campaign={campaign} />
+          {filtered.map((campaign, i) => (
+            <motion.div
+              key={campaign.campaignId}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <CampaignCard campaign={campaign} />
+            </motion.div>
           ))}
         </div>
       )}

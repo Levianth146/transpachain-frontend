@@ -2,8 +2,9 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import Link from "next/link";
-import { Target, Gem, Users } from "lucide-react";
+import { Target, Coins, Users } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
+import { useSocketEvents } from "@/hooks/useSocket";
 
 function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
   const ref = useRef(null);
@@ -35,16 +36,25 @@ export function HeroSection() {
     countUniqueDonors: 0,
   });
 
-  useEffect(() => {
+  const loadStats = () => {
     api.getStats().then(setStats).catch(() => {});
+  };
+
+  useEffect(() => {
+    loadStats();
   }, []);
+
+  useSocketEvents({
+    donationReceived: () => loadStats(),
+    campaignCreated: () => loadStats(),
+  });
 
   const ethDonated = parseFloat(
     (Number(BigInt(stats.totalDonated || "0")) / 1e18).toFixed(2)
   );
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 min-h-[560px] flex items-center">
+    <section className="hero-grain relative overflow-hidden bg-hero-gradient min-h-[560px] flex items-center">
       {/* Grid pattern overlay */}
       <div
         className="absolute inset-0 opacity-10" suppressHydrationWarning
@@ -129,19 +139,25 @@ export function HeroSection() {
               <div className="text-3xl font-bold text-white">
                 <AnimatedCounter value={stats.totalCampaigns} />
               </div>
-              <div className="text-slate-400 text-sm mt-1">Campaigns</div>
+              <div className="text-slate-400 text-sm mt-1 flex items-center gap-1">
+                <Target size={14} weight="duotone" /> Campaigns
+              </div>
             </div>
             <div>
               <div className="text-3xl font-bold text-emerald-400">
                 <AnimatedCounter value={ethDonated} suffix=" ETH" />
               </div>
-              <div className="text-slate-400 text-sm mt-1">Total Donated</div>
+              <div className="text-slate-400 text-sm mt-1 flex items-center gap-1">
+                <Coins size={14} weight="duotone" /> Total Donated
+              </div>
             </div>
             <div>
               <div className="text-3xl font-bold text-white">
                 <AnimatedCounter value={stats.countUniqueDonors} />
               </div>
-              <div className="text-slate-400 text-sm mt-1">Donors</div>
+              <div className="text-slate-400 text-sm mt-1 flex items-center gap-1">
+                <Users size={14} weight="duotone" /> Donors
+              </div>
             </div>
           </motion.div>
         </div>

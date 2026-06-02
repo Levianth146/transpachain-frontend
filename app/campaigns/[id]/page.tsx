@@ -5,7 +5,10 @@ import { formatEther } from "viem";
 import { api } from "@/lib/api";
 import { MilestoneTimeline } from "@/components/MilestoneTimeline";
 import { DonateModal } from "@/components/DonateModal";
+import { RefundPanel } from "@/components/RefundPanel";
 import { VotingPanel } from "@/components/VotingPanel";
+import { CampaignDetailSkeleton } from "@/components/CampaignDetailSkeleton";
+import { DonorAvatars } from "@/components/DonorAvatars";
 import { CampaignStatus } from "@/types";
 
 const STATUS_BADGE: Record<number, { label: string; color: string }> = {
@@ -30,7 +33,7 @@ export default function CampaignDetailPage({ params }: Props) {
     });
   }, [resolvedParams.id]);
 
-  if (loading) return <div className="p-8">Loading...</div>;
+  if (loading) return <CampaignDetailSkeleton />;
   if (!campaign || campaign.error)  return <div className="p-8 text-center">Campaign not found</div>;
 
   const raised    = Number(formatEther(BigInt(campaign.raisedAmount ?? "0")));
@@ -72,10 +75,11 @@ export default function CampaignDetailPage({ params }: Props) {
           <div className="bg-emerald-500 h-3 rounded-full transition-all"
             style={{ width: `${progress}%` }} />
         </div>
-        <div className="flex justify-between text-sm text-gray-500">
+        <div className="flex justify-between text-sm text-gray-500 mb-3">
           <span>{progress.toFixed(0)}% funded</span>
           <span>{campaign.donorCount} donors</span>
         </div>
+        <DonorAvatars campaignId={Number(campaign.campaignId)} />
       </div>
 
       {/* Main content */}
@@ -84,7 +88,8 @@ export default function CampaignDetailPage({ params }: Props) {
           <MilestoneTimeline campaignId={campaignId} campaign={campaign} />
         </div>
         <div className="space-y-4">
-          <DonateModal campaignId={campaignId} />
+          <DonateModal campaignId={campaignId} paymentToken={campaign.paymentToken ?? 0} />
+          <RefundPanel campaignId={campaignId} paymentToken={campaign.paymentToken ?? 0} />
           <VotingPanel campaignId={campaignId} />
         </div>
       </div>
