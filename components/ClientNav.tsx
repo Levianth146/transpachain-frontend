@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useAccount, useReadContract } from "wagmi";
 import { ConnectWallet } from "./ConnectWallet";
 import { useMounted } from "@/hooks/useMounted";
-import { GlobeHemisphereWest, PlusCircle, SquaresFour, ShieldCheck } from "@phosphor-icons/react";
+import { GlobeHemisphereWest, PlusCircle, SquaresFour, ShieldCheck, Scales } from "@phosphor-icons/react";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { keccak256, toBytes } from "viem";
 
@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { href: "/",                 label: "Campaigns", icon: GlobeHemisphereWest },
   { href: "/campaigns/create", label: "Create",    icon: PlusCircle },
   { href: "/dashboard",        label: "Dashboard", icon: SquaresFour },
+  { href: "/governance",       label: "Governance", icon: Scales },
 ];
 
 const ADMIN_ROLE    = keccak256(toBytes("ADMIN_ROLE"));

@@ -15,6 +15,7 @@ import {
   CheckCircle, ChevronDown, ChevronUp, BadgeCheck,
 } from "lucide-react";
 import { addToast } from "@/components/Toast";
+import { AdminOrgProfiles } from "@/components/AdminOrgProfiles";
 import { api } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -372,6 +373,14 @@ export default function AdminPage() {
             </button>
           </div>
         </div>
+      </Section>
+
+      {/* ── Off-chain org applications ── */}
+      <Section icon={Users} title="Organization applications (off-chain)" collapsible>
+        <AdminOrgProfiles />
+        <p className="text-xs text-gray-400 mt-3">
+          Approve profile here, then use Verify Org above to grant ORG_ROLE on-chain.
+        </p>
       </Section>
 
       {/* ── Verified Orgs List ── */}

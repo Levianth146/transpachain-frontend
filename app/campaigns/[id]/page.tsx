@@ -9,6 +9,10 @@ import { RefundPanel } from "@/components/RefundPanel";
 import { VotingPanel } from "@/components/VotingPanel";
 import { CampaignDetailSkeleton } from "@/components/CampaignDetailSkeleton";
 import { DonorAvatars } from "@/components/DonorAvatars";
+import { EscrowTransparencyCard } from "@/components/EscrowTransparencyCard";
+import { OrgCampaignActions } from "@/components/OrgCampaignActions";
+import { CampaignStatusTimeline } from "@/components/CampaignStatusTimeline";
+import { useSocketEvents } from "@/hooks/useSocket";
 import { CampaignStatus } from "@/types";
 
 const STATUS_BADGE: Record<number, { label: string; color: string }> = {
@@ -26,12 +30,28 @@ export default function CampaignDetailPage({ params }: Props) {
   const [campaign, setCampaign] = useState<any>(null);
   const [loading, setLoading]   = useState(true);
 
-  useEffect(() => {
+  const load = () => {
     api.getCampaign(Number(resolvedParams.id)).then((data) => {
       setCampaign(data);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    load();
   }, [resolvedParams.id]);
+
+  useSocketEvents({
+    donationReceived: (d: { campaignId?: number }) => {
+      if (d?.campaignId === Number(resolvedParams.id)) load();
+    },
+    campaignUpdated: (d: { campaignId?: number }) => {
+      if (d?.campaignId === Number(resolvedParams.id)) load();
+    },
+    deadlineExtended: (d: { campaignId?: number }) => {
+      if (d?.campaignId === Number(resolvedParams.id)) load();
+    },
+  });
 
   if (loading) return <CampaignDetailSkeleton />;
   if (!campaign || campaign.error)  return <div className="p-8 text-center">Campaign not found</div>;
@@ -82,12 +102,29 @@ export default function CampaignDetailPage({ params }: Props) {
         <DonorAvatars campaignId={Number(campaign.campaignId)} />
       </div>
 
-      {/* Main content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="lg:col-span-2 space-y-4">
+          <CampaignStatusTimeline
+            status={campaign.status}
+            completedMilestones={campaign.completedMilestones ?? 0}
+            totalMilestones={campaign.totalMilestones}
+            deadline={campaign.deadline}
+          />
           <MilestoneTimeline campaignId={campaignId} campaign={campaign} />
+          <OrgCampaignActions
+            campaignId={campaignId}
+            orgAddress={campaign.orgAddress}
+            status={campaign.status}
+            deadline={campaign.deadline}
+            totalMilestones={campaign.totalMilestones}
+            completedMilestones={campaign.completedMilestones ?? 0}
+          />
         </div>
         <div className="space-y-4">
+          <EscrowTransparencyCard
+            campaignId={campaignId}
+            paymentToken={campaign.paymentToken ?? 0}
+          />
           <DonateModal campaignId={campaignId} paymentToken={campaign.paymentToken ?? 0} />
           <RefundPanel campaignId={campaignId} paymentToken={campaign.paymentToken ?? 0} />
           <VotingPanel campaignId={campaignId} />

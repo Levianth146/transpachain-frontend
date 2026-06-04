@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { api } from "@/lib/api";
-import { useCastVote, useQueueProposal, useExecuteProposal } from "@/hooks/useGovernance";
+import { useCastVote, useQueueProposal, useExecuteProposal, useProposal } from "@/hooks/useGovernance";
+import Link from "next/link";
 import { VoteChoice, ProposalState } from "@/types";
 
 const STATE_LABEL: Record<number, string> = {
@@ -36,8 +37,23 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
   );
 
   const proposalId = BigInt(proposal.proposalId);
-  const totalVotes = proposal.forVotes + proposal.againstVotes + proposal.abstainVotes;
-  const forPct     = totalVotes > 0 ? ((proposal.forVotes / totalVotes) * 100).toFixed(0) : "0";
+  const { data: onChainProposal } = useProposal(proposalId);
+  const chain = onChainProposal as {
+    forVotes?: bigint;
+    againstVotes?: bigint;
+    abstainVotes?: bigint;
+    totalVotingPower?: bigint;
+  } | undefined;
+
+  const forVotes = Number(chain?.forVotes ?? proposal.forVotes ?? 0);
+  const againstVotes = Number(chain?.againstVotes ?? proposal.againstVotes ?? 0);
+  const abstainVotes = Number(chain?.abstainVotes ?? proposal.abstainVotes ?? 0);
+  const totalPower = Number(chain?.totalVotingPower ?? 0);
+  const totalVotes = forVotes + againstVotes + abstainVotes;
+  const forPct = totalVotes > 0 ? ((forVotes / totalVotes) * 100).toFixed(0) : "0";
+  const quorumPct =
+    totalPower > 0 ? ((forVotes / totalPower) * 100).toFixed(0) : "0";
+  const quorumMet = totalPower > 0 && forVotes * 100 >= totalPower * 51;
 
   return (
     <div className="bg-white border rounded-xl p-5">
@@ -59,8 +75,14 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
           <div className="bg-emerald-500 h-2 rounded-full"
             style={{ width: `${forPct}%` }} />
         </div>
-        <p className="text-xs text-gray-400 mt-1">{forPct}% in favor (need 51%)</p>
+        <p className="text-xs text-gray-400 mt-1">
+          {forPct}% of cast votes · Quorum: {quorumPct}% of donor power (need 51% For)
+          {quorumMet ? " ✓" : ""}
+        </p>
       </div>
+      <Link href="/governance" className="text-xs text-blue-600 hover:underline block mb-2">
+        View all DAO proposals →
+      </Link>
 
       {/* Vote buttons — only if Active */}
       {proposal.state === 1 && (

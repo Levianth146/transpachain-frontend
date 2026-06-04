@@ -16,22 +16,39 @@ function getSocket() {
   return socket;
 }
 
-export function useSocketEvents(
-  handlers: Partial<{
-    donationReceived: (data: unknown) => void;
-    campaignCreated: (data: unknown) => void;
-  }>
-) {
+type SocketHandlers = Partial<{
+  donationReceived: (data: { campaignId?: number }) => void;
+  campaignCreated: (data: unknown) => void;
+  campaignUpdated: (data: { campaignId?: number }) => void;
+  deadlineExtended: (data: { campaignId?: number }) => void;
+  proposalCreated: (data: { campaignId?: number }) => void;
+  campaignFinalized: (data: { campaignId?: number }) => void;
+}>;
+
+export function useSocketEvents(handlers: SocketHandlers) {
   useEffect(() => {
     const s = getSocket();
     if (!s) return;
 
-    if (handlers.donationReceived) s.on("donationReceived", handlers.donationReceived);
-    if (handlers.campaignCreated) s.on("campaignCreated", handlers.campaignCreated);
+    const pairs: [keyof SocketHandlers, string][] = [
+      ["donationReceived", "donationReceived"],
+      ["campaignCreated", "campaignCreated"],
+      ["campaignUpdated", "campaignUpdated"],
+      ["deadlineExtended", "deadlineExtended"],
+      ["proposalCreated", "proposalCreated"],
+      ["campaignFinalized", "campaignFinalized"],
+    ];
+
+    for (const [key, event] of pairs) {
+      const fn = handlers[key];
+      if (fn) s.on(event, fn as (...args: unknown[]) => void);
+    }
 
     return () => {
-      if (handlers.donationReceived) s.off("donationReceived", handlers.donationReceived);
-      if (handlers.campaignCreated) s.off("campaignCreated", handlers.campaignCreated);
+      for (const [key, event] of pairs) {
+        const fn = handlers[key];
+        if (fn) s.off(event, fn as (...args: unknown[]) => void);
+      }
     };
   }, [handlers]);
 }

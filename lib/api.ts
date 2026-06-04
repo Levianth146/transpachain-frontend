@@ -66,6 +66,41 @@ export const api = {
     return res.json();
   },
 
+  getProposals: async (state?: number) => {
+    const params = state !== undefined ? `?state=${state}` : "";
+    const res = await fetch(`${BACKEND_URL}/proposals${params}`);
+    return res.json();
+  },
+
+  getOrgProfile: async (address: string) => {
+    const res = await fetch(`${BACKEND_URL}/orgs/${address}`);
+    return res.json();
+  },
+
+  submitOrgProfile: async (body: Record<string, string>) => {
+    const res = await fetch(`${BACKEND_URL}/orgs`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return res.json();
+  },
+
+  getPendingOrgProfiles: async () => {
+    const res = await fetch(`${BACKEND_URL}/admin/org-profiles?status=pending`);
+    if (!res.ok) throw new Error("Failed to fetch org profiles");
+    return res.json();
+  },
+
+  reviewOrgProfile: async (address: string, status: string, reviewerNote?: string) => {
+    const res = await fetch(`${BACKEND_URL}/admin/org-profiles/${address}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status, reviewerNote }),
+    });
+    return res.json();
+  },
+
   getVerifiedOrgs: async (): Promise<{
     orgs: Array<{ address: string; updatedAt: string; blockNumber?: number; txHash?: string }>;
     total: number;

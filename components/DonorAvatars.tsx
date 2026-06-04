@@ -8,16 +8,16 @@ function seedFromAddress(address: string): number {
 }
 
 function MiniAvatar({ address }: { address: string }) {
-  const seed = seedFromAddress(address);
-  const hue = seed % 360;
+  const src = `https://api.dicebear.com/7.x.identicon/svg?seed=${address.toLowerCase()}`;
   return (
-    <span
-      className="inline-flex h-7 w-7 rounded-full ring-2 ring-white dark:ring-zinc-900 items-center justify-center text-[10px] font-mono text-white shrink-0"
-      style={{ backgroundColor: `hsl(${hue}, 55%, 45%)` }}
+    <img
+      src={src}
+      alt=""
+      width={28}
+      height={28}
+      className="h-7 w-7 rounded-full ring-2 ring-white dark:ring-zinc-900 shrink-0 bg-gray-100"
       title={address}
-    >
-      {address.slice(2, 4).toUpperCase()}
-    </span>
+    />
   );
 }
 

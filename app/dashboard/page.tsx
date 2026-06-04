@@ -5,6 +5,7 @@ import { formatEther } from "viem";
 import { api } from "@/lib/api";
 import { NFTGallery } from "@/components/NFTGallery";
 import { ConnectWallet } from "@/components/ConnectWallet";
+import { OrgProfileForm } from "@/components/OrgProfileForm";
 
 export default function DashboardPage() {
   const { address, isConnected } = useAccount();
@@ -90,6 +91,10 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="mt-10">
+        <OrgProfileForm />
       </div>
     </main>
   );
