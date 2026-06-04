@@ -26,7 +26,15 @@ function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: numbe
           </a>
         )}
         {milestone?.releaseAmount != null && (
-          <p className="text-xs text-gray-500">{formatEther(milestone?.releaseAmount ?? BigInt(0))} ETH</p>
+          <p className="text-xs text-gray-500">
+            {(() => {
+              try {
+                return `${formatEther(BigInt(milestone.releaseAmount))} ETH`;
+              } catch {
+                return "— ETH";
+              }
+            })()}
+          </p>
         )}
       </div>
     </div>
@@ -34,13 +42,18 @@ function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: numbe
 }
 
 export function MilestoneTimeline({ campaignId, campaign }: { campaignId: bigint; campaign: Campaign }) {
+  const count = Math.max(0, Number(campaign.totalMilestones) || 0);
   return (
     <div className="bg-white border rounded-xl p-5">
       <h3 className="font-semibold mb-4">Milestone Timeline</h3>
       <div className="space-y-3">
-        {Array.from({ length: campaign.totalMilestones }, (_, i) => (
-          <MilestoneItem key={i} campaignId={campaignId} index={i} />
-        ))}
+        {count === 0 ? (
+          <p className="text-sm text-gray-400">No milestones configured.</p>
+        ) : (
+          Array.from({ length: count }, (_, i) => (
+            <MilestoneItem key={i} campaignId={campaignId} index={i} />
+          ))
+        )}
       </div>
     </div>
   );

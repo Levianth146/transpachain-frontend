@@ -31,10 +31,14 @@ export default function CampaignDetailPage({ params }: Props) {
   const [loading, setLoading]   = useState(true);
 
   const load = () => {
-    api.getCampaign(Number(resolvedParams.id)).then((data) => {
-      setCampaign(data);
-      setLoading(false);
-    });
+    setLoading(true);
+    api
+      .getCampaign(Number(resolvedParams.id))
+      .then((data) => {
+        setCampaign(data);
+      })
+      .catch(() => setCampaign({ error: true }))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -56,11 +60,27 @@ export default function CampaignDetailPage({ params }: Props) {
   if (loading) return <CampaignDetailSkeleton />;
   if (!campaign || campaign.error)  return <div className="p-8 text-center">Campaign not found</div>;
 
-  const raised    = Number(formatEther(BigInt(campaign.raisedAmount ?? "0")));
-  const goal      = Number(formatEther(BigInt(campaign.goalAmount ?? "0")));
-  const progress  = goal > 0 ? Math.min((raised / goal) * 100, 100) : 0;
+  const toWei = (v: unknown) => {
+    try {
+      if (v == null || v === "") return 0n;
+      return BigInt(String(v));
+    } catch {
+      return 0n;
+    }
+  };
+
+  const raised    = Number(formatEther(toWei(campaign.raisedAmount)));
+  const goal      = Number(formatEther(toWei(campaign.goalAmount)));
+  const progress  = goal > 0 && Number.isFinite(raised) ? Math.min((raised / goal) * 100, 100) : 0;
   const badge     = STATUS_BADGE[campaign.status] ?? STATUS_BADGE[0];
-  const campaignId = BigInt(campaign.campaignId);
+  let campaignId: bigint;
+  try {
+    campaignId = BigInt(campaign.campaignId ?? resolvedParams.id);
+  } catch {
+    return <div className="p-8 text-center">Campaign data is invalid</div>;
+  }
+  const totalMilestones = Math.max(0, Number(campaign.totalMilestones) || 0);
+  const completedMilestones = Math.max(0, Number(campaign.completedMilestones) || 0);
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-10">
@@ -105,19 +125,19 @@ export default function CampaignDetailPage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2 space-y-4">
           <CampaignStatusTimeline
-            status={campaign.status}
-            completedMilestones={campaign.completedMilestones ?? 0}
-            totalMilestones={campaign.totalMilestones}
-            deadline={campaign.deadline}
+            status={campaign.status ?? 0}
+            completedMilestones={completedMilestones}
+            totalMilestones={totalMilestones}
+            deadline={Number(campaign.deadline) || 0}
           />
           <MilestoneTimeline campaignId={campaignId} campaign={campaign} />
           <OrgCampaignActions
             campaignId={campaignId}
-            orgAddress={campaign.orgAddress}
-            status={campaign.status}
-            deadline={campaign.deadline}
-            totalMilestones={campaign.totalMilestones}
-            completedMilestones={campaign.completedMilestones ?? 0}
+            orgAddress={campaign.orgAddress ?? ""}
+            status={campaign.status ?? 0}
+            deadline={Number(campaign.deadline) || 0}
+            totalMilestones={totalMilestones}
+            completedMilestones={completedMilestones}
           />
         </div>
         <div className="space-y-4">
