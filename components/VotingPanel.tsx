@@ -18,13 +18,19 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
   const { queue, isPending: isQueuing } = useQueueProposal();
   const { execute, isPending: isExecuting } = useExecuteProposal();
 
+  const proposalId =
+    proposal?.proposalId != null ? BigInt(proposal.proposalId) : 0n;
+  const { data: onChainProposal } = useProposal(proposalId, {
+    enabled: proposal != null,
+  });
+
   useEffect(() => {
-    // Fetch active proposal from backend
-    api.getCampaignProposals(Number(campaignId)).then((proposals: any[]) => {
-      // Get proposal Active (state = 1)
-      const active = proposals.find((p: any) => p.state === 1);
-      setProposal(active ?? null);
-    });
+    api.getCampaignProposals(Number(campaignId))
+      .then((proposals: any[]) => {
+        const active = proposals.find((p: any) => p.state === 1);
+        setProposal(active ?? null);
+      })
+      .catch(() => setProposal(null));
   }, [campaignId, voted]);
 
   if (!proposal) return (
@@ -35,9 +41,6 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
       </p>
     </div>
   );
-
-  const proposalId = BigInt(proposal.proposalId);
-  const { data: onChainProposal } = useProposal(proposalId);
   const chain = onChainProposal as {
     forVotes?: bigint;
     againstVotes?: bigint;

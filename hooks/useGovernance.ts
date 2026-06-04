@@ -5,12 +5,13 @@ import { VoteChoice } from "@/types";
 
 // ─── Read hooks ────────────────────────────────────────────────
 
-export function useProposal(proposalId: bigint) {
+export function useProposal(proposalId: bigint, options?: { enabled?: boolean }) {
   return useReadContract({
     address: ADDRESSES.governanceDAO,
     abi:     GOVERNANCE_DAO_ABI,
     functionName: "getProposal",
     args:    [proposalId],
+    query:   { enabled: options?.enabled !== false },
   });
 }
 
