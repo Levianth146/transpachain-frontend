@@ -6,7 +6,8 @@ import { Scales, ArrowRight } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { HowItWorksBlock } from "@/components/HowItWorksBlock";
+import { LearnMoreLink } from "@/components/LearnMoreLink";
+import { formatVoteWeight } from "@/lib/format";
 
 const STATE_STYLE: Record<number, string> = {
   0: "bg-gray-100 text-gray-700",
@@ -36,13 +37,11 @@ export default function GovernanceHubPage() {
           <Scales size={32} className="text-gold-500" weight="duotone" />
           <h1 className="text-3xl font-display text-gold-500">DAO Governance</h1>
         </div>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
+        <p className="text-gray-600 dark:text-gray-400 mb-2">
           Milestone releases are decided by donor votes. Each proof submission opens a proposal;
           51% quorum and a 24-hour timelock protect escrowed funds.
         </p>
-        <GlassPanel className="p-4 mb-8">
-          <HowItWorksBlock columns={3} />
-        </GlassPanel>
+        <LearnMoreLink className="mb-8" />
       </motion.div>
 
       {loading ? (
@@ -68,9 +67,9 @@ export default function GovernanceHubPage() {
                     Proposal #{p.proposalId} · Milestone {(p.milestoneIndex ?? 0) + 1}
                   </p>
                   <div className="flex gap-3 mt-2 text-xs text-gray-500">
-                    <span>For: {p.forVotes}</span>
-                    <span>Against: {p.againstVotes}</span>
-                    <span>Abstain: {p.abstainVotes}</span>
+                    <span>For: {formatVoteWeight(p.forVotes)} ETH</span>
+                    <span>Against: {formatVoteWeight(p.againstVotes)} ETH</span>
+                    <span>Abstain: {formatVoteWeight(p.abstainVotes)} ETH</span>
                   </div>
                 </div>
                 <span className={`text-xs px-2 py-1 rounded-full shrink-0 ${STATE_STYLE[p.state] ?? STATE_STYLE[0]}`}>

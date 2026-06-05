@@ -30,6 +30,7 @@ export const CHARITY_CORE_ABI = [
   { name: "cancelCampaign", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
   { name: "finalizeCampaign", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
   { name: "extendDeadline", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }, { name: "newDeadline", type: "uint256" }], outputs: [] },
+  { name: "MAX_EXTENSION", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "isOrgVerified", type: "function", stateMutability: "view", inputs: [{ name: "org", type: "address" }], outputs: [{ name: "", type: "bool" }] },
   { name: "totalCampaigns", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "getCampaignsByOrg", type: "function", stateMutability: "view", inputs: [{ name: "org", type: "address" }], outputs: [{ name: "", type: "uint256[]" }] },

@@ -18,6 +18,9 @@ import { addToast } from "@/components/Toast";
 import { AdminOrgProfiles } from "@/components/AdminOrgProfiles";
 import { api } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { MotionCard } from "@/components/ui/MotionCard";
 
 const ORG_ROLE      = keccak256(toBytes("ORG_ROLE"));
 const ADMIN_ROLE    = keccak256(toBytes("ADMIN_ROLE"));
@@ -62,12 +65,12 @@ function OrgRow({
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center justify-between py-3 px-4 rounded-lg bg-emerald-50/60 border border-emerald-100 hover:bg-emerald-50 transition-colors group"
+      className="flex items-center justify-between py-3 px-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 hover:bg-emerald-50/80 transition-colors group"
     >
       <div className="flex items-center gap-3 min-w-0">
         <BadgeCheck size={16} className="text-emerald-500 shrink-0" />
         <div className="min-w-0">
-          <p className="font-mono text-sm text-gray-800 truncate">{address}</p>
+          <p className="font-mono text-sm text-gray-800 dark:text-gray-200 truncate">{address}</p>
           <p className="text-xs text-gray-400 mt-0.5">{campaignCount} campaign{campaignCount !== 1 ? "s" : ""}</p>
         </div>
       </div>
@@ -98,18 +101,21 @@ function Section({
   iconClass = "text-emerald-600",
   children,
   collapsible = false,
+  delay = 0,
 }: {
   icon: React.ElementType;
   title: string;
   iconClass?: string;
   children: React.ReactNode;
   collapsible?: boolean;
+  delay?: number;
 }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+    <GlassPanel delay={delay} hover={false} className="overflow-hidden">
       <button
-        className={`w-full flex items-center justify-between px-6 py-4 ${collapsible ? "cursor-pointer hover:bg-gray-50" : "cursor-default"}`}
+        type="button"
+        className={`w-full flex items-center justify-between px-6 py-4 ${collapsible ? "cursor-pointer hover:bg-white/30 dark:hover:bg-white/5" : "cursor-default"}`}
         onClick={() => collapsible && setOpen((o) => !o)}
       >
         <h2 className="font-semibold text-base flex items-center gap-2">
@@ -133,9 +139,15 @@ function Section({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </GlassPanel>
   );
 }
+
+const STAT_GRADIENTS = [
+  "from-gray-500/15 to-slate-500/5",
+  "from-emerald-500/20 to-teal-500/10",
+  "from-purple-500/20 to-violet-500/10",
+];
 
 export default function AdminPage() {
   const { address, isConnected } = useAccount();
@@ -148,7 +160,6 @@ export default function AdminPage() {
 
   useEffect(() => setMounted(true), []);
 
-  // ── Role checks ──────────────────────────────────────────────
   const { data: isAdminRole } = useReadContract({
     address:      ADDRESSES.charityCore,
     abi:          CHARITY_CORE_ABI,
@@ -175,7 +186,6 @@ export default function AdminPage() {
 
   const isAdmin = Boolean(isAdminRole || isDefaultAdminRole);
 
-  // ── Target org status ────────────────────────────────────────
   const validOrg = orgAddress.startsWith("0x") && orgAddress.length === 42;
   const { data: isOrgVerified, refetch: refetchOrgStatus } = useReadContract({
     address:      ADDRESSES.charityCore,
@@ -185,7 +195,6 @@ export default function AdminPage() {
     query:        { enabled: validOrg },
   });
 
-  // ── Target verifier status ───────────────────────────────────
   const validVerifier = verifierAddr.startsWith("0x") && verifierAddr.length === 42;
   const { data: isVerifierRole, refetch: refetchVerifierStatus } = useReadContract({
     address:      ADDRESSES.charityCore,
@@ -195,14 +204,12 @@ export default function AdminPage() {
     query:        { enabled: validVerifier },
   });
 
-  // ── Stats ────────────────────────────────────────────────────
   const { data: totalCampaigns } = useReadContract({
     address:      ADDRESSES.charityCore,
     abi:          CHARITY_CORE_ABI,
     functionName: "totalCampaigns",
   });
 
-  // ── Write contracts ──────────────────────────────────────────
   const { writeContract: writeVerify,         data: verifyHash,         isPending: isVerifyPending }         = useWriteContract();
   const { isSuccess: verifySuccess,           isLoading: isVerifyConfirming }                                = useWaitForTransactionReceipt({ hash: verifyHash });
 
@@ -215,7 +222,6 @@ export default function AdminPage() {
   const { writeContract: writeRevokeVerifier, data: revokeVerifierHash, isPending: isRevokeVerifierPending } = useWriteContract();
   const { isSuccess: revokeVerifierSuccess,   isLoading: isRevokeVerifierConfirming }                        = useWaitForTransactionReceipt({ hash: revokeVerifierHash });
 
-  // ── Fetch verified orgs from BACKEND (not getLogs) ───────────
   const fetchVerifiedOrgs = useCallback(async () => {
     setOrgsLoading(true);
     try {
@@ -233,12 +239,10 @@ export default function AdminPage() {
     if (mounted && (isAdmin || isVerifier)) fetchVerifiedOrgs();
   }, [mounted, isAdmin, isVerifier, fetchVerifiedOrgs]);
 
-  // ── Toast effects ────────────────────────────────────────────
   useEffect(() => {
     if (verifySuccess) {
       addToast({ type: "success", title: "Org verified!", message: truncate(orgAddress) });
       refetchOrgStatus();
-      // Give indexer 3s to process then refresh list
       setTimeout(fetchVerifiedOrgs, 3000);
     }
   }, [verifySuccess]);
@@ -274,77 +278,82 @@ export default function AdminPage() {
     });
   };
 
-  // ── Guards ───────────────────────────────────────────────────
   if (!mounted) return null;
 
   if (!isConnected) return (
-    <main className="max-w-3xl mx-auto px-4 py-20 text-center">
-      <Shield size={48} className="mx-auto text-gray-300 mb-4" />
-      <h1 className="text-2xl font-bold mb-2">Admin Panel</h1>
+    <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center">
+      <Shield size={48} className="text-gray-300 mb-4" />
+      <h1 className="text-3xl font-display mb-2">Admin Panel</h1>
       <p className="text-gray-500">Connect wallet to access admin panel.</p>
-    </main>
+    </AnimatedGradientBackground>
   );
 
   if (!isAdmin && !isVerifier) return (
-    <main className="max-w-3xl mx-auto px-4 py-20 text-center">
-      <AlertCircle size={48} className="mx-auto text-red-300 mb-4" />
-      <h1 className="text-2xl font-bold mb-2">Access Denied</h1>
-      <p className="text-gray-500">You don't have admin or verifier role.</p>
+    <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center">
+      <AlertCircle size={48} className="text-red-300 mb-4" />
+      <h1 className="text-3xl font-display mb-2">Access Denied</h1>
+      <p className="text-gray-500">You don&apos;t have admin or verifier role.</p>
       <p className="text-xs text-gray-400 mt-2 font-mono">{address}</p>
-    </main>
+    </AnimatedGradientBackground>
   );
 
   const isOrgWriting      = isVerifyPending || isVerifyConfirming || isRevokePending || isRevokeConfirming;
   const isVerifierWriting = isGrantVerifierPending || isGrantVerifierConfirming || isRevokeVerifierPending || isRevokeVerifierConfirming;
 
+  const stats = [
+    { label: "Total Campaigns", value: totalCampaigns?.toString() ?? "—", color: "text-gray-900 dark:text-cream-100" },
+    { label: "Verified Orgs", value: verifiedOrgs.length.toString(), color: "text-emerald-600" },
+    { label: "Your Role", value: isAdmin ? "Admin" : "Verifier", color: "text-purple-600" },
+  ];
+
   return (
+    <AnimatedGradientBackground className="min-h-screen">
     <main className="max-w-3xl mx-auto px-4 py-10 space-y-6">
 
-      {/* ── Header ── */}
-      <div className="flex items-center justify-between">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-emerald-50 rounded-xl">
+          <div className="p-2.5 bg-emerald-500/10 rounded-xl border border-emerald-200/40">
             <Shield size={24} className="text-emerald-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Admin Panel</h1>
+            <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100">Admin Panel</h1>
             <p className="text-sm text-gray-500">
-              {isAdmin ? "Admin" : "Verifier"} ·{" "}
               <span className="font-mono">{address ? truncate(address) : ""}</span>
             </p>
           </div>
         </div>
         <div className="flex gap-2">
-          {isAdmin    && <span className="text-xs px-2.5 py-1 bg-purple-50 text-purple-700 border border-purple-100 rounded-full font-medium">ADMIN</span>}
-          {isVerifier && <span className="text-xs px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-100 rounded-full font-medium">VERIFIER</span>}
+          {isAdmin    && <span className="text-xs px-2.5 py-1 bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-200/40 rounded-full font-medium">ADMIN</span>}
+          {isVerifier && <span className="text-xs px-2.5 py-1 bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-200/40 rounded-full font-medium">VERIFIER</span>}
         </div>
-      </div>
+      </motion.div>
 
-      {/* ── Stats ── */}
       <div className="grid grid-cols-3 gap-4">
-        {[
-          { label: "Total Campaigns", value: totalCampaigns?.toString() ?? "—", color: "text-gray-900" },
-          { label: "Verified Orgs",   value: verifiedOrgs.length.toString(),    color: "text-emerald-600" },
-          { label: "Your Role",       value: isAdmin ? "Admin" : "Verifier",    color: "text-purple-600" },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">
-            <p className={`text-2xl font-bold ${color}`}>{value}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{label}</p>
-          </div>
+        {stats.map(({ label, value, color }, i) => (
+          <MotionCard key={label} index={i}>
+            <GlassPanel hover={false} className={`p-4 text-center bg-gradient-to-br ${STAT_GRADIENTS[i]}`}>
+              <p className={`text-2xl font-bold ${color}`}>{value}</p>
+              <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+            </GlassPanel>
+          </MotionCard>
         ))}
       </div>
 
-      {/* ── Verify / Revoke Org ── */}
-      <Section icon={UserCheck} title="Manage Organization Verification">
+      <Section icon={UserCheck} title="Verifier workflow — verify organization" delay={0.1}>
+        <ol className="text-xs text-gray-500 dark:text-gray-400 mb-4 space-y-1 list-decimal list-inside">
+          <li>Review off-chain application below</li>
+          <li>Paste org wallet address and check verification status</li>
+          <li>Click Verify Org to grant ORG_ROLE on-chain</li>
+        </ol>
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Organization Wallet Address</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Organization wallet address</label>
             <input
               type="text"
               value={orgAddress}
               onChange={e => setOrgAddress(e.target.value)}
               placeholder="0x..."
-              className="w-full border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-ink-900 dark:border-zinc-700"
             />
           </div>
           {orgAddress.length === 42 && (
@@ -361,7 +370,7 @@ export default function AdminPage() {
               className="flex-1 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-emerald-700 flex items-center justify-center gap-1.5 transition-colors"
             >
               <UserCheck size={14} />
-              {isVerifyPending || isVerifyConfirming ? "Verifying..." : "Verify Org"}
+              {isVerifyPending || isVerifyConfirming ? "Verifying…" : "Verify org"}
             </button>
             <button
               onClick={() => writeRevoke({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "revokeOrg", args: [orgAddress as `0x${string}`] })}
@@ -369,29 +378,32 @@ export default function AdminPage() {
               className="flex-1 py-2 bg-red-500 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-red-600 flex items-center justify-center gap-1.5 transition-colors"
             >
               <UserX size={14} />
-              {isRevokePending || isRevokeConfirming ? "Revoking..." : "Revoke Org"}
+              {isRevokePending || isRevokeConfirming ? "Revoking…" : "Revoke org"}
             </button>
           </div>
         </div>
       </Section>
 
-      {/* ── Off-chain org applications ── */}
-      <Section icon={Users} title="Organization applications (off-chain)" collapsible>
+      <Section icon={Users} title="Organization applications (off-chain)" collapsible delay={0.15}>
         <AdminOrgProfiles />
         <p className="text-xs text-gray-400 mt-3">
           Approve profile here, then use Verify Org above to grant ORG_ROLE on-chain.
         </p>
       </Section>
 
-      {/* ── Verified Orgs List ── */}
-      <Section icon={Users} title={`Verified Organizations (${verifiedOrgs.length})`} collapsible>
+      <Section icon={Users} title={`Verified organizations (${verifiedOrgs.length})`} collapsible delay={0.2}>
         <div className="space-y-2">
           {orgsLoading ? (
-            <div className="flex items-center justify-center py-8 text-gray-400">
-              <RefreshCw size={16} className="animate-spin mr-2" /> Loading from backend...
+            <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+              <RefreshCw size={20} className="animate-spin mb-2" />
+              <p className="text-sm">Loading from backend…</p>
             </div>
           ) : verifiedOrgs.length === 0 ? (
-            <div className="text-center py-8 text-gray-400 text-sm">No verified organizations yet.</div>
+            <div className="text-center py-10">
+              <Users size={32} className="mx-auto text-gray-300 mb-2" />
+              <p className="text-sm text-gray-400">No verified organizations yet.</p>
+              <p className="text-xs text-gray-400 mt-1">Verify your first org using the workflow above.</p>
+            </div>
           ) : (
             verifiedOrgs.map((org) => (
               <OrgRow key={org} address={org} onRevoke={handleQuickRevoke} isRevoking={isRevokePending || isRevokeConfirming} />
@@ -399,8 +411,9 @@ export default function AdminPage() {
           )}
           {!orgsLoading && (
             <button
+              type="button"
               onClick={fetchVerifiedOrgs}
-              className="w-full mt-2 py-2 text-xs text-gray-400 hover:text-gray-600 flex items-center justify-center gap-1.5 hover:bg-gray-50 rounded-lg transition-colors"
+              className="w-full mt-2 py-2 text-xs text-gray-400 hover:text-gray-600 flex items-center justify-center gap-1.5 hover:bg-white/30 rounded-lg transition-colors"
             >
               <RefreshCw size={12} /> Refresh list
             </button>
@@ -408,21 +421,20 @@ export default function AdminPage() {
         </div>
       </Section>
 
-      {/* ── Manage Verifier Role — Admin only ── */}
       {isAdmin && (
-        <Section icon={ShieldCheck} title="Manage Verifier Role" iconClass="text-purple-600">
+        <Section icon={ShieldCheck} title="Manage verifier role" iconClass="text-purple-600" delay={0.25}>
           <p className="text-xs text-gray-500 mb-4">
-            Grant or revoke <code className="bg-purple-50 text-purple-700 px-1.5 py-0.5 rounded font-mono">VERIFIER_ROLE</code> — verifiers can verify/revoke organizations.
+            Grant or revoke <code className="bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300 px-1.5 py-0.5 rounded font-mono">VERIFIER_ROLE</code> — verifiers can verify/revoke organizations.
           </p>
           <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Wallet Address</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Wallet address</label>
               <input
                 type="text"
                 value={verifierAddr}
                 onChange={e => setVerifierAddr(e.target.value)}
                 placeholder="0x..."
-                className="w-full border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-ink-900 dark:border-zinc-700"
               />
             </div>
             {verifierAddr.length === 42 && (
@@ -439,7 +451,7 @@ export default function AdminPage() {
                 className="flex-1 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-purple-700 flex items-center justify-center gap-1.5 transition-colors"
               >
                 <ShieldCheck size={14} />
-                {isGrantVerifierPending || isGrantVerifierConfirming ? "Granting..." : "Grant Verifier"}
+                {isGrantVerifierPending || isGrantVerifierConfirming ? "Granting…" : "Grant verifier"}
               </button>
               <button
                 onClick={() => writeRevokeVerifier({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "revokeRole", args: [VERIFIER_ROLE, verifierAddr as `0x${string}`] })}
@@ -447,7 +459,7 @@ export default function AdminPage() {
                 className="flex-1 py-2 bg-gray-700 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-gray-800 flex items-center justify-center gap-1.5 transition-colors"
               >
                 <UserX size={14} />
-                {isRevokeVerifierPending || isRevokeVerifierConfirming ? "Revoking..." : "Revoke Verifier"}
+                {isRevokeVerifierPending || isRevokeVerifierConfirming ? "Revoking…" : "Revoke verifier"}
               </button>
             </div>
           </div>
@@ -455,5 +467,6 @@ export default function AdminPage() {
       )}
 
     </main>
+    </AnimatedGradientBackground>
   );
 }

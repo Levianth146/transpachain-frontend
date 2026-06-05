@@ -4,7 +4,8 @@ import { useReadContract } from "wagmi";
 import { motion } from "framer-motion";
 import { ADDRESSES, IMPACT_NFT_ABI } from "@/lib/contracts";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { Medal } from "@phosphor-icons/react";
+import { Medal, Info, Copy } from "@phosphor-icons/react";
+import { useState } from "react";
 
 const TIER_STYLE: Record<number, {
   label: string;
@@ -52,11 +53,11 @@ function NFTCard({ tokenId, index }: { tokenId: bigint; index: number }) {
     <div className="h-36 rounded-xl bg-gray-100 dark:bg-zinc-800 animate-pulse" />
   );
 
-  const m = meta as any;
-  const tierIdx = Number(m?.tier ?? m?.[2] ?? 0);
+  const m = meta as Record<string, unknown>;
+  const tierIdx = Number(m?.tier ?? 0);
   const tier = TIER_STYLE[tierIdx] ?? TIER_STYLE[0];
-  const campaignId = Number(m?.campaignId ?? m?.[0] ?? 0);
-  const score = Number(m?.impactScore ?? m?.[4] ?? 0);
+  const campaignId = Number(m?.campaignId ?? 0);
+  const score = Number(m?.impactScore ?? 0);
 
   return (
     <motion.div
@@ -90,6 +91,7 @@ function NFTCard({ tokenId, index }: { tokenId: bigint; index: number }) {
 export function NFTGallery({ address }: { address: string }) {
   const { address: connectedAddress } = useAccount();
   const walletAddress = (address ?? connectedAddress) as `0x${string}` | undefined;
+  const [copied, setCopied] = useState(false);
 
   const { data: tokenIdsRaw } = useReadContract({
     address:      ADDRESSES.impactNFT,
@@ -99,6 +101,12 @@ export function NFTGallery({ address }: { address: string }) {
     query:        { enabled: !!walletAddress },
   });
   const tokenIds = tokenIdsRaw as bigint[] | undefined;
+
+  const copyContract = () => {
+    navigator.clipboard.writeText(ADDRESSES.impactNFT);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   const emptyState = (msg: string) => (
     <GlassPanel className="p-5 h-full">
@@ -118,13 +126,32 @@ export function NFTGallery({ address }: { address: string }) {
 
   return (
     <GlassPanel className="p-5 h-full">
-      <h3 className="font-semibold mb-4 flex items-center gap-2">
+      <h3 className="font-semibold mb-2 flex items-center gap-2">
         <Medal size={18} className="text-gold-500" weight="duotone" />
         My Impact NFTs
         <span className="ml-auto text-xs font-normal bg-gold-500/10 text-gold-600 px-2 py-0.5 rounded-full">
           {tokenIds.length}
         </span>
       </h3>
+
+      <div className="flex items-start gap-2 text-[11px] text-gray-500 dark:text-gray-400 bg-blue-50/60 dark:bg-blue-950/20 rounded-lg px-2.5 py-2 mb-4">
+        <Info size={14} className="shrink-0 mt-0.5 text-blue-500" />
+        <div>
+          <p>
+            <strong>1 badge per campaign</strong> — minted on your first donation; tier upgrades on further gifts.
+            MetaMask may show fewer NFTs because it only auto-detects collections with standard metadata.
+          </p>
+          <button
+            type="button"
+            onClick={copyContract}
+            className="mt-1 inline-flex items-center gap-1 text-blue-600 hover:underline"
+          >
+            <Copy size={11} />
+            {copied ? "Copied!" : "Copy NFT contract to import in wallet"}
+          </button>
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 gap-3">
         {tokenIds.map((tokenId, i) => (
           <NFTCard key={tokenId.toString()} tokenId={tokenId} index={i} />

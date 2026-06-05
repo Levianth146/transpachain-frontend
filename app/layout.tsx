@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Racing_Sans_One } from "next/font/google";
+import { Inter, Great_Vibes } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -10,10 +10,10 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { MobileNav } from "@/components/MobileNav";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const racing = Racing_Sans_One({
+const greatVibes = Great_Vibes({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-racing",
+  variable: "--font-display",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${racing.variable} font-sans`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${greatVibes.variable} font-sans`} suppressHydrationWarning>
         <Providers>
           <nav className="relative bg-white/90 dark:bg-ink-900/95 border-b border-gold-200/20 dark:border-zinc-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md">
             <Logo />

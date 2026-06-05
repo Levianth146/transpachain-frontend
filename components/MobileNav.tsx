@@ -11,6 +11,7 @@ const LINKS = [
   { href: "/campaigns/create", label: "Create" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/governance", label: "Governance" },
+  { href: "/about", label: "About" },
   { href: "/admin", label: "Admin" },
 ];
 

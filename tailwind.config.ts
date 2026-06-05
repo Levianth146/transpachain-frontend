@@ -25,7 +25,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["var(--font-racing)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "cursive"],
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       backgroundImage: {

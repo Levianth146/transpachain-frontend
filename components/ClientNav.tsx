@@ -5,7 +5,7 @@ import { useAccount, useReadContract } from "wagmi";
 import { motion } from "framer-motion";
 import { ConnectWallet } from "./ConnectWallet";
 import { useMounted } from "@/hooks/useMounted";
-import { GlobeHemisphereWest, PlusCircle, SquaresFour, ShieldCheck, Scales } from "@phosphor-icons/react";
+import { GlobeHemisphereWest, PlusCircle, SquaresFour, ShieldCheck, Scales, Info } from "@phosphor-icons/react";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { keccak256, toBytes } from "viem";
 
@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { href: "/campaigns/create", label: "Create",    icon: PlusCircle },
   { href: "/dashboard",        label: "Dashboard", icon: SquaresFour },
   { href: "/governance",       label: "Governance", icon: Scales },
+  { href: "/about",            label: "About",      icon: Info },
 ];
 
 const ADMIN_ROLE    = keccak256(toBytes("ADMIN_ROLE"));

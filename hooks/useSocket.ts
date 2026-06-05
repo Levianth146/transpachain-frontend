@@ -20,8 +20,11 @@ type SocketHandlers = Partial<{
   donationReceived: (data: { campaignId?: number }) => void;
   campaignCreated: (data: unknown) => void;
   campaignUpdated: (data: { campaignId?: number }) => void;
-  deadlineExtended: (data: { campaignId?: number }) => void;
-  proposalCreated: (data: { campaignId?: number }) => void;
+  deadlineExtended: (data: { campaignId?: number; deadline?: number }) => void;
+  proposalCreated: (data: { campaignId?: number; proposalId?: number }) => void;
+  proposalExecuted: (data: { proposalId?: number }) => void;
+  proposalDefeated: (data: { proposalId?: number }) => void;
+  proposalQueued: (data: { proposalId?: number }) => void;
   campaignFinalized: (data: { campaignId?: number }) => void;
 }>;
 
@@ -36,6 +39,9 @@ export function useSocketEvents(handlers: SocketHandlers) {
       ["campaignUpdated", "campaignUpdated"],
       ["deadlineExtended", "deadlineExtended"],
       ["proposalCreated", "proposalCreated"],
+      ["proposalExecuted", "proposalExecuted"],
+      ["proposalDefeated", "proposalDefeated"],
+      ["proposalQueued", "proposalQueued"],
       ["campaignFinalized", "campaignFinalized"],
     ];
 

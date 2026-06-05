@@ -15,9 +15,7 @@ import { CampaignStatusTimeline } from "@/components/CampaignStatusTimeline";
 import { CampaignImage } from "@/components/CampaignImage";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { HowItWorksBlock } from "@/components/HowItWorksBlock";
-import { TraditionalVsTranspaChain } from "@/components/TraditionalVsTranspaChain";
-import { TrustSecurityStrip } from "@/components/TrustSecurityStrip";
+import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { CampaignStatus } from "@/types";
 
@@ -103,7 +101,7 @@ export default function CampaignDetailPage({ params }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-cream-100 mb-1">{campaign.title}</h1>
+          <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100 mb-1">{campaign.title}</h1>
           <p className="text-gray-500">by {campaign.orgName}</p>
         </div>
         <span className={`text-sm px-3 py-1 rounded-full font-medium ${badge.color}`}>
@@ -111,10 +109,10 @@ export default function CampaignDetailPage({ params }: Props) {
         </span>
       </div>
 
-      <TrustSecurityStrip />
+      <LearnMoreLink className="mb-4" />
 
       {/* Description */}
-      <p className="text-gray-600 dark:text-gray-300 mb-6 mt-4">{campaign.description}</p>
+      <p className="text-gray-600 dark:text-gray-300 mb-6">{campaign.description}</p>
 
       {/* Progress */}
       <GlassPanel className="p-5 mb-6">
@@ -160,11 +158,6 @@ export default function CampaignDetailPage({ params }: Props) {
           <RefundPanel campaignId={campaignId} paymentToken={campaign.paymentToken ?? 0} />
           <VotingPanel campaignId={campaignId} />
         </div>
-      </div>
-
-      <div className="space-y-6 mt-6">
-        <HowItWorksBlock columns={3} />
-        <TraditionalVsTranspaChain compact />
       </div>
 
     </main>

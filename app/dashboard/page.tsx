@@ -10,7 +10,8 @@ import { ConnectWallet } from "@/components/ConnectWallet";
 import { OrgProfileForm } from "@/components/OrgProfileForm";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { HowItWorksBlock } from "@/components/HowItWorksBlock";
+import { LearnMoreLink } from "@/components/LearnMoreLink";
+import { DonorNotifications } from "@/components/DonorNotifications";
 
 const STAT_ICONS = [Coins, Heart, CheckCircle];
 
@@ -73,7 +74,10 @@ export default function DashboardPage() {
             <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100">My Impact Dashboard</h1>
           </div>
           <p className="text-sm text-gray-400 font-mono truncate">{address}</p>
+          <LearnMoreLink className="mt-2" />
         </motion.div>
+
+        <DonorNotifications />
 
         {stats.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -132,11 +136,6 @@ export default function DashboardPage() {
             )}
           </GlassPanel>
         </div>
-
-        <GlassPanel className="p-5 mb-8">
-          <h3 className="font-semibold mb-4 text-sm text-gray-700 dark:text-gray-300">How TranspaChain protects your donations</h3>
-          <HowItWorksBlock columns={5} />
-        </GlassPanel>
 
         <GlassPanel className="p-5">
           <OrgProfileForm />
