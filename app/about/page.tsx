@@ -5,8 +5,6 @@ import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBack
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { HowItWorksBlock } from "@/components/HowItWorksBlock";
 import { TrustSecurityStrip } from "@/components/TrustSecurityStrip";
-import { TraditionalVsTranspaChain } from "@/components/TraditionalVsTranspaChain";
-
 const ANTI_ABUSE = [
   {
     title: "Verified organizations only",
@@ -71,8 +69,6 @@ export default function AboutPage() {
           </h2>
           <TrustSecurityStrip />
         </GlassPanel>
-
-        <TraditionalVsTranspaChain />
 
         <GlassPanel className="p-6">
           <h2 className="text-xl font-display text-gray-900 dark:text-cream-100 mb-4 flex items-center gap-2">

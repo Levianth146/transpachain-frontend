@@ -11,6 +11,7 @@ import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBack
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { formatVoteWeight } from "@/lib/format";
 import { api } from "@/lib/api";
+import { getProofIpfsUrl, isPlaceholderProofCid, isValidIpfsCid } from "@/lib/ipfs";
 
 const STATE_LABEL: Record<number, { label: string; color: string }> = {
   0: { label: "Pending",   color: "bg-gray-100 text-gray-700 dark:bg-zinc-800 dark:text-gray-300" },
@@ -90,11 +91,9 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
     }).catch(() => setCampaignTitle(`Campaign #${campaignId}`));
   }, [campaignId]);
 
-  const proofUrl = proofCID
-    ? proofCID.startsWith("http") || proofCID.startsWith("ipfs://")
-      ? proofCID.replace("ipfs://", "https://ipfs.io/ipfs/")
-      : `https://ipfs.io/ipfs/${proofCID}`
-    : null;
+  const proofUrl = getProofIpfsUrl(proofCID);
+  const hasProofCid = proofCID.trim().length > 0;
+  const isDemoProof = hasProofCid && (isPlaceholderProofCid(proofCID) || !isValidIpfsCid(proofCID));
 
   return (
     <AnimatedGradientBackground className="min-h-screen">
@@ -115,13 +114,22 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
             <p className="text-gray-600 dark:text-gray-300">{campaignTitle}</p>
             <p className="text-sm text-gray-500 mt-1">
               Milestone {milestoneIndex + 1}
-              {proofUrl && (
+              {proofUrl ? (
                 <> ·{" "}
                   <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline inline-flex items-center gap-1">
                     <FileMagnifyingGlass size={14} /> View proof
                   </a>
                 </>
-              )}
+              ) : isDemoProof ? (
+                <> ·{" "}
+                  <span className="text-amber-600 dark:text-amber-400 text-xs">
+                    Demo proof — submit real milestone proof via{" "}
+                    <Link href={`/campaigns/${campaignId}`} className="underline hover:text-amber-700">
+                      org dashboard
+                    </Link>
+                  </span>
+                </>
+              ) : null}
             </p>
           </div>
           <span className={`text-sm px-3 py-1 rounded-full font-medium shrink-0 ${badge.color}`}>
