@@ -6,7 +6,8 @@ import { useDonate, useDonateUSDC } from "@/hooks/useDonationVault";
 import { addToast } from "@/components/Toast";
 import { ADDRESSES } from "@/lib/contracts";
 import { ERC20_ABI, USDC_ADDRESS, USDC_DECIMALS } from "@/lib/erc20";
-import { HandCoins } from "@phosphor-icons/react";
+import { HandCoins, Lock, ShieldCheck } from "@phosphor-icons/react";
+import { motion } from "framer-motion";
 
 export function DonateModal({
   campaignId,
@@ -96,13 +97,27 @@ export function DonateModal({
   }
 
   return (
-    <div className="bg-white/90 dark:bg-zinc-900/90 border border-gold-200/30 rounded-xl p-5 shadow-sm">
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white/90 dark:bg-zinc-900/90 border border-gold-200/30 rounded-xl p-5 shadow-sm"
+    >
       <h3 className="font-semibold mb-3 flex items-center gap-2 text-ink-900 dark:text-cream-100">
         <HandCoins size={20} weight="duotone" className="text-emerald-600" />
         Make a Donation
       </h3>
+
+      <div className="flex flex-wrap gap-2 mb-3">
+        <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200/50">
+          <Lock size={10} weight="duotone" /> Escrowed on-chain
+        </span>
+        <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border border-purple-200/50">
+          <ShieldCheck size={10} weight="duotone" /> DAO-governed release
+        </span>
+      </div>
+
       <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-        Token: {isUSDC ? "USDC (Sepolia)" : "ETH"}
+        Token: {isUSDC ? "USDC (Sepolia)" : "ETH"} · Unlike traditional charity, your funds stay in the vault until milestones pass a donor vote.
       </p>
       <div className="flex flex-col gap-2">
         <input
@@ -135,6 +150,6 @@ export function DonateModal({
       {(ethError || usdcDonateError) && (
         <p className="text-xs text-red-500 mt-2">{(ethError || usdcDonateError)?.message}</p>
       )}
-    </div>
+    </motion.div>
   );
 }

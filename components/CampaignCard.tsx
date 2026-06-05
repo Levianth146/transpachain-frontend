@@ -1,9 +1,11 @@
 "use client";
 import Link from "next/link";
 import { formatEther } from "viem";
+import { motion } from "framer-motion";
 import type { Campaign } from "@/types";
 import { CampaignStatus } from "@/types";
 import { BookOpen, Heart, AlertTriangle, Leaf, Users, Lightbulb, Clock, TrendingUp } from "lucide-react";
+import { CampaignImage } from "@/components/CampaignImage";
 
 const STATUS_BADGE: Record<CampaignStatus, { label: string; color: string }> = {
   [CampaignStatus.Active]:     { label: "Active",    color: "bg-emerald-100 text-emerald-800" },
@@ -52,30 +54,31 @@ export function CampaignCard({ campaign }: { campaign: any }) {
 
   return (
     <Link href={`/campaigns/${campaign.campaignId}`}>
-      <div className="bg-white rounded-2xl border border-gray-100 hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden group h-full flex flex-col">
-        {/* Image */}
-        {campaign.imageUrl ? (
-          <div className="relative overflow-hidden h-48">
-            <img src={campaign.imageUrl} alt={campaign.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-            {/* Status badge on image */}
-            <span className={`absolute top-3 right-3 text-xs px-2.5 py-1 rounded-full font-semibold backdrop-blur-sm ${badge?.color}`}>
-              {badge?.label}
-            </span>
-            {/* Urgent timer */}
-            {isUrgent && (
-              <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full font-medium bg-red-500 text-white flex items-center gap-1">
-                <Clock size={10} /> {timeLeft}
+      <motion.div
+        whileHover={{ y: -6 }}
+        transition={{ duration: 0.25 }}
+        className="bg-white/90 dark:bg-ink-900/80 rounded-2xl border border-gray-100 dark:border-zinc-800 hover:shadow-2xl hover:shadow-emerald-900/10 transition-shadow duration-300 cursor-pointer overflow-hidden group h-full flex flex-col backdrop-blur-sm"
+      >
+        <CampaignImage
+          imageUrl={campaign.imageUrl}
+          title={campaign.title}
+          category={campaign.category}
+          className="relative overflow-hidden h-48"
+          imgClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          overlay={
+            <>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+              <span className={`absolute top-3 right-3 text-xs px-2.5 py-1 rounded-full font-semibold backdrop-blur-sm ${badge?.color}`}>
+                {badge?.label}
               </span>
-            )}
-          </div>
-        ) : (
-          <div className="h-48 bg-gradient-to-br from-emerald-50 to-teal-100 flex items-center justify-center">
-            <CategoryIcon size={48} className="text-emerald-300" />
-          </div>
-        )}
+              {isUrgent && (
+                <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full font-medium bg-red-500 text-white flex items-center gap-1">
+                  <Clock size={10} /> {timeLeft}
+                </span>
+              )}
+            </>
+          }
+        />
 
         <div className="p-5 flex flex-col flex-1">
           {/* Category + time */}
@@ -143,7 +146,7 @@ export function CampaignCard({ campaign }: { campaign: any }) {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 }

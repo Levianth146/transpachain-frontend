@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAccount, useReadContract } from "wagmi";
+import { motion } from "framer-motion";
 import { ConnectWallet } from "./ConnectWallet";
 import { useMounted } from "@/hooks/useMounted";
 import { GlobeHemisphereWest, PlusCircle, SquaresFour, ShieldCheck, Scales } from "@phosphor-icons/react";
@@ -57,38 +58,56 @@ export function ClientNav() {
 
   return (
     <div className="flex items-center gap-6">
-      <div className="flex gap-1">
+      <motion.div
+        layout
+        className="flex gap-1 p-1 rounded-2xl bg-gray-100/80 dark:bg-ink-950/60 border border-gray-200/60 dark:border-zinc-800 backdrop-blur-md"
+      >
         {NAV_LINKS.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (
-            <Link
-              key={href}
-              href={href}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                active
-                  ? "bg-emerald-50 text-emerald-700"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-              }`}
-            >
-              <Icon size={15} />
-              {label}
+            <Link key={href} href={href} className="relative">
+              {active && (
+                <motion.span
+                  layoutId="nav-dock-pill"
+                  className="absolute inset-0 rounded-xl bg-white dark:bg-ink-900 shadow-sm border border-emerald-200/40 dark:border-emerald-800/40"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              <span
+                className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-colors duration-200 ${
+                  active
+                    ? "text-emerald-700 dark:text-emerald-400"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-cream-100"
+                }`}
+              >
+                <Icon size={15} />
+                {label}
+              </span>
             </Link>
           );
         })}
         {showAdmin && (
-          <Link
-            href="/admin"
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-              pathname === "/admin"
-                ? "bg-purple-50 text-purple-700"
-                : "text-gray-600 hover:bg-purple-50 hover:text-purple-700"
-            }`}
-          >
-            <ShieldCheck size={15} weight="duotone" />
-            Admin
+          <Link href="/admin" className="relative">
+            {pathname === "/admin" && (
+              <motion.span
+                layoutId="nav-dock-pill"
+                className="absolute inset-0 rounded-xl bg-white dark:bg-ink-900 shadow-sm border border-purple-200/40"
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+            )}
+            <span
+              className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${
+                pathname === "/admin"
+                  ? "text-purple-700 dark:text-purple-400"
+                  : "text-gray-600 hover:text-purple-700"
+              }`}
+            >
+              <ShieldCheck size={15} weight="duotone" />
+              Admin
+            </span>
           </Link>
         )}
-      </div>
+      </motion.div>
       <ConnectWallet />
     </div>
   );

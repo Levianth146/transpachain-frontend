@@ -12,6 +12,12 @@ import { DonorAvatars } from "@/components/DonorAvatars";
 import { EscrowTransparencyCard } from "@/components/EscrowTransparencyCard";
 import { OrgCampaignActions } from "@/components/OrgCampaignActions";
 import { CampaignStatusTimeline } from "@/components/CampaignStatusTimeline";
+import { CampaignImage } from "@/components/CampaignImage";
+import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { HowItWorksBlock } from "@/components/HowItWorksBlock";
+import { TraditionalVsTranspaChain } from "@/components/TraditionalVsTranspaChain";
+import { TrustSecurityStrip } from "@/components/TrustSecurityStrip";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { CampaignStatus } from "@/types";
 
@@ -83,18 +89,21 @@ export default function CampaignDetailPage({ params }: Props) {
   const completedMilestones = Math.max(0, Number(campaign.completedMilestones) || 0);
 
   return (
+    <AnimatedGradientBackground className="min-h-screen">
     <main className="max-w-5xl mx-auto px-4 py-10">
 
-      {/* Hero image */}
-      {campaign.imageUrl && (
-        <img src={campaign.imageUrl} alt={campaign.title}
-          className="w-full h-64 object-cover rounded-xl mb-6" />
-      )}
+      <CampaignImage
+        imageUrl={campaign.imageUrl}
+        title={campaign.title}
+        category={campaign.category}
+        className="w-full h-64 rounded-xl mb-6 overflow-hidden"
+        imgClassName="w-full h-full object-cover"
+      />
 
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">{campaign.title}</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-cream-100 mb-1">{campaign.title}</h1>
           <p className="text-gray-500">by {campaign.orgName}</p>
         </div>
         <span className={`text-sm px-3 py-1 rounded-full font-medium ${badge.color}`}>
@@ -102,17 +111,19 @@ export default function CampaignDetailPage({ params }: Props) {
         </span>
       </div>
 
+      <TrustSecurityStrip />
+
       {/* Description */}
-      <p className="text-gray-600 mb-6">{campaign.description}</p>
+      <p className="text-gray-600 dark:text-gray-300 mb-6 mt-4">{campaign.description}</p>
 
       {/* Progress */}
-      <div className="bg-white rounded-xl border p-5 mb-6">
+      <GlassPanel className="p-5 mb-6">
         <div className="flex justify-between text-sm text-gray-500 mb-2">
-          <span className="text-lg font-bold text-gray-900">{raised.toFixed(3)} ETH raised</span>
+          <span className="text-lg font-bold text-gray-900 dark:text-cream-100">{raised.toFixed(3)} ETH raised</span>
           <span>Goal: {goal.toFixed(3)} ETH</span>
         </div>
-        <div className="w-full bg-gray-100 rounded-full h-3 mb-2">
-          <div className="bg-emerald-500 h-3 rounded-full transition-all"
+        <div className="w-full bg-gray-100 dark:bg-zinc-800 rounded-full h-3 mb-2">
+          <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-3 rounded-full transition-all"
             style={{ width: `${progress}%` }} />
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-3">
@@ -120,7 +131,7 @@ export default function CampaignDetailPage({ params }: Props) {
           <span>{campaign.donorCount} donors</span>
         </div>
         <DonorAvatars campaignId={Number(campaign.campaignId)} />
-      </div>
+      </GlassPanel>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2 space-y-4">
@@ -151,6 +162,12 @@ export default function CampaignDetailPage({ params }: Props) {
         </div>
       </div>
 
+      <div className="space-y-6 mt-6">
+        <HowItWorksBlock columns={3} />
+        <TraditionalVsTranspaChain compact />
+      </div>
+
     </main>
+    </AnimatedGradientBackground>
   );
 }

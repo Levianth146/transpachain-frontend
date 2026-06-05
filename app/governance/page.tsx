@@ -4,6 +4,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Scales, ArrowRight } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
+import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { HowItWorksBlock } from "@/components/HowItWorksBlock";
 
 const STATE_STYLE: Record<number, string> = {
   0: "bg-gray-100 text-gray-700",
@@ -26,16 +29,20 @@ export default function GovernanceHubPage() {
   }, []);
 
   return (
+    <AnimatedGradientBackground className="min-h-screen">
     <main className="max-w-4xl mx-auto px-4 py-10">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <Scales size={32} className="text-gold-500" weight="duotone" />
           <h1 className="text-3xl font-display text-gold-500">DAO Governance</h1>
         </div>
-        <p className="text-gray-600 dark:text-gray-400 mb-8">
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
           Milestone releases are decided by donor votes. Each proof submission opens a proposal;
           51% quorum and a 24-hour timelock protect escrowed funds.
         </p>
+        <GlassPanel className="p-4 mb-8">
+          <HowItWorksBlock columns={3} />
+        </GlassPanel>
       </motion.div>
 
       {loading ? (
@@ -50,8 +57,8 @@ export default function GovernanceHubPage() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="bg-white dark:bg-ink-900 border rounded-xl p-4 hover:shadow-md transition-shadow"
             >
+            <GlassPanel hover className="p-4">
               <div className="flex justify-between items-start gap-4">
                 <div>
                   <p className="font-semibold text-gray-900 dark:text-cream-100">
@@ -84,10 +91,12 @@ export default function GovernanceHubPage() {
                   Proposal detail
                 </Link>
               </div>
+            </GlassPanel>
             </motion.li>
           ))}
         </ul>
       )}
     </main>
+    </AnimatedGradientBackground>
   );
 }
