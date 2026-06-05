@@ -14,10 +14,10 @@ export function CampaignList() {
   const [mounted, setMounted]     = useState(false);
 
   const load = () => {
-    api.getCampaigns().then((data) => {
-      const valid = (data.campaigns ?? []).filter((c: any) => c.title && c.title.length > 0);
-      setAllCampaigns(valid);
-      setFiltered(valid);
+    api.getCampaigns(1, 50).then((data) => {
+      const campaigns = data.campaigns ?? [];
+      setAllCampaigns(campaigns);
+      setFiltered(campaigns);
       setLoading(false);
     });
   };

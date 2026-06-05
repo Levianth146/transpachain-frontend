@@ -2,7 +2,7 @@ const BACKEND_URL = typeof window !== "undefined" && window.location.hostname !=
 
 export const api = {
   // Campaigns
-  getCampaigns: async (page = 1, limit = 12, filters?: { category?: string; status?: number }) => {
+  getCampaigns: async (page = 1, limit = 50, filters?: { category?: string; status?: number }) => {
     const params = new URLSearchParams({ page: String(page), limit: String(limit) });
     if (filters?.category) params.set("category", filters.category);
     if (filters?.status !== undefined) params.set("status", String(filters.status));
