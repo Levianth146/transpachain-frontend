@@ -11,6 +11,8 @@ import { addToast } from "@/components/Toast";
 import { motion } from "framer-motion";
 import { CalendarPlus, XCircle, CheckCircle, FileArrowUp, Warning } from "@phosphor-icons/react";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
+import { api } from "@/lib/api";
+import { TxLink } from "@/components/TxLink";
 
 const FE_MAX_EXTENSIONS = 2;
 const SECONDS_PER_DAY = 24 * 3600;
@@ -57,10 +59,18 @@ export function OrgCampaignActions({
   const { cancelCampaign, isPending: cancelling } = useCancelCampaign();
   const { extendDeadline, isPending: extending, isSuccess: extended } = useExtendDeadline();
   const { finalizeCampaign, isPending: finalizing } = useFinalizeCampaign();
-  const { submitMilestoneProof, isPending: submitting, isSuccess: submitted } =
-    useSubmitMilestoneProof();
+  const {
+    submitMilestoneProof,
+    hash: proofTxHash,
+    isPending: submitting,
+    isSuccess: submitted,
+  } = useSubmitMilestoneProof();
 
   const [proofCID, setProofCID] = useState("");
+  const [evidenceTitle, setEvidenceTitle] = useState("");
+  const [evidenceDesc, setEvidenceDesc] = useState("");
+  const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
+  const [evidenceSubmitting, setEvidenceSubmitting] = useState(false);
   const [milestoneIdx, setMilestoneIdx] = useState(0);
   const [extendDays, setExtendDays] = useState(7);
   const [extensionsUsed, setExtensionsUsed] = useState(0);
@@ -151,8 +161,65 @@ export function OrgCampaignActions({
           </button>
         </div>
         {submitted && (
-          <p className="text-xs text-emerald-600">Proof submitted — donors can vote on the new proposal.</p>
+          <p className="text-xs text-emerald-600">
+            Proof submitted — awaiting admin approval before public vote.
+            {proofTxHash && <span className="block mt-1"><TxLink hash={proofTxHash} /></span>}
+          </p>
         )}
+      </div>
+
+      <div className="space-y-2 border-t border-amber-200/40 pt-3">
+        <label className="text-xs font-medium text-gray-600">Minh chứng (ảnh + mô tả) — chờ admin duyệt</label>
+        <input
+          value={evidenceTitle}
+          onChange={(e) => setEvidenceTitle(e.target.value)}
+          placeholder="Tiêu đề minh chứng"
+          className="w-full border rounded-lg px-3 py-1.5 text-sm"
+        />
+        <textarea
+          value={evidenceDesc}
+          onChange={(e) => setEvidenceDesc(e.target.value)}
+          placeholder="Mô tả chi tiết"
+          className="w-full border rounded-lg px-3 py-1.5 text-sm min-h-[60px]"
+        />
+        <input type="file" accept="image/*" onChange={(e) => setEvidenceFile(e.target.files?.[0] ?? null)} className="text-xs" />
+        <button
+          type="button"
+          disabled={evidenceSubmitting || !evidenceTitle.trim()}
+          onClick={async () => {
+            if (!address) return;
+            setEvidenceSubmitting(true);
+            try {
+              let imageUrl = "";
+              let ipfsCID = "";
+              if (evidenceFile) {
+                const up = await api.uploadFile(evidenceFile);
+                imageUrl = up.url ?? "";
+                ipfsCID = up.cid ?? up.IpfsHash ?? "";
+              }
+              await api.submitEvidence({
+                campaignId: Number(campaignId),
+                milestoneIndex: milestoneIdx,
+                orgAddress: address,
+                title: evidenceTitle,
+                description: evidenceDesc,
+                imageUrl,
+                ipfsCID,
+              });
+              addToast({ type: "success", title: "Minh chứng đã gửi", message: "Chờ admin duyệt" });
+              setEvidenceTitle("");
+              setEvidenceDesc("");
+              setEvidenceFile(null);
+            } catch {
+              addToast({ type: "error", title: "Upload failed" });
+            } finally {
+              setEvidenceSubmitting(false);
+            }
+          }}
+          className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm disabled:opacity-50"
+        >
+          {evidenceSubmitting ? "…" : "Gửi minh chứng"}
+        </button>
       </div>
 
       <div className="rounded-lg border border-amber-200/60 bg-white/40 dark:bg-black/20 p-3 space-y-2">

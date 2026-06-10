@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { addToast } from "@/components/Toast";
 import { AdminOrgProfiles } from "@/components/AdminOrgProfiles";
+import { AdminPendingPanel } from "@/components/AdminPendingPanel";
 import { api } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
@@ -309,6 +310,8 @@ export default function AdminPage() {
   return (
     <AnimatedGradientBackground className="min-h-screen">
     <main className="max-w-3xl mx-auto px-4 py-10 space-y-6">
+
+      <AdminPendingPanel />
 
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div className="flex items-center gap-3">

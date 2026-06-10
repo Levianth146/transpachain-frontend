@@ -101,6 +101,52 @@ export const api = {
     return res.json();
   },
 
+  getEvidence: async (campaignId?: number, status = "approved") => {
+    const params = new URLSearchParams({ status });
+    if (campaignId !== undefined) params.set("campaignId", String(campaignId));
+    const res = await fetch(`${BACKEND_URL}/evidence?${params}`);
+    return res.json();
+  },
+
+  submitEvidence: async (body: Record<string, unknown>) => {
+    const res = await fetch(`${BACKEND_URL}/evidence`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return res.json();
+  },
+
+  getPendingProposals: async () => {
+    const res = await fetch(`${BACKEND_URL}/admin/proposals?approval=pending`);
+    if (!res.ok) throw new Error("Failed to fetch proposals");
+    return res.json();
+  },
+
+  reviewProposal: async (proposalId: number, approvalStatus: string) => {
+    const res = await fetch(`${BACKEND_URL}/admin/proposals/${proposalId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ approvalStatus }),
+    });
+    return res.json();
+  },
+
+  getPendingEvidence: async () => {
+    const res = await fetch(`${BACKEND_URL}/admin/evidence?approval=pending`);
+    if (!res.ok) throw new Error("Failed to fetch evidence");
+    return res.json();
+  },
+
+  reviewEvidence: async (id: string, approvalStatus: string, reviewerNote?: string) => {
+    const res = await fetch(`${BACKEND_URL}/admin/evidence/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ approvalStatus, reviewerNote }),
+    });
+    return res.json();
+  },
+
   getVerifiedOrgs: async (): Promise<{
     orgs: Array<{ address: string; updatedAt: string; blockNumber?: number; txHash?: string }>;
     total: number;

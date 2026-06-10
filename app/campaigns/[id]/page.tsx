@@ -16,6 +16,8 @@ import { CampaignImage } from "@/components/CampaignImage";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
+import { OnChainChecking } from "@/components/OnChainChecking";
+import { EvidencePanel } from "@/components/EvidencePanel";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { CampaignStatus } from "@/types";
 
@@ -139,6 +141,8 @@ export default function CampaignDetailPage({ params }: Props) {
             totalMilestones={totalMilestones}
             deadline={Number(campaign.deadline) || 0}
           />
+          <OnChainChecking campaignId={campaignId} />
+          <EvidencePanel campaignId={Number(campaign.campaignId)} />
           <MilestoneTimeline campaignId={campaignId} campaign={campaign} />
           <OrgCampaignActions
             campaignId={campaignId}

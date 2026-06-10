@@ -6,6 +6,8 @@ import { ADDRESSES, IMPACT_NFT_ABI } from "@/lib/contracts";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { Medal, Info, Copy } from "@phosphor-icons/react";
 import { useState } from "react";
+import Image from "next/image";
+import { tierImagePath } from "@/lib/nft";
 
 const TIER_STYLE: Record<number, {
   label: string;
@@ -71,9 +73,9 @@ function NFTCard({ tokenId, index }: { tokenId: bigint; index: number }) {
       <motion.div
         animate={{ y: [0, -4, 0] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        className="text-4xl mb-2"
+        className="mb-2 flex justify-center"
       >
-        {tier.emoji}
+        <Image src={tierImagePath(tierIdx)} alt={tier.label} width={72} height={72} className="rounded-lg" />
       </motion.div>
       <p className={`font-bold text-sm ${tier.text}`}>{tier.label} Donor</p>
       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Campaign #{campaignId}</p>

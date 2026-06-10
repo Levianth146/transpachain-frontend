@@ -8,6 +8,9 @@ import { ADDRESSES } from "@/lib/contracts";
 import { ERC20_ABI, USDC_ADDRESS, USDC_DECIMALS } from "@/lib/erc20";
 import { HandCoins, Lock, ShieldCheck } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
+import { TxLink } from "@/components/TxLink";
+import { tierFromEthAmount, tierImagePath, tierLabel } from "@/lib/nft";
+import Image from "next/image";
 
 export function DonateModal({
   campaignId,
@@ -19,11 +22,19 @@ export function DonateModal({
   const isUSDC = paymentToken === 1;
   const { address, isConnected } = useAccount();
   const [amount, setAmount] = useState("");
-  const [open, setOpen] = useState(false);
+  const [successTier, setSuccessTier] = useState<number | null>(null);
 
-  const { donate, isPending: ethPending, isConfirming: ethConfirming, isSuccess: ethSuccess, error: ethError } = useDonate();
+  const {
+    donate,
+    hash: ethHash,
+    isPending: ethPending,
+    isConfirming: ethConfirming,
+    isSuccess: ethSuccess,
+    error: ethError,
+  } = useDonate();
   const {
     donateUSDC,
+    hash: usdcHash,
     isPending: usdcDonatePending,
     isConfirming: usdcDonateConfirming,
     isSuccess: usdcDonateSuccess,
@@ -55,14 +66,17 @@ export function DonateModal({
 
   useEffect(() => {
     if (ethSuccess || usdcDonateSuccess) {
+      const amt = parseFloat(amount || "0");
+      const tier = isUSDC ? 0 : tierFromEthAmount(amt);
+      setSuccessTier(tier);
       addToast({
         type: "success",
-        title: "Donation confirmed",
-        message: "Impact NFT minted or upgraded on-chain",
+        title: "Bạn đã nhận NFT Donor Badge",
+        message: `${tierLabel(tier)} badge minted or upgraded for this campaign`,
       });
       setAmount("");
     }
-  }, [ethSuccess, usdcDonateSuccess]);
+  }, [ethSuccess, usdcDonateSuccess, amount, isUSDC]);
 
   const handleApprove = () => {
     if (!parsedAmount) return;
@@ -89,9 +103,15 @@ export function DonateModal({
     ethPending || ethConfirming || usdcDonatePending || usdcDonateConfirming || approvePending;
 
   if (ethSuccess || usdcDonateSuccess) {
+    const tier = successTier ?? 0;
+    const txHash = ethHash ?? usdcHash;
     return (
-      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
-        <p className="text-emerald-700 font-medium">Donation confirmed. Impact NFT updated on-chain.</p>
+      <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 text-center space-y-3">
+        <Image src={tierImagePath(tier)} alt={tierLabel(tier)} width={96} height={96} className="mx-auto rounded-lg" />
+        <p className="text-emerald-700 dark:text-emerald-400 font-medium">
+          Bạn đã nhận NFT Donor Badge — {tierLabel(tier)}
+        </p>
+        <TxLink hash={txHash} label="View on SepoliaScan" />
       </div>
     );
   }
