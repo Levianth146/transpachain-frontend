@@ -71,7 +71,7 @@ export function DonateModal({
       setSuccessTier(tier);
       addToast({
         type: "success",
-        title: "Bạn đã nhận NFT Donor Badge",
+        title: "You received a Donor Badge NFT",
         message: `${tierLabel(tier)} badge minted or upgraded for this campaign`,
       });
       setAmount("");
@@ -109,7 +109,7 @@ export function DonateModal({
       <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 text-center space-y-3">
         <Image src={tierImagePath(tier)} alt={tierLabel(tier)} width={96} height={96} className="mx-auto rounded-lg" />
         <p className="text-emerald-700 dark:text-emerald-400 font-medium">
-          Bạn đã nhận NFT Donor Badge — {tierLabel(tier)}
+          You received a Donor Badge NFT — {tierLabel(tier)}
         </p>
         <TxLink hash={txHash} label="View on SepoliaScan" />
       </div>

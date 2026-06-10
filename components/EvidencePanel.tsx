@@ -18,7 +18,7 @@ export function EvidencePanel({ campaignId }: { campaignId: number }) {
     <GlassPanel className="p-5">
       <h3 className="font-display text-lg font-semibold mb-3 flex items-center gap-2">
         <FileImage size={22} weight="duotone" className="text-blue-600" />
-        Minh chứng (Evidence)
+        Evidence
       </h3>
       <div className="grid gap-4">
         {items.map((e) => (

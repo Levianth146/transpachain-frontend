@@ -60,7 +60,7 @@ export function AdminPendingPanel() {
       {evidence.length > 0 && (
         <div>
           <h3 className="text-sm font-medium mb-2 flex items-center gap-1">
-            <FileImage size={16} /> Minh chứng ({evidence.length})
+            <FileImage size={16} /> Evidence ({evidence.length})
           </h3>
           <ul className="space-y-2">
             {evidence.map((e) => (

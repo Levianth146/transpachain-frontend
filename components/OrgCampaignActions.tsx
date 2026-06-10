@@ -169,17 +169,17 @@ export function OrgCampaignActions({
       </div>
 
       <div className="space-y-2 border-t border-amber-200/40 pt-3">
-        <label className="text-xs font-medium text-gray-600">Minh chứng (ảnh + mô tả) — chờ admin duyệt</label>
+        <label className="text-xs font-medium text-gray-600">Evidence (image + description) — awaiting admin approval</label>
         <input
           value={evidenceTitle}
           onChange={(e) => setEvidenceTitle(e.target.value)}
-          placeholder="Tiêu đề minh chứng"
+          placeholder="Evidence title"
           className="w-full border rounded-lg px-3 py-1.5 text-sm"
         />
         <textarea
           value={evidenceDesc}
           onChange={(e) => setEvidenceDesc(e.target.value)}
-          placeholder="Mô tả chi tiết"
+          placeholder="Detailed description"
           className="w-full border rounded-lg px-3 py-1.5 text-sm min-h-[60px]"
         />
         <input type="file" accept="image/*" onChange={(e) => setEvidenceFile(e.target.files?.[0] ?? null)} className="text-xs" />
@@ -206,7 +206,7 @@ export function OrgCampaignActions({
                 imageUrl,
                 ipfsCID,
               });
-              addToast({ type: "success", title: "Minh chứng đã gửi", message: "Chờ admin duyệt" });
+              addToast({ type: "success", title: "Evidence submitted", message: "Awaiting admin approval" });
               setEvidenceTitle("");
               setEvidenceDesc("");
               setEvidenceFile(null);
@@ -218,7 +218,7 @@ export function OrgCampaignActions({
           }}
           className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm disabled:opacity-50"
         >
-          {evidenceSubmitting ? "…" : "Gửi minh chứng"}
+          {evidenceSubmitting ? "…" : "Submit evidence"}
         </button>
       </div>
 
