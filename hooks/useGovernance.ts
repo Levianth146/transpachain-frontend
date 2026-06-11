@@ -103,3 +103,16 @@ export function useResubmitProposal() {
     writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "resubmitProposal", args: [proposalId] });
   return { resubmit, hash, isPending, isSuccess, error };
 }
+
+export function useCloseProposal() {
+  const { writeContract, data: hash, isPending, error } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
+  const closeProposal = (proposalId: bigint, reason: string) =>
+    writeContract({
+      address: ADDRESSES.governanceDAO,
+      abi: GOVERNANCE_DAO_ABI,
+      functionName: "closeProposal",
+      args: [proposalId, reason],
+    });
+  return { closeProposal, hash, isPending, isConfirming, isSuccess, error };
+}

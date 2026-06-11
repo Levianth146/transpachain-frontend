@@ -4,10 +4,13 @@ import { api } from "@/lib/api";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { addToast } from "@/components/Toast";
 import { Clock, FileImage, Scales } from "@phosphor-icons/react";
+import { useCloseProposal } from "@/hooks/useGovernance";
 
 export function AdminPendingPanel() {
   const [proposals, setProposals] = useState<any[]>([]);
   const [evidence, setEvidence] = useState<any[]>([]);
+  const [closeReason, setCloseReason] = useState<Record<number, string>>({});
+  const { closeProposal, isPending: isClosing } = useCloseProposal();
 
   const load = useCallback(() => {
     api.getPendingProposals().then((d) => setProposals(d.proposals ?? [])).catch(() => {});
@@ -20,6 +23,20 @@ export function AdminPendingPanel() {
     await api.reviewProposal(id, status);
     addToast({ type: "success", title: `Proposal ${status}` });
     load();
+  };
+
+  const closeProposalAdmin = async (id: number) => {
+    const reason = closeReason[id]?.trim() || "Closed by admin";
+    try {
+      await closeProposal(BigInt(id), reason);
+      await api.closeProposal(id, reason);
+      addToast({ type: "success", title: "Proposal closed on-chain & indexed" });
+      load();
+    } catch {
+      await api.closeProposal(id, reason);
+      addToast({ type: "info", title: "Proposal closed off-chain (redeploy DAO for on-chain close)" });
+      load();
+    }
   };
 
   const reviewEvidence = async (id: string, status: string) => {
@@ -45,11 +62,29 @@ export function AdminPendingPanel() {
           <p className="text-xs text-gray-500 mb-2">Approve before they appear on Governance for public vote.</p>
           <ul className="space-y-2">
             {proposals.map((p) => (
-              <li key={p.proposalId} className="flex flex-wrap items-center justify-between gap-2 text-sm border rounded-lg p-3 dark:border-zinc-700">
-                <span>Proposal #{p.proposalId} · Campaign #{p.campaignId} · M{p.milestoneIndex}</span>
-                <div className="flex gap-2">
-                  <button onClick={() => reviewProposal(p.proposalId, "approved")} className="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs">Approve</button>
-                  <button onClick={() => reviewProposal(p.proposalId, "rejected")} className="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-xs">Reject</button>
+              <li key={p.proposalId} className="flex flex-col gap-2 text-sm border rounded-lg p-3 dark:border-zinc-700">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span>Proposal #{p.proposalId} · Campaign #{p.campaignId} · M{p.milestoneIndex}</span>
+                  <div className="flex gap-2">
+                    <button onClick={() => reviewProposal(p.proposalId, "approved")} className="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs">Approve</button>
+                    <button onClick={() => reviewProposal(p.proposalId, "rejected")} className="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-xs">Reject</button>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 items-center">
+                  <input
+                    type="text"
+                    placeholder="Close reason (manipulation, spam…)"
+                    value={closeReason[p.proposalId] ?? ""}
+                    onChange={(e) => setCloseReason((prev) => ({ ...prev, [p.proposalId]: e.target.value }))}
+                    className="flex-1 min-w-[180px] text-xs border rounded px-2 py-1 dark:bg-ink-900 dark:border-zinc-700"
+                  />
+                  <button
+                    onClick={() => closeProposalAdmin(p.proposalId)}
+                    disabled={isClosing}
+                    className="px-3 py-1 bg-gray-800 text-white rounded-lg text-xs disabled:opacity-50"
+                  >
+                    Close proposal
+                  </button>
                 </div>
               </li>
             ))}

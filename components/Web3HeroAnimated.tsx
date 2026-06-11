@@ -1,16 +1,62 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { Target, Coins, Users } from "@phosphor-icons/react";
+import { api } from "@/lib/api";
+import { useSocketEvents } from "@/hooks/useSocket";
 
 const pillars = [92, 84, 78, 70, 62, 54, 46, 34, 18, 34, 46, 54, 62, 70, 78, 84, 92];
 
+function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, { duration: 2000, bounce: 0 });
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (inView) motionValue.set(value);
+  }, [inView, value, motionValue]);
+
+  useEffect(() => {
+    springValue.on("change", (v) => setDisplay(Math.floor(v)));
+  }, [springValue]);
+
+  return (
+    <span ref={ref}>
+      {display.toLocaleString()}{suffix}
+    </span>
+  );
+}
+
 export function Web3HeroAnimated() {
   const [isMounted, setIsMounted] = useState(false);
+  const [stats, setStats] = useState({
+    totalCampaigns: 0,
+    activeCampaigns: 0,
+    totalDonated: "0",
+    countUniqueDonors: 0,
+  });
+
+  const loadStats = () => {
+    api.getStats().then(setStats).catch(() => {});
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => setIsMounted(true), 100);
+    loadStats();
     return () => clearTimeout(timer);
   }, []);
+
+  useSocketEvents({
+    donationReceived: () => loadStats(),
+    campaignCreated: () => loadStats(),
+  });
+
+  const ethDonated = parseFloat(
+    (Number(BigInt(stats.totalDonated || "0")) / 1e18).toFixed(2)
+  );
 
   return (
     <>
@@ -79,7 +125,42 @@ export function Web3HeroAnimated() {
               <Link href="/about" className="inline-flex rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white/90 backdrop-blur hover:border-white/40">
                 How it works
               </Link>
+              <Link href="/campaigns/create" className="inline-flex rounded-full border border-white/10 px-6 py-3 text-sm font-semibold text-white/70 backdrop-blur hover:border-white/30 hover:text-white">
+                Create Campaign
+              </Link>
             </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 20 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-12 grid grid-cols-3 gap-6 max-w-lg mx-auto text-left"
+            >
+              <div>
+                <div className="text-2xl md:text-3xl font-bold text-white">
+                  <AnimatedCounter value={stats.totalCampaigns} />
+                </div>
+                <div className="text-white/60 text-xs md:text-sm mt-1 flex items-center justify-center gap-1">
+                  <Target size={14} weight="duotone" /> Campaigns
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl md:text-3xl font-bold text-emerald-400">
+                  <AnimatedCounter value={ethDonated} suffix=" ETH" />
+                </div>
+                <div className="text-white/60 text-xs md:text-sm mt-1 flex items-center justify-center gap-1">
+                  <Coins size={14} weight="duotone" /> Donated
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl md:text-3xl font-bold text-white">
+                  <AnimatedCounter value={stats.countUniqueDonors} />
+                </div>
+                <div className="text-white/60 text-xs md:text-sm mt-1 flex items-center justify-center gap-1">
+                  <Users size={14} weight="duotone" /> Donors
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
 

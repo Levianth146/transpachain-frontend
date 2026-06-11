@@ -66,12 +66,20 @@ export const GOVERNANCE_DAO_ABI = [
   { name: "queueProposal", type: "function", stateMutability: "nonpayable", inputs: [{ name: "proposalId", type: "uint256" }], outputs: [] },
   { name: "executeProposal", type: "function", stateMutability: "nonpayable", inputs: [{ name: "proposalId", type: "uint256" }], outputs: [] },
   { name: "resubmitProposal", type: "function", stateMutability: "nonpayable", inputs: [{ name: "oldProposalId", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
+  { name: "closeProposal", type: "function", stateMutability: "nonpayable", inputs: [{ name: "proposalId", type: "uint256" }, { name: "reason", type: "string" }], outputs: [] },
+  { name: "cancelProposal", type: "function", stateMutability: "nonpayable", inputs: [{ name: "proposalId", type: "uint256" }], outputs: [] },
+  { name: "quadraticWeight", type: "function", stateMutability: "pure", inputs: [{ name: "amountWei", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
+  { name: "getDonorLinearAmount", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }, { name: "donor", type: "address" }], outputs: [{ name: "", type: "uint256" }] },
   { name: "getProposal", type: "function", stateMutability: "view", inputs: [{ name: "proposalId", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "id", type: "uint256" }, { name: "campaignId", type: "uint256" }, { name: "milestoneIndex", type: "uint8" }, { name: "proofCID", type: "string" }, { name: "proposer", type: "address" }, { name: "startBlock", type: "uint256" }, { name: "endBlock", type: "uint256" }, { name: "forVotes", type: "uint256" }, { name: "againstVotes", type: "uint256" }, { name: "abstainVotes", type: "uint256" }, { name: "totalVotingPower", type: "uint256" }, { name: "state", type: "uint8" }, { name: "executeAfter", type: "uint256" }, { name: "snapshotBlock", type: "uint256" }] }] },
   { name: "getProposalState", type: "function", stateMutability: "view", inputs: [{ name: "proposalId", type: "uint256" }], outputs: [{ name: "", type: "uint8" }] },
   { name: "getActiveProposal", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
   { name: "hasVoted", type: "function", stateMutability: "view", inputs: [{ name: "proposalId", type: "uint256" }, { name: "voter", type: "address" }], outputs: [{ name: "", type: "bool" }] },
   { name: "getVotingPower", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }, { name: "voter", type: "address" }], outputs: [{ name: "", type: "uint256" }] },
+  { name: "QUORUM_BPS", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { name: "VOTING_PERIOD", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { name: "TIMELOCK_DELAY", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "VoteCast", type: "event", inputs: [{ name: "proposalId", type: "uint256", indexed: true }, { name: "voter", type: "address", indexed: true }, { name: "choice", type: "uint8", indexed: false }, { name: "weight", type: "uint256", indexed: false }] },
+  { name: "ProposalClosed", type: "event", inputs: [{ name: "proposalId", type: "uint256", indexed: true }, { name: "closedBy", type: "address", indexed: true }, { name: "reason", type: "string", indexed: false }] },
 ] as const;
  
 export const IMPACT_NFT_ABI = [

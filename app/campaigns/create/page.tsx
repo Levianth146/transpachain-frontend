@@ -77,11 +77,13 @@ export default function CreateCampaignPage() {
   );
 
   if (!isConnected) return (
-    <main className="max-w-2xl mx-auto px-4 py-10 text-center">
-      <h1 className="text-2xl font-bold mb-4">Create Campaign</h1>
-      <p className="text-gray-500 mb-4">Connect your wallet to create a campaign.</p>
-      <ConnectWallet />
-    </main>
+    <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center px-4">
+      <div className="max-w-md w-full text-center space-y-4">
+        <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100">Create Campaign</h1>
+        <p className="text-gray-500 dark:text-gray-400">Connect your verified org wallet to launch an on-chain escrow campaign.</p>
+        <ConnectWallet />
+      </div>
+    </AnimatedGradientBackground>
   );
 
   return (

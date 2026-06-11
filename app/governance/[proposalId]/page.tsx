@@ -9,7 +9,8 @@ import { useAccount } from "wagmi";
 import { VoteChoice } from "@/types";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { formatVoteWeight } from "@/lib/format";
+import { formatQuadraticVoteWeight } from "@/lib/format";
+import { useVotingPower, useHasVoted } from "@/hooks/useGovernance";
 import { api } from "@/lib/api";
 import { getProofIpfsUrl, isPlaceholderProofCid, isValidIpfsCid } from "@/lib/ipfs";
 
@@ -30,7 +31,7 @@ function VoteBar({ label, value, total, color }: { label: string; value: bigint;
     <div>
       <div className="flex justify-between text-xs mb-1">
         <span>{label}</span>
-        <span>{formatVoteWeight(value)} ETH ({pct.toFixed(1)}%)</span>
+        <span>{formatQuadraticVoteWeight(value)} QV ({pct.toFixed(1)}%)</span>
       </div>
       <div className="h-2 bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
         <motion.div
@@ -59,6 +60,8 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
 
   const p = proposalRaw as Record<string, unknown> | undefined;
   const campaignId = Number(p?.campaignId ?? 0);
+  const { data: myPower } = useVotingPower(BigInt(campaignId || 0), address);
+  const { data: alreadyVoted } = useHasVoted(proposalId, address);
   const milestoneIndex = Number(p?.milestoneIndex ?? 0);
   const proofCID = String(p?.proofCID ?? "");
   const forVotes = BigInt(String(p?.forVotes ?? 0));
@@ -153,7 +156,7 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
               {quorumMet ? " ✓ Met" : " — Not met"}
             </p>
             <p className="text-[10px] text-gray-400 mt-0.5">
-              {formatVoteWeight(totalCast)} / {formatVoteWeight(totalVotingPower)} ETH voted
+              {formatQuadraticVoteWeight(totalCast)} / {formatQuadraticVoteWeight(totalVotingPower)} QV cast
             </p>
           </div>
           <div className="rounded-lg bg-white/50 dark:bg-white/5 p-3">
@@ -206,6 +209,15 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
       {stateNum === 1 && (
         <GlassPanel className="p-5 mb-4">
           <h3 className="font-semibold mb-3">Cast your vote</h3>
+          {address && myPower != null && (
+            <p className="text-xs text-gray-500 mb-3">
+              Your quadratic vote power: {formatQuadraticVoteWeight(myPower as bigint)} QV
+              {Number(myPower) === 0 && " — donate to this campaign to vote"}
+            </p>
+          )}
+          {alreadyVoted && (
+            <p className="text-xs text-emerald-600 mb-2">You already voted on this proposal.</p>
+          )}
           <div className="flex gap-2">
             <button onClick={() => castVote(proposalId, VoteChoice.For)}
               disabled={!address || isVoting}

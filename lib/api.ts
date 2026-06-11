@@ -132,6 +132,15 @@ export const api = {
     return res.json();
   },
 
+  closeProposal: async (proposalId: number, closedReason: string) => {
+    const res = await fetch(`${BACKEND_URL}/admin/proposals/${proposalId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ closedByAdmin: true, closedReason }),
+    });
+    return res.json();
+  },
+
   getPendingEvidence: async () => {
     const res = await fetch(`${BACKEND_URL}/admin/evidence?approval=pending`);
     if (!res.ok) throw new Error("Failed to fetch evidence");

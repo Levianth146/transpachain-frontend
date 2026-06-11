@@ -4,7 +4,9 @@ import { useAccount } from "wagmi";
 import { api } from "@/lib/api";
 import { useCastVote, useQueueProposal, useExecuteProposal, useProposal } from "@/hooks/useGovernance";
 import Link from "next/link";
-import { VoteChoice, ProposalState } from "@/types";
+import { VoteChoice } from "@/types";
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { formatQuadraticVoteWeight } from "@/lib/format";
 
 const STATE_LABEL: Record<number, string> = {
   0: "Pending", 1: "Active", 2: "Defeated",
@@ -27,59 +29,61 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
   useEffect(() => {
     api.getCampaignProposals(Number(campaignId))
       .then((proposals: any[]) => {
-        const active = proposals.find((p: any) => p.state === 1);
+        const active = proposals.find((p: any) => p.state === 1 && !p.closedByAdmin);
         setProposal(active ?? null);
       })
       .catch(() => setProposal(null));
   }, [campaignId, voted]);
 
   if (!proposal) return (
-    <div className="bg-white border rounded-xl p-5">
-      <h3 className="font-semibold mb-3">Governance Voting</h3>
+    <GlassPanel className="p-5">
+      <h3 className="font-display font-semibold mb-3">Governance Voting</h3>
       <p className="text-sm text-gray-400">
         No active proposals for this campaign.
       </p>
-    </div>
+    </GlassPanel>
   );
+
   const chain = onChainProposal as {
     forVotes?: bigint;
     againstVotes?: bigint;
     abstainVotes?: bigint;
     totalVotingPower?: bigint;
+    state?: number;
   } | undefined;
 
-  const forVotes = Number(chain?.forVotes ?? proposal.forVotes ?? 0);
-  const againstVotes = Number(chain?.againstVotes ?? proposal.againstVotes ?? 0);
-  const abstainVotes = Number(chain?.abstainVotes ?? proposal.abstainVotes ?? 0);
-  const totalPower = Number(chain?.totalVotingPower ?? 0);
+  const forVotes = chain?.forVotes ?? 0n;
+  const againstVotes = chain?.againstVotes ?? 0n;
+  const abstainVotes = chain?.abstainVotes ?? 0n;
+  const totalPower = chain?.totalVotingPower ?? 0n;
   const totalVotes = forVotes + againstVotes + abstainVotes;
-  const forPct = totalVotes > 0 ? ((forVotes / totalVotes) * 100).toFixed(0) : "0";
+  const forPct = totalVotes > 0n ? Number((forVotes * 100n) / totalVotes) : 0;
   const quorumPct =
-    totalPower > 0 ? ((forVotes / totalPower) * 100).toFixed(0) : "0";
-  const quorumMet = totalPower > 0 && forVotes * 100 >= totalPower * 51;
+    totalPower > 0n ? Number((forVotes * 10000n) / totalPower) / 100 : 0;
+  const quorumMet = totalPower > 0n && forVotes * 10000n >= totalPower * 5100n;
+  const stateNum = chain?.state ?? proposal.state;
 
   return (
-    <div className="bg-white border rounded-xl p-5">
-      <h3 className="font-semibold mb-1">Governance Voting</h3>
+    <GlassPanel className="p-5">
+      <h3 className="font-display font-semibold mb-1">Governance Voting</h3>
       <p className="text-xs text-gray-400 mb-4">
         Proposal #{proposal.proposalId} — Milestone {proposal.milestoneIndex + 1}
         <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">
-          {STATE_LABEL[proposal.state]}
+          {STATE_LABEL[stateNum] ?? "Active"}
         </span>
       </p>
 
-      {/* Vote results */}
       <div className="mb-4">
         <div className="flex justify-between text-xs text-gray-500 mb-1">
-          <span>For: {proposal.forVotes}</span>
-          <span>Against: {proposal.againstVotes}</span>
+          <span>For: {formatQuadraticVoteWeight(forVotes)} QV</span>
+          <span>Against: {formatQuadraticVoteWeight(againstVotes)} QV</span>
         </div>
         <div className="w-full bg-red-100 rounded-full h-2">
           <div className="bg-emerald-500 h-2 rounded-full"
             style={{ width: `${forPct}%` }} />
         </div>
         <p className="text-xs text-gray-400 mt-1">
-          {forPct}% of cast votes · Quorum: {quorumPct}% of donor power (need 51% For)
+          Quadratic votes · Quorum: {quorumPct.toFixed(1)}% For of total power (need 51%)
           {quorumMet ? " ✓" : ""}
         </p>
       </div>
@@ -87,36 +91,33 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
         View all DAO proposals →
       </Link>
 
-      {/* Vote buttons — only if Active */}
-      {proposal.state === 1 && (
+      {stateNum === 1 && (
         <div className="flex gap-2">
           <button onClick={() => castVote(proposalId, VoteChoice.For)}
             disabled={!address || isVoting}
             className="flex-1 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium
                        disabled:opacity-50 hover:bg-emerald-700">
-            {isVoting ? "Voting..." : "✓ Vote For"}
+            {isVoting ? "Voting..." : "Vote For"}
           </button>
           <button onClick={() => castVote(proposalId, VoteChoice.Against)}
             disabled={!address || isVoting}
             className="flex-1 py-2 bg-red-500 text-white rounded-lg text-sm font-medium
                        disabled:opacity-50 hover:bg-red-600">
-            ✗ Vote Against
+            Vote Against
           </button>
         </div>
       )}
 
-      {/* Queue button — after voting ends */}
-      {proposal.state === 1 && (
+      {stateNum === 1 && (
         <button onClick={() => queue(proposalId)}
           disabled={isQueuing}
-          className="w-full mt-2 py-2 border border-gray-300 rounded-lg text-sm
-                     disabled:opacity-50 hover:bg-gray-50">
+          className="w-full mt-2 py-2 border rounded-lg text-sm
+                     disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-white/5">
           {isQueuing ? "Queuing..." : "Queue Proposal"}
         </button>
       )}
 
-      {/* Execute button — after timelock */}
-      {proposal.state === 3 && (
+      {stateNum === 3 && (
         <button onClick={() => execute(proposalId)}
           disabled={isExecuting}
           className="w-full mt-2 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium
@@ -126,8 +127,8 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
       )}
 
       {!address && (
-        <p className="text-xs text-amber-600 mt-2">Connect wallet to vote</p>
+        <p className="text-xs text-amber-600 mt-2">Connect wallet with a campaign donation to vote</p>
       )}
-    </div>
+    </GlassPanel>
   );
 }
