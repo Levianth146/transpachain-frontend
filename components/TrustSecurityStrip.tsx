@@ -1,16 +1,18 @@
 "use client";
-import { ShieldCheck, Lock, Scales, ArrowCounterClockwise } from "@phosphor-icons/react";
+import { ShieldCheck, Lock, Scales, ArrowCounterClockwise, FileMagnifyingGlass, Prohibit } from "@phosphor-icons/react";
 
 const CALLOUTS = [
-  { icon: Lock, label: "Escrow vault", detail: "Funds locked until milestone approval" },
-  { icon: Scales, label: "DAO governance", detail: "Donors vote on fund release" },
-  { icon: ArrowCounterClockwise, label: "On-chain refunds", detail: "Automatic if campaign fails" },
-  { icon: ShieldCheck, label: "Verified orgs", detail: "Admin-verified wallet required" },
+  { icon: Lock, label: "Escrow vault", detail: "ETH or USDC locked until milestone approval" },
+  { icon: Scales, label: "Quadratic voting", detail: "Vote weight = √donation; admin gates proposals first" },
+  { icon: FileMagnifyingGlass, label: "Evidence review", detail: "Admin approves milestone proof before public vote" },
+  { icon: Prohibit, label: "Admin safeguards", detail: "Suspicious proposals can be closed on-chain (closeProposal)" },
+  { icon: ArrowCounterClockwise, label: "On-chain refunds", detail: "Automatic if campaign fails or is cancelled" },
+  { icon: ShieldCheck, label: "Verified orgs", detail: "Admin-verified wallet required to create campaigns" },
 ];
 
 export function TrustSecurityStrip() {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
       {CALLOUTS.map(({ icon: Icon, label, detail }) => (
         <div
           key={label}

@@ -1,6 +1,7 @@
 "use client";
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther } from "viem";
+import { parseCampaignGoalAmount } from "@/lib/format";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import type { Campaign } from "@/types";
 
@@ -60,7 +61,7 @@ export function useCreateCampaign() {
 
   const createCampaign = (
     metadataCID: string,
-    goalEth: string,
+    goalAmount: string,
     deadlineTimestamp: bigint,
     totalMilestones: number,
     paymentToken: number, // 0 = ETH, 1 = USDC
@@ -70,7 +71,7 @@ export function useCreateCampaign() {
       address:      ADDRESSES.charityCore,
       abi:          CHARITY_CORE_ABI,
       functionName: "createCampaign",
-      args:         [metadataCID, parseEther(goalEth), deadlineTimestamp, totalMilestones, paymentToken, category],
+      args:         [metadataCID, parseCampaignGoalAmount(goalAmount, paymentToken), deadlineTimestamp, totalMilestones, paymentToken, category],
       value:        parseEther("0.001"), // creation deposit
     });
   };

@@ -9,6 +9,7 @@ import { ConnectWallet } from "@/components/ConnectWallet";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { normalizeImageUrl } from "@/lib/images";
+import { getPaymentTokenLabel } from "@/lib/format";
 
 export default function CreateCampaignPage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function CreateCampaignPage() {
     category:    "education",
     imageUrl:    "",
     orgName:     "",
-    goalEth:     "",
+    goalAmount:  "",
     milestones:  "3",
     paymentToken: "0",  // 0 = ETH, 1 = USDC
     daysUntilDeadline: "30",
@@ -45,7 +46,7 @@ export default function CreateCampaignPage() {
       category:    form.category,
       imageUrl:    normalizedImage,
       orgName:     form.orgName,
-      goalAmount:  form.goalEth,
+      goalAmount:  form.goalAmount,
     });
 
     // 2. Calculate deadline timestamp
@@ -56,7 +57,7 @@ export default function CreateCampaignPage() {
     // 3. Call contract
     createCampaign(
       cid,
-      form.goalEth,
+      form.goalAmount,
       deadline,
       Number(form.milestones),
       Number(form.paymentToken),
@@ -64,11 +65,17 @@ export default function CreateCampaignPage() {
     );
   };
 
+  const paymentTokenNum = Number(form.paymentToken);
+  const tokenLabel = getPaymentTokenLabel(paymentTokenNum);
+  const goalStep = paymentTokenNum === 1 ? "0.01" : "0.001";
+  const goalMin = paymentTokenNum === 1 ? "1" : "0.001";
+  const goalPlaceholder = paymentTokenNum === 1 ? "1000" : "2.0";
+
   if (isSuccess) return (
     <main className="max-w-2xl mx-auto px-4 py-10 text-center">
       <div className="text-5xl mb-4">🎉</div>
-      <h1 className="text-2xl font-bold mb-2">Campaign Created!</h1>
-      <p className="text-gray-500 mb-6">Your campaign has been deployed on Sepolia.</p>
+      <h1 className="text-2xl font-bold mb-2 text-gray-900 dark:text-cream-100">Campaign Created!</h1>
+      <p className="text-gray-500 dark:text-gray-400 mb-6">Your campaign has been deployed on Sepolia.</p>
       <button onClick={() => router.push("/")}
         className="px-6 py-2 bg-emerald-600 text-white rounded-lg">
         View Campaigns
@@ -77,7 +84,7 @@ export default function CreateCampaignPage() {
   );
 
   if (!isConnected) return (
-    <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center px-4">
+    <AnimatedGradientBackground variant="dark" className="min-h-screen flex flex-col items-center justify-center px-4">
       <div className="max-w-md w-full text-center space-y-4">
         <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100">Create Campaign</h1>
         <p className="text-gray-500 dark:text-gray-400">Connect your verified org wallet to launch an on-chain escrow campaign.</p>
@@ -87,39 +94,39 @@ export default function CreateCampaignPage() {
   );
 
   return (
-    <AnimatedGradientBackground className="min-h-screen">
+    <AnimatedGradientBackground variant="dark" className="min-h-screen">
     <main className="max-w-2xl mx-auto px-4 py-10">
       <h1 className="text-4xl font-display text-gray-900 dark:text-cream-100 mb-2">Create Campaign</h1>
-      <p className="text-sm text-gray-500 mb-2">Funds are escrowed on-chain — released only after donor DAO votes approve milestones.</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Funds are escrowed on-chain — released only after donor DAO votes approve milestones.</p>
       <LearnMoreLink className="mb-6" />
       <form onSubmit={handleSubmit} className="space-y-4">
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Campaign Title *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Campaign Title *</label>
           <input name="title" value={form.title} onChange={handleChange} required
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100"
             placeholder="Build Schools in Rural Kenya" />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Organisation Name *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Organisation Name *</label>
           <input name="orgName" value={form.orgName} onChange={handleChange} required
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100"
             placeholder="Education For All Foundation" />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description *</label>
           <textarea name="description" value={form.description} onChange={handleChange} required
-            rows={3} className="w-full border rounded-lg px-3 py-2 text-sm"
+            rows={3} className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100"
             placeholder="Describe your campaign..." />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
             <select name="category" value={form.category} onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 text-sm">
+              className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100">
               <option value="education">Education</option>
               <option value="healthcare">Healthcare</option>
               <option value="disaster">Disaster Relief</option>
@@ -128,9 +135,9 @@ export default function CreateCampaignPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Payment Token</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Payment Token</label>
             <select name="paymentToken" value={form.paymentToken} onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 text-sm">
+              className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100">
               <option value="0">ETH</option>
               <option value="1">USDC</option>
             </select>
@@ -140,7 +147,7 @@ export default function CreateCampaignPage() {
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image URL</label>
           <input name="imageUrl" value={form.imageUrl} onChange={handleChange}
-            className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700"
+            className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100"
             placeholder="https://images.unsplash.com/... or ipfs://Qm..." />
           {form.imageUrl && !normalizeImageUrl(form.imageUrl) && (
             <p className="text-xs text-amber-600 mt-1">Invalid URL — use https:// or ipfs://. A category fallback will be shown instead.</p>
@@ -149,16 +156,16 @@ export default function CreateCampaignPage() {
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Goal (ETH) *</label>
-            <input name="goalEth" value={form.goalEth} onChange={handleChange} required
-              type="number" step="0.001" min="0.001"
-              className="w-full border rounded-lg px-3 py-2 text-sm"
-              placeholder="2.0" />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Goal ({tokenLabel}) *</label>
+            <input name="goalAmount" value={form.goalAmount} onChange={handleChange} required
+              type="number" step={goalStep} min={goalMin}
+              className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100"
+              placeholder={goalPlaceholder} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Milestones</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Milestones</label>
             <select name="milestones" value={form.milestones} onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 text-sm">
+              className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -166,15 +173,15 @@ export default function CreateCampaignPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Duration (days)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Duration (days)</label>
             <input name="daysUntilDeadline" value={form.daysUntilDeadline} onChange={handleChange}
               type="number" min="1" max="90"
-              className="w-full border rounded-lg px-3 py-2 text-sm" />
+              className="w-full border rounded-lg px-3 py-2 text-sm dark:bg-ink-900 dark:border-zinc-700 dark:text-cream-100" />
           </div>
         </div>
 
         {!isVerified && address && (
-          <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+          <div className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg text-sm text-amber-800 dark:text-amber-200">
             <span>⚠️</span>
             <div>
               <p className="font-medium">Your wallet is not verified as an organization.</p>

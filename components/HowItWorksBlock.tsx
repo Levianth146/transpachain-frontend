@@ -1,47 +1,59 @@
 "use client";
 import { motion } from "framer-motion";
-import { Lock, FileMagnifyingGlass, Scales, ArrowCounterClockwise, Medal } from "@phosphor-icons/react";
+import { Lock, FileMagnifyingGlass, Scales, ArrowCounterClockwise, Medal, Coins } from "@phosphor-icons/react";
 
 const STEPS = [
   {
     icon: Lock,
     title: "Donate → Escrow",
-    desc: "Funds lock in DonationVault smart contract — not sent to org wallet upfront.",
+    desc: "Donate in ETH or USDC — funds lock in DonationVault, not the org wallet.",
     color: "text-emerald-500",
     bg: "bg-emerald-500/10",
   },
   {
     icon: FileMagnifyingGlass,
-    title: "Org submits proof",
-    desc: "Milestone evidence uploaded to IPFS; donors can inspect before voting.",
+    title: "Evidence + review",
+    desc: "Orgs submit milestone proof to IPFS; admin reviews before it goes to donors.",
     color: "text-blue-500",
     bg: "bg-blue-500/10",
   },
   {
     icon: Scales,
-    title: "DAO vote",
-    desc: "Donors vote on-chain; 51% quorum + 24h timelock before release.",
+    title: "Quadratic DAO vote",
+    desc: "Admin approves proposals off-chain; donors vote with √donation weight. 51% quorum + 24h timelock.",
     color: "text-purple-500",
     bg: "bg-purple-500/10",
   },
   {
     icon: ArrowCounterClockwise,
     title: "Refund path",
-    desc: "Failed or cancelled campaigns trigger automatic refund eligibility.",
+    desc: "Failed or cancelled campaigns trigger automatic refund eligibility on-chain.",
     color: "text-amber-500",
     bg: "bg-amber-500/10",
   },
   {
     icon: Medal,
     title: "Impact NFT",
-    desc: "Donors receive tiered NFTs (Bronze/Silver/Gold) as on-chain proof of impact.",
+    desc: "Donors receive tiered NFTs — Bronze, Silver, or Gold — as on-chain proof of impact.",
     color: "text-gold-500",
     bg: "bg-gold-500/10",
   },
+  {
+    icon: Coins,
+    title: "ETH or USDC",
+    desc: "Campaigns choose their payment token; amounts and escrow display in the correct unit.",
+    color: "text-teal-500",
+    bg: "bg-teal-500/10",
+  },
 ];
 
-export function HowItWorksBlock({ columns = 5 }: { columns?: 3 | 5 }) {
-  const gridCols = columns === 3 ? "md:grid-cols-3" : "md:grid-cols-3 lg:grid-cols-5";
+export function HowItWorksBlock({ columns = 5 }: { columns?: 3 | 5 | 6 }) {
+  const gridCols =
+    columns === 3
+      ? "md:grid-cols-3"
+      : columns === 6
+        ? "md:grid-cols-3 lg:grid-cols-6"
+        : "md:grid-cols-3 lg:grid-cols-5";
 
   return (
     <div className={`grid grid-cols-1 sm:grid-cols-2 ${gridCols} gap-3`}>

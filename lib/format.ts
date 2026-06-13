@@ -1,4 +1,24 @@
-import { formatEther } from "viem";
+import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
+
+/** Decimals for campaign payment token (0 = ETH, 1 = USDC) */
+export function getPaymentTokenDecimals(paymentToken: number): 6 | 18 {
+  return paymentToken === 1 ? 6 : 18;
+}
+
+export function getPaymentTokenLabel(paymentToken: number): "ETH" | "USDC" {
+  return paymentToken === 1 ? "USDC" : "ETH";
+}
+
+/** Format on-chain campaign amount for the given payment token */
+export function formatCampaignAmount(amount: bigint | string, paymentToken: number): string {
+  const value = typeof amount === "bigint" ? amount : BigInt(amount || "0");
+  return paymentToken === 1 ? formatUnits(value, 6) : formatEther(value);
+}
+
+/** Parse user-entered goal amount into on-chain units */
+export function parseCampaignGoalAmount(value: string, paymentToken: number): bigint {
+  return paymentToken === 1 ? parseUnits(value, 6) : parseEther(value);
+}
 
 /** Format quadratic vote weight (√wei units) for display */
 export function formatQuadraticVoteWeight(value: string | number | bigint | undefined | null): string {

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { CampaignCard } from "./CampaignCard";
@@ -6,6 +7,7 @@ import { CampaignListSkeleton } from "./CampaignCardSkeleton";
 import { CampaignFilter, FilterState } from "./CampaignFilter";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { motion } from "framer-motion";
+import { PlusCircle } from "@phosphor-icons/react";
 
 export function CampaignList() {
   const [allCampaigns, setAllCampaigns] = useState<any[]>([]);
@@ -58,14 +60,28 @@ export function CampaignList() {
   if (loading) return <CampaignListSkeleton />;
 
   if (allCampaigns.length === 0) return (
-    <div className="text-center py-20 text-gray-400">No campaigns yet.</div>
+    <div className="text-center py-20 px-4 max-w-md mx-auto">
+      <p className="text-5xl mb-4">📋</p>
+      <h3 className="text-xl font-display font-semibold text-cream-100 mb-2">No campaigns yet</h3>
+      <p className="text-gray-400 text-sm leading-relaxed mb-6">
+        Campaigns appear here after a verified organization creates one on-chain via Sepolia.
+        Each campaign locks donations in escrow until donors approve milestone releases.
+      </p>
+      <Link
+        href="/campaigns/create"
+        className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-500 transition-colors"
+      >
+        <PlusCircle size={18} weight="duotone" />
+        Create a Campaign
+      </Link>
+    </div>
   );
 
   return (
     <div>
       <CampaignFilter onFilter={handleFilter} total={filtered.length} />
       {filtered.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">No campaigns found.</div>
+        <div className="text-center py-20 text-gray-400">No campaigns match your filters.</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((campaign, i) => (

@@ -1,5 +1,5 @@
 "use client";
-import { formatEther } from "viem";
+import { formatCampaignAmount } from "@/lib/format";
 import { useCampaignEscrow, useCanRefund } from "@/hooks/useDonationVault";
 import { useAccount } from "wagmi";
 import { motion } from "framer-motion";
@@ -19,6 +19,9 @@ export function EscrowTransparencyCard({
   const escrowBal = escrow as bigint | undefined;
   const refund = refundInfo as [boolean, bigint, bigint] | undefined;
   const unit = paymentToken === 1 ? "USDC" : "ETH";
+  const fractionDigits = paymentToken === 1 ? 2 : 4;
+  const formatAmount = (value: bigint) =>
+    `${Number(formatCampaignAmount(value, paymentToken)).toFixed(fractionDigits)} ${unit}`;
 
   return (
     <motion.div
@@ -40,9 +43,7 @@ export function EscrowTransparencyCard({
             <Lock size={12} /> In escrow
           </p>
           <p className="text-lg font-bold mt-1">
-            {escrowBal !== undefined
-              ? `${Number(formatEther(escrowBal)).toFixed(4)} ${unit}`
-              : "—"}
+            {escrowBal !== undefined ? formatAmount(escrowBal) : "—"}
           </p>
         </div>
         {address && (
@@ -51,9 +52,7 @@ export function EscrowTransparencyCard({
               <ArrowCounterClockwise size={12} /> Your refund
             </p>
             <p className="text-lg font-bold mt-1">
-              {refund?.[0]
-                ? `${Number(formatEther(refund[1])).toFixed(4)} ${unit}`
-                : "Not eligible"}
+              {refund?.[0] ? formatAmount(refund[1]) : "Not eligible"}
             </p>
           </div>
         )}

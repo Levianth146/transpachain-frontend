@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { formatEther } from "viem";
+import { formatCampaignAmount, getPaymentTokenLabel } from "@/lib/format";
 import { motion } from "framer-motion";
 import type { Campaign } from "@/types";
 import { CampaignStatus } from "@/types";
@@ -43,8 +43,11 @@ function getTimeLeft(deadline: number): string {
 }
 
 export function CampaignCard({ campaign }: { campaign: any }) {
-  const raised      = Number(formatEther(BigInt(campaign.raisedAmount ?? "0")));
-  const goal        = Number(formatEther(BigInt(campaign.goalAmount ?? "0")));
+  const paymentToken = campaign.paymentToken ?? 0;
+  const tokenLabel   = getPaymentTokenLabel(paymentToken);
+  const fractionDigits = paymentToken === 1 ? 2 : 3;
+  const raised      = Number(formatCampaignAmount(campaign.raisedAmount ?? "0", paymentToken));
+  const goal        = Number(formatCampaignAmount(campaign.goalAmount ?? "0", paymentToken));
   const progress    = goal > 0 ? Math.min((raised / goal) * 100, 100) : 0;
   const badge       = STATUS_BADGE[campaign.status as CampaignStatus];
   const CategoryIcon = CATEGORY_ICONS[campaign.category] || Lightbulb;
@@ -118,7 +121,7 @@ export function CampaignCard({ campaign }: { campaign: any }) {
             <div className="flex justify-between text-xs mb-1.5">
               <span className="font-bold text-gray-900 flex items-center gap-1">
                 <TrendingUp size={11} className="text-emerald-500" />
-                {raised.toFixed(3)} ETH
+                {raised.toFixed(fractionDigits)} {tokenLabel}
               </span>
               <span className="text-emerald-600 font-semibold">{progress.toFixed(0)}%</span>
             </div>
@@ -138,7 +141,7 @@ export function CampaignCard({ campaign }: { campaign: any }) {
 
             {/* Footer stats */}
             <div className="flex justify-between items-center text-xs text-gray-400">
-              <span>Goal: <span className="font-medium text-gray-600">{goal.toFixed(3)} ETH</span></span>
+              <span>Goal: <span className="font-medium text-gray-600">{goal.toFixed(fractionDigits)} {tokenLabel}</span></span>
               <span className="flex items-center gap-1">
                 <Users size={10} />
                 {campaign.donorCount ?? 0} donors

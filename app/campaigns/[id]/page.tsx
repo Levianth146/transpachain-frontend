@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useEffect, useState } from "react";
-import { formatEther } from "viem";
+import { formatCampaignAmount, getPaymentTokenLabel } from "@/lib/format";
 import { api } from "@/lib/api";
 import { MilestoneTimeline } from "@/components/MilestoneTimeline";
 import { DonateModal } from "@/components/DonateModal";
@@ -76,8 +76,11 @@ export default function CampaignDetailPage({ params }: Props) {
     }
   };
 
-  const raised    = Number(formatEther(toWei(campaign.raisedAmount)));
-  const goal      = Number(formatEther(toWei(campaign.goalAmount)));
+  const paymentToken = campaign.paymentToken ?? 0;
+  const tokenLabel = getPaymentTokenLabel(paymentToken);
+  const fractionDigits = paymentToken === 1 ? 2 : 3;
+  const raised    = Number(formatCampaignAmount(toWei(campaign.raisedAmount), paymentToken));
+  const goal      = Number(formatCampaignAmount(toWei(campaign.goalAmount), paymentToken));
   const progress  = goal > 0 && Number.isFinite(raised) ? Math.min((raised / goal) * 100, 100) : 0;
   const badge     = STATUS_BADGE[campaign.status] ?? STATUS_BADGE[0];
   let campaignId: bigint;
@@ -90,7 +93,7 @@ export default function CampaignDetailPage({ params }: Props) {
   const completedMilestones = Math.max(0, Number(campaign.completedMilestones) || 0);
 
   return (
-    <AnimatedGradientBackground className="min-h-screen">
+    <AnimatedGradientBackground variant="dark" className="min-h-screen">
     <main className="max-w-5xl mx-auto px-4 py-10">
 
       <CampaignImage
@@ -120,8 +123,8 @@ export default function CampaignDetailPage({ params }: Props) {
       {/* Progress */}
       <GlassPanel className="p-5 mb-6">
         <div className="flex justify-between text-sm text-gray-500 mb-2">
-          <span className="text-lg font-bold text-gray-900 dark:text-cream-100">{raised.toFixed(3)} ETH raised</span>
-          <span>Goal: {goal.toFixed(3)} ETH</span>
+          <span className="text-lg font-bold text-gray-900 dark:text-cream-100">{raised.toFixed(fractionDigits)} {tokenLabel} raised</span>
+          <span>Goal: {goal.toFixed(fractionDigits)} {tokenLabel}</span>
         </div>
         <div className="w-full bg-gray-100 dark:bg-zinc-800 rounded-full h-3 mb-2">
           <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-3 rounded-full transition-all"

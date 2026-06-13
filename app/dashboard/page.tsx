@@ -34,7 +34,7 @@ export default function DashboardPage() {
   if (!mounted) return null;
 
   if (!isConnected) return (
-    <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center gap-4">
+    <AnimatedGradientBackground variant="dark" className="min-h-screen flex flex-col items-center justify-center gap-4">
       <p className="text-lg font-medium">Connect your wallet to view dashboard</p>
       <ConnectWallet />
     </AnimatedGradientBackground>
@@ -62,7 +62,7 @@ export default function DashboardPage() {
   ] : [];
 
   return (
-    <AnimatedGradientBackground className="min-h-screen">
+    <AnimatedGradientBackground variant="dark" className="min-h-screen">
       <main className="max-w-5xl mx-auto px-4 py-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
