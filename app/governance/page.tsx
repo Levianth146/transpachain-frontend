@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Scales } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
-import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+import { PageShell } from "@/components/PageShell";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { ProposalListItem } from "@/components/ProposalListItem";
@@ -23,34 +23,33 @@ export default function GovernanceHubPage() {
   }, []);
 
   return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen">
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="mb-2 flex items-center gap-3">
-          <Scales size={32} className="text-accent-shine" weight="duotone" />
-          <h1 className="text-3xl font-bold text-white">DAO Governance</h1>
-        </div>
-        <p className="mb-2 text-white/70">
-          Milestone releases are decided by donor votes using quadratic weighting (√donation).
-          Admin approves proposals off-chain before they appear here. 51% quorum and a 24-hour timelock protect escrowed funds.
-        </p>
-        <LearnMoreLink className="mb-4" />
+    <PageShell
+      eyebrow="DAO"
+      title={
+        <span className="inline-flex items-center gap-3">
+          <Scales size={32} className="text-holo-lavender" weight="duotone" />
+          Governance
+        </span>
+      }
+      description="Milestone releases are decided by donor votes using quadratic weighting (√donation). Admin approves proposals off-chain before they appear here. 51% quorum and a 24-hour timelock protect escrowed funds."
+      maxWidth="4xl"
+    >
+      <LearnMoreLink className="mb-6" />
 
-        <GlassPanel className="mb-8 p-4 text-sm text-white/70">
-          <p className="mb-1 font-medium text-white">Quadratic voting & identity</p>
-          <p className="text-xs leading-relaxed">
-            Vote weight = √(ETH donated) — splitting donations across wallets does not increase total influence.
-            Only wallets with an on-chain donation to the campaign can vote (Sybil resistance via escrowed stake).
-            Connect your donor wallet to cast votes on active proposals.
-          </p>
-          {!isConnected && (
-            <div className="mt-3 flex items-center gap-3">
-              <ConnectWallet />
-              <span className="text-xs text-white/50">Wallet required to vote</span>
-            </div>
-          )}
-        </GlassPanel>
-      </motion.div>
+      <GlassPanel holoBorder className="mb-8 p-4 text-sm text-white/70">
+        <p className="mb-1 font-medium text-white">Quadratic voting & identity</p>
+        <p className="text-xs leading-relaxed">
+          Vote weight = √(ETH donated) — splitting donations across wallets does not increase total influence.
+          Only wallets with an on-chain donation to the campaign can vote (Sybil resistance via escrowed stake).
+          Connect your donor wallet to cast votes on active proposals.
+        </p>
+        {!isConnected && (
+          <div className="mt-3 flex items-center gap-3">
+            <ConnectWallet />
+            <span className="text-xs text-white/50">Wallet required to vote</span>
+          </div>
+        )}
+      </GlassPanel>
 
       {loading ? (
         <p className="text-white/50">Loading proposals…</p>
@@ -63,7 +62,6 @@ export default function GovernanceHubPage() {
           ))}
         </ul>
       )}
-    </main>
-    </AnimatedGradientBackground>
+    </PageShell>
   );
 }

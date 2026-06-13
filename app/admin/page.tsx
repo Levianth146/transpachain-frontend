@@ -19,6 +19,7 @@ import { AdminOrgProfiles } from "@/components/AdminOrgProfiles";
 import { AdminPendingPanel } from "@/components/AdminPendingPanel";
 import { api } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
+import { PageShell } from "@/components/PageShell";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { MotionCard } from "@/components/ui/MotionCard";
@@ -145,9 +146,9 @@ function Section({
 }
 
 const STAT_GRADIENTS = [
-  "from-gray-500/15 to-slate-500/5",
-  "from-emerald-500/20 to-teal-500/10",
-  "from-purple-500/20 to-violet-500/10",
+  "from-holo-silver/15 to-holo-lavender/10",
+  "from-holo-mint/20 to-holo-lavender/10",
+  "from-holo-lavender/20 to-holo-pink/10",
 ];
 
 export default function AdminPage() {
@@ -303,40 +304,35 @@ export default function AdminPage() {
 
   const stats = [
     { label: "Total Campaigns", value: totalCampaigns?.toString() ?? "—", color: "text-white" },
-    { label: "Verified Orgs", value: verifiedOrgs.length.toString(), color: "text-emerald-600" },
-    { label: "Your Role", value: isAdmin ? "Admin" : "Verifier", color: "text-purple-600" },
+    { label: "Verified Orgs", value: verifiedOrgs.length.toString(), color: "text-holo-mint" },
+    { label: "Your Role", value: isAdmin ? "Admin" : "Verifier", color: "text-holo-lavender" },
   ];
 
   return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen">
-    <main className="max-w-3xl mx-auto px-4 py-10 space-y-6">
+    <PageShell
+      eyebrow="Administration"
+      title="Admin Panel"
+      description={
+        <span className="font-mono text-sm text-white/50">{address ? truncate(address) : ""}</span>
+      }
+      maxWidth="3xl"
+      actions={
+        <div className="flex gap-2">
+          {isAdmin    && <span className="rounded-full border border-holo-lavender/30 bg-holo-lavender/10 px-2.5 py-1 text-xs font-medium text-holo-lavender">ADMIN</span>}
+          {isVerifier && <span className="rounded-full border border-holo-mint/30 bg-holo-mint/10 px-2.5 py-1 text-xs font-medium text-holo-mint">VERIFIER</span>}
+        </div>
+      }
+    >
+    <div className="space-y-6">
 
       <AdminPendingPanel />
-
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-emerald-500/10 rounded-xl border border-emerald-200/40">
-            <Shield size={24} className="text-emerald-600" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-white">Admin Panel</h1>
-            <p className="text-sm text-white/50">
-              <span className="font-mono">{address ? truncate(address) : ""}</span>
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          {isAdmin    && <span className="text-xs px-2.5 py-1 bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-200/40 rounded-full font-medium">ADMIN</span>}
-          {isVerifier && <span className="text-xs px-2.5 py-1 bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-200/40 rounded-full font-medium">VERIFIER</span>}
-        </div>
-      </motion.div>
 
       <div className="grid grid-cols-3 gap-4">
         {stats.map(({ label, value, color }, i) => (
           <MotionCard key={label} index={i}>
-            <GlassPanel hover={false} className={`p-4 text-center bg-gradient-to-br ${STAT_GRADIENTS[i]}`}>
+            <GlassPanel hover={false} holoBorder className={`bg-gradient-to-br ${STAT_GRADIENTS[i]} p-4 text-center`}>
               <p className={`text-2xl font-bold ${color}`}>{value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+              <p className="mt-0.5 text-xs text-white/50">{label}</p>
             </GlassPanel>
           </MotionCard>
         ))}
@@ -469,7 +465,7 @@ export default function AdminPage() {
         </Section>
       )}
 
-    </main>
-    </AnimatedGradientBackground>
+    </div>
+    </PageShell>
   );
 }

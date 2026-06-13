@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import { Check, X } from "@phosphor-icons/react";
 
 const ROWS = [
-  { label: "Fund custody", traditional: "Org holds funds directly", openheart: "Locked in on-chain escrow vault" },
-  { label: "Release trigger", traditional: "Internal approval", openheart: "DAO vote after milestone proof" },
-  { label: "Transparency", traditional: "Periodic reports", openheart: "Every tx & vote on Sepolia explorer" },
-  { label: "Failed campaign", traditional: "Refund policy varies", openheart: "Automatic refund eligibility on-chain" },
-  { label: "Donor proof", traditional: "Receipt email", openheart: "Impact NFT + tx hash" },
+  { label: "Fund custody", traditional: "Org holds funds directly", transpachain: "Locked in on-chain escrow vault" },
+  { label: "Release trigger", traditional: "Internal approval", transpachain: "DAO vote after milestone proof" },
+  { label: "Transparency", traditional: "Periodic reports", transpachain: "Every tx & vote on Sepolia explorer" },
+  { label: "Failed campaign", traditional: "Refund policy varies", transpachain: "Automatic refund eligibility on-chain" },
+  { label: "Donor proof", traditional: "Receipt email", transpachain: "Impact NFT + tx hash" },
 ];
 
 export function TraditionalVsTranspaChain({ compact = false }: { compact?: boolean }) {
@@ -19,7 +19,7 @@ export function TraditionalVsTranspaChain({ compact = false }: { compact?: boole
     >
       <div className="border-b border-white/10 bg-white/[0.02] px-4 py-3">
         <h3 className="text-sm font-semibold text-accent-shine">
-          Traditional Charity vs OpenHeart
+          Traditional Charity vs TranspaChain
         </h3>
         {!compact && (
           <p className="mt-0.5 text-xs text-white/50">
@@ -39,7 +39,7 @@ export function TraditionalVsTranspaChain({ compact = false }: { compact?: boole
               </th>
               <th className="px-4 py-2 font-medium">
                 <span className="inline-flex items-center gap-1 text-emerald-400">
-                  <Check size={12} weight="bold" /> OpenHeart
+                  <Check size={12} weight="bold" /> TranspaChain
                 </span>
               </th>
             </tr>
@@ -55,7 +55,7 @@ export function TraditionalVsTranspaChain({ compact = false }: { compact?: boole
                 </td>
                 <td className="px-4 py-2.5 text-white/50">{row.traditional}</td>
                 <td className="px-4 py-2.5 font-medium text-emerald-400">
-                  {row.openheart}
+                  {row.transpachain}
                 </td>
               </tr>
             ))}

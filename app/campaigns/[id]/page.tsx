@@ -13,6 +13,7 @@ import { EscrowTransparencyCard } from "@/components/EscrowTransparencyCard";
 import { OrgCampaignActions } from "@/components/OrgCampaignActions";
 import { CampaignStatusTimeline } from "@/components/CampaignStatusTimeline";
 import { CampaignImage } from "@/components/CampaignImage";
+import { PageShell } from "@/components/PageShell";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
@@ -97,9 +98,17 @@ export default function CampaignDetailPage({ params }: Props) {
   const completedMilestones = Math.max(0, Number(campaign.completedMilestones) || 0);
 
   return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen">
-    <main className="mx-auto max-w-5xl px-4 py-10">
-
+    <PageShell
+      eyebrow="Campaign"
+      title={campaign.title}
+      description={`by ${campaign.orgName}`}
+      maxWidth="5xl"
+      actions={
+        <span className={`text-sm px-3 py-1 rounded-full font-medium ${badge.color}`}>
+          {badge.label}
+        </span>
+      }
+    >
       <CampaignImage
         imageUrl={campaign.imageUrl}
         title={campaign.title}
@@ -108,30 +117,17 @@ export default function CampaignDetailPage({ params }: Props) {
         imgClassName="w-full h-full object-cover"
       />
 
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div>
-          <h1 className="mb-1 text-3xl font-bold text-white">{campaign.title}</h1>
-          <p className="text-white/60">by {campaign.orgName}</p>
-        </div>
-        <span className={`text-sm px-3 py-1 rounded-full font-medium ${badge.color}`}>
-          {badge.label}
-        </span>
-      </div>
-
       <LearnMoreLink className="mb-4" />
 
-      {/* Description */}
       <p className="mb-6 text-white/70">{campaign.description}</p>
 
-      {/* Progress */}
-      <GlassPanel className="p-5 mb-6">
+      <GlassPanel holoBorder className="p-5 mb-6">
         <div className="mb-2 flex justify-between text-sm text-white/60">
           <span className="text-lg font-bold text-white">{raised.toFixed(fractionDigits)} {tokenLabel} raised</span>
           <span>Goal: {goal.toFixed(fractionDigits)} {tokenLabel}</span>
         </div>
         <div className="mb-2 h-3 w-full rounded-full bg-white/10">
-          <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-3 rounded-full transition-all"
+          <div className="h-3 rounded-full bg-holo-gradient transition-all"
             style={{ width: `${progress}%` }} />
         </div>
         <div className="mb-3 flex justify-between text-sm text-white/60">
@@ -173,7 +169,6 @@ export default function CampaignDetailPage({ params }: Props) {
         </div>
       </div>
 
-    </main>
-    </AnimatedGradientBackground>
+    </PageShell>
   );
 }

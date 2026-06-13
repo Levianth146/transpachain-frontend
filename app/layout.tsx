@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -7,27 +7,37 @@ import { ToastContainer } from "@/components/Toast";
 import { ConditionalNav } from "@/components/ConditionalNav";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
-  title: "OpenHeart — Transparent Giving Platform",
+  title: "TranspaChain — Transparent Giving Platform",
   description:
-    "Open-hearted charity on Ethereum — milestone-based escrow, donor governance, and on-chain accountability",
+    "Transparent charity on Ethereum — milestone-based escrow, donor governance, and on-chain accountability at transpachain.site",
   icons: {
-    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans`} suppressHydrationWarning>
         <Providers>
           <ConditionalNav />
           {children}
-          <footer className="border-t border-gray-800 bg-black px-6 py-8 text-center text-sm text-white/50">
-            <p className="mb-1 font-medium text-white/70">OpenHeart</p>
-            <p className="mb-2">Sepolia testnet demo — not financial advice.</p>
-            <Link href="/legal" className="text-accent-shine transition-colors hover:text-white">
+          <footer className="border-t border-white/10 bg-black px-6 py-8 text-center text-sm text-white/50">
+            <p className="mb-1 font-display font-medium text-holo">
+              TranspaChain
+            </p>
+            <p className="mb-2">Sepolia testnet demo — transpachain.site — not financial advice.</p>
+            <Link href="/legal" className="text-holo-mint transition-colors hover:text-white">
               Legal &amp; Disclaimer
             </Link>
           </footer>

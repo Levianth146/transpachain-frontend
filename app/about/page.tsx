@@ -1,10 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
-import { Heart, ShieldCheck, Scales } from "@phosphor-icons/react";
-import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+import { ShieldCheck, Scales, Sparkle } from "@phosphor-icons/react";
+import { PageShell } from "@/components/PageShell";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { HowItWorksBlock } from "@/components/HowItWorksBlock";
 import { TrustSecurityStrip } from "@/components/TrustSecurityStrip";
+
 const ANTI_ABUSE = [
   {
     title: "Verified organizations only",
@@ -46,21 +47,20 @@ const ANTI_ABUSE = [
 
 export default function AboutPage() {
   return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen">
-      <main className="mx-auto max-w-4xl px-4 py-10 space-y-8">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex items-center gap-3 mb-2">
-            <Heart size={32} className="text-emerald-500" weight="duotone" />
-            <h1 className="text-4xl font-bold text-white">About OpenHeart</h1>
-          </div>
-          <p className="text-lg leading-relaxed text-white/70">
-            OpenHeart is a transparent giving platform on Ethereum where every donation is escrowed in ETH or USDC,
-            every release is voted on by donors using quadratic weighting, and every transaction is verifiable on-chain.
-          </p>
-        </motion.div>
-
-        <GlassPanel className="p-6">
-          <h2 className="mb-3 text-xl font-semibold text-emerald-400">Our mission</h2>
+    <PageShell
+      eyebrow="Platform"
+      title={
+        <span className="inline-flex items-center gap-3">
+          <Sparkle size={32} className="text-holo-mint" weight="duotone" />
+          About TranspaChain
+        </span>
+      }
+      description="TranspaChain is a transparent giving platform on Ethereum where every donation is escrowed in ETH or USDC, every release is voted on by donors using quadratic weighting, and every transaction is verifiable on-chain."
+      maxWidth="4xl"
+    >
+      <div className="space-y-8">
+        <GlassPanel holoBorder className="p-6">
+          <h2 className="mb-3 text-xl font-semibold text-holo-mint">Our mission</h2>
           <p className="leading-relaxed text-white/70">
             We bridge the trust gap between donors and charitable organizations. Instead of sending funds
             directly to an org wallet, donations lock in a smart-contract escrow vault — in ETH or USDC.
@@ -70,32 +70,32 @@ export default function AboutPage() {
           </p>
         </GlassPanel>
 
-        <GlassPanel className="p-6">
+        <GlassPanel holoBorder className="p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">How it works</h2>
           <HowItWorksBlock columns={6} />
         </GlassPanel>
 
-        <GlassPanel className="p-6">
+        <GlassPanel holoBorder className="p-6">
           <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-white">
-            <ShieldCheck size={22} className="text-emerald-500" weight="duotone" />
+            <ShieldCheck size={22} className="text-holo-mint" weight="duotone" />
             Security &amp; trust
           </h2>
           <TrustSecurityStrip />
         </GlassPanel>
 
-        <GlassPanel className="p-6">
+        <GlassPanel holoBorder className="p-6">
           <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-white">
-            <Scales size={22} className="text-purple-500" weight="duotone" />
+            <Scales size={22} className="text-holo-lavender" weight="duotone" />
             Anti-abuse safeguards
           </h2>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             {ANTI_ABUSE.map((item, i) => (
               <motion.div
                 key={item.title}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
+                className="rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-holo-lavender/20"
               >
                 <p className="text-sm font-semibold text-white">{item.title}</p>
                 <p className="mt-1 text-xs leading-relaxed text-white/60">{item.desc}</p>
@@ -103,7 +103,7 @@ export default function AboutPage() {
             ))}
           </div>
         </GlassPanel>
-      </main>
-    </AnimatedGradientBackground>
+      </div>
+    </PageShell>
   );
 }

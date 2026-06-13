@@ -82,7 +82,7 @@ export function Web3HeroAnimated() {
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,rgba(100,206,251,0.12),transparent_70%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,rgba(94,234,212,0.12),transparent_70%)]"
       />
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
@@ -96,7 +96,7 @@ export function Web3HeroAnimated() {
         >
           <div className="max-w-md text-left text-sm leading-relaxed text-white/70 sm:text-base">
             <p>
-              OpenHeart is transparent giving on Ethereum Sepolia — donations lock in on-chain escrow,
+              TranspaChain is transparent giving on Ethereum Sepolia — donations lock in on-chain escrow,
               milestone proof is verified, and donors govern releases through quadratic voting.
             </p>
           </div>
@@ -134,20 +134,20 @@ export function Web3HeroAnimated() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 16 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="mb-4 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60 sm:text-xs"
+            className="mb-4 text-[10px] font-display font-medium uppercase tracking-[0.2em] text-white/60 sm:text-xs"
           >
-            Open giving. On-chain accountability.
+            Transparent giving. On-chain accountability.
           </motion.p>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 20 }}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="text-4xl font-bold uppercase tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+            className="text-4xl font-display font-bold uppercase tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
           >
-            <span className="block text-white">Give with an</span>
+            <span className="block text-white">Give with</span>
             <span className="block">
-              <ShinyText>Open Heart.</ShinyText>
+              <ShinyText>TranspaChain.</ShinyText>
             </span>
           </motion.h1>
 

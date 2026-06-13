@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --holo-mint: #5eead4;
+    --holo-lavender: #c4b5fd;
+    --holo-pink: #f9a8d4;
+    --holo-silver: #e2e8f0;
+  }
+
   body {
     @apply bg-black text-white antialiased;
   }
@@ -16,5 +23,21 @@
   .hero-grain::after {
     content: "";
     @apply pointer-events-none absolute inset-0 bg-grain opacity-40 mix-blend-overlay;
+  }
+
+  .text-holo {
+    @apply bg-holo-gradient bg-clip-text text-transparent;
+  }
+
+  .border-holo {
+    background:
+      linear-gradient(#0c0a09, #0c0a09) padding-box,
+      linear-gradient(135deg, var(--holo-mint), var(--holo-lavender), var(--holo-pink), var(--holo-silver)) border-box;
+    border: 1px solid transparent;
+  }
+
+  .input-glass {
+    @apply w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder:text-white/40 backdrop-blur-sm transition-colors;
+    @apply focus:outline-none focus:ring-2 focus:ring-holo-mint/40 focus:border-holo-lavender/30;
   }
 }
