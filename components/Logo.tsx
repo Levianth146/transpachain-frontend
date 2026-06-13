@@ -1,27 +1,42 @@
 import Link from "next/link";
 
-export function Logo({ className = "" }: { className?: string }) {
+interface LogoProps {
+  className?: string;
+  variant?: "light" | "default";
+}
+
+export function Logo({ className = "", variant = "default" }: LogoProps) {
+  const isLight = variant === "light";
+
   return (
     <Link
       href="/"
-      className={`group flex items-center gap-2.5 select-none ${className}`}
+      className={`group flex select-none items-center gap-2.5 ${className}`}
       aria-label="TranspaChain home"
     >
-      <img
-        src="/logo.svg"
-        alt=""
-        width={34}
-        height={34}
-        className="shrink-0 drop-shadow-sm"
-      />
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20">
+        <img
+          src="/logo.svg"
+          alt=""
+          width={34}
+          height={34}
+          className="h-8 w-8 shrink-0"
+        />
+      </span>
       <span className="flex flex-col justify-center leading-none">
-        <span className="font-display text-[1.375rem] font-normal tracking-tight">
-          <span className="text-ink-900 transition-colors duration-200 dark:text-cream-50">
-            Transpa
-          </span>
-          <span className="bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 bg-clip-text text-transparent transition-all duration-200 group-hover:from-gold-300 group-hover:via-gold-400 group-hover:to-gold-500">
-            Chain
-          </span>
+        <span className="text-[1.125rem] font-semibold tracking-tight sm:text-[1.25rem]">
+          {isLight ? (
+            <span className="text-white transition-colors duration-200 group-hover:text-white/90">
+              TranspaChain
+            </span>
+          ) : (
+            <>
+              <span className="text-white transition-colors duration-200">Transpa</span>
+              <span className="bg-gradient-to-r from-accent-shine via-white to-accent-shine bg-clip-text text-transparent">
+                Chain
+              </span>
+            </>
+          )}
         </span>
       </span>
     </Link>

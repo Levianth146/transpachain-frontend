@@ -24,20 +24,20 @@ export default function GovernanceHubPage() {
 
   return (
     <AnimatedGradientBackground variant="dark" className="min-h-screen">
-    <main className="max-w-4xl mx-auto px-4 py-10">
+    <main className="mx-auto max-w-4xl px-4 py-10">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-center gap-3 mb-2">
-          <Scales size={32} className="text-gold-500" weight="duotone" />
-          <h1 className="text-3xl font-display text-gold-500">DAO Governance</h1>
+        <div className="mb-2 flex items-center gap-3">
+          <Scales size={32} className="text-accent-shine" weight="duotone" />
+          <h1 className="text-3xl font-bold text-white">DAO Governance</h1>
         </div>
-        <p className="text-gray-600 dark:text-gray-400 mb-2">
+        <p className="mb-2 text-white/70">
           Milestone releases are decided by donor votes using quadratic weighting (√donation).
           Admin approves proposals off-chain before they appear here. 51% quorum and a 24-hour timelock protect escrowed funds.
         </p>
         <LearnMoreLink className="mb-4" />
 
-        <GlassPanel className="p-4 mb-8 text-sm text-gray-600 dark:text-gray-300">
-          <p className="font-medium text-gray-900 dark:text-cream-100 mb-1">Quadratic voting & identity</p>
+        <GlassPanel className="mb-8 p-4 text-sm text-white/70">
+          <p className="mb-1 font-medium text-white">Quadratic voting & identity</p>
           <p className="text-xs leading-relaxed">
             Vote weight = √(ETH donated) — splitting donations across wallets does not increase total influence.
             Only wallets with an on-chain donation to the campaign can vote (Sybil resistance via escrowed stake).
@@ -46,16 +46,16 @@ export default function GovernanceHubPage() {
           {!isConnected && (
             <div className="mt-3 flex items-center gap-3">
               <ConnectWallet />
-              <span className="text-xs text-gray-500">Wallet required to vote</span>
+              <span className="text-xs text-white/50">Wallet required to vote</span>
             </div>
           )}
         </GlassPanel>
       </motion.div>
 
       {loading ? (
-        <p className="text-gray-400">Loading proposals…</p>
+        <p className="text-white/50">Loading proposals…</p>
       ) : proposals.length === 0 ? (
-        <p className="text-gray-500">No proposals indexed yet. Submit a milestone proof on an active campaign.</p>
+        <p className="text-white/60">No proposals indexed yet. Submit a milestone proof on an active campaign.</p>
       ) : (
         <ul className="space-y-4">
           {proposals.map((p, i) => (

@@ -47,21 +47,21 @@ const ANTI_ABUSE = [
 export default function AboutPage() {
   return (
     <AnimatedGradientBackground variant="dark" className="min-h-screen">
-      <main className="max-w-4xl mx-auto px-4 py-10 space-y-8">
+      <main className="mx-auto max-w-4xl px-4 py-10 space-y-8">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3 mb-2">
             <Heart size={32} className="text-emerald-500" weight="duotone" />
-            <h1 className="text-4xl font-display text-gray-900 dark:text-cream-100">About TranspaChain</h1>
+            <h1 className="text-4xl font-bold text-white">About TranspaChain</h1>
           </div>
-          <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-lg leading-relaxed text-white/70">
             TranspaChain is a transparent charity platform on Ethereum where every donation is escrowed in ETH or USDC,
             every release is voted on by donors using quadratic weighting, and every transaction is verifiable on-chain.
           </p>
         </motion.div>
 
         <GlassPanel className="p-6">
-          <h2 className="text-xl font-display text-emerald-700 dark:text-emerald-400 mb-3">Our mission</h2>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+          <h2 className="mb-3 text-xl font-semibold text-emerald-400">Our mission</h2>
+          <p className="leading-relaxed text-white/70">
             We bridge the trust gap between donors and charitable organizations. Instead of sending funds
             directly to an org wallet, donations lock in a smart-contract escrow vault — in ETH or USDC.
             Organizations earn trust by submitting milestone proof reviewed by admin; donors retain control
@@ -71,12 +71,12 @@ export default function AboutPage() {
         </GlassPanel>
 
         <GlassPanel className="p-6">
-          <h2 className="text-xl font-display text-gray-900 dark:text-cream-100 mb-4">How it works</h2>
+          <h2 className="mb-4 text-xl font-semibold text-white">How it works</h2>
           <HowItWorksBlock columns={6} />
         </GlassPanel>
 
         <GlassPanel className="p-6">
-          <h2 className="text-xl font-display text-gray-900 dark:text-cream-100 mb-4 flex items-center gap-2">
+          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-white">
             <ShieldCheck size={22} className="text-emerald-500" weight="duotone" />
             Security &amp; trust
           </h2>
@@ -84,7 +84,7 @@ export default function AboutPage() {
         </GlassPanel>
 
         <GlassPanel className="p-6">
-          <h2 className="text-xl font-display text-gray-900 dark:text-cream-100 mb-4 flex items-center gap-2">
+          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-white">
             <Scales size={22} className="text-purple-500" weight="duotone" />
             Anti-abuse safeguards
           </h2>
@@ -95,10 +95,10 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-gray-100 dark:border-zinc-800 p-4 bg-white/50 dark:bg-white/5"
+                className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
               >
-                <p className="font-semibold text-sm text-gray-900 dark:text-cream-100">{item.title}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">{item.desc}</p>
+                <p className="text-sm font-semibold text-white">{item.title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-white/60">{item.desc}</p>
               </motion.div>
             ))}
           </div>

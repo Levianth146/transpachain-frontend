@@ -35,7 +35,7 @@ export default function DashboardPage() {
 
   if (!isConnected) return (
     <AnimatedGradientBackground variant="dark" className="min-h-screen flex flex-col items-center justify-center gap-4">
-      <p className="text-lg font-medium">Connect your wallet to view dashboard</p>
+      <p className="text-lg font-medium text-white">Connect your wallet to view dashboard</p>
       <ConnectWallet />
     </AnimatedGradientBackground>
   );
@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
   return (
     <AnimatedGradientBackground variant="dark" className="min-h-screen">
-      <main className="max-w-5xl mx-auto px-4 py-10">
+      <main className="mx-auto max-w-5xl px-4 py-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -71,9 +71,9 @@ export default function DashboardPage() {
         >
           <div className="flex items-center gap-2 mb-1">
             <TrendUp size={28} className="text-emerald-500" weight="duotone" />
-            <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100">My Impact Dashboard</h1>
+            <h1 className="text-3xl font-bold text-white">My Impact Dashboard</h1>
           </div>
-          <p className="text-sm text-gray-400 font-mono truncate">{address}</p>
+          <p className="truncate font-mono text-sm text-white/50">{address}</p>
           <LearnMoreLink className="mt-2" />
         </motion.div>
 
@@ -87,7 +87,7 @@ export default function DashboardPage() {
                 <GlassPanel key={stat.label} delay={i * 0.08} className={`p-5 text-center bg-gradient-to-br ${stat.gradient}`}>
                   <Icon size={24} className={`mx-auto mb-2 ${stat.color}`} weight="duotone" />
                   <p className={`text-3xl font-bold ${stat.color}`}>{stat.value}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{stat.label}</p>
+                  <p className="mt-1 text-sm text-white/60">{stat.label}</p>
                 </GlassPanel>
               );
             })}
@@ -103,7 +103,7 @@ export default function DashboardPage() {
               Donation History
             </h3>
             {donations.length === 0 ? (
-              <p className="text-sm text-gray-400">No donations yet. Browse campaigns to make your first impact!</p>
+              <p className="text-sm text-white/50">No donations yet. Browse campaigns to make your first impact!</p>
             ) : (
               <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
                 {donations.map((d: any, i: number) => (
@@ -112,14 +112,14 @@ export default function DashboardPage() {
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.04 }}
-                    className="flex justify-between items-center py-2.5 px-3 rounded-lg bg-white/50 dark:bg-white/5 border border-gray-100 dark:border-zinc-800"
+                    className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5"
                   >
                     <div>
-                      <p className="text-sm font-medium">Campaign #{d.campaignId}</p>
-                      <p className="text-xs text-gray-400 font-mono">{d.txHash.slice(0, 10)}…</p>
+                      <p className="text-sm font-medium text-white">Campaign #{d.campaignId}</p>
+                      <p className="font-mono text-xs text-white/40">{d.txHash.slice(0, 10)}…</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-bold text-emerald-600">
+                      <p className="text-sm font-bold text-emerald-400">
                         {Number(formatEther(BigInt(d.amount))).toFixed(3)} ETH
                       </p>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${

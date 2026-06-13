@@ -10,46 +10,40 @@ interface Props {
 export function AnimatedGradientBackground({
   children,
   className = "",
-  variant = "subtle",
+  variant = "dark",
 }: Props) {
   const vivid = variant === "vivid";
-  const dark = variant === "dark";
 
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative min-h-screen overflow-hidden bg-black text-white ${className}`}>
       <div className="absolute inset-0 -z-10">
         <motion.div
           className={`absolute -inset-[40%] rounded-full blur-3xl ${
-            dark ? "opacity-35" : vivid ? "opacity-40" : "opacity-25"
+            vivid ? "opacity-30" : "opacity-20"
           }`}
           style={{
             background:
-              "conic-gradient(from 0deg, #10b981, #06b6d4, #8b5cf6, #10b981)",
+              "conic-gradient(from 0deg, #64CEFB, #8b5cf6, #10b981, #64CEFB)",
           }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className={`absolute top-1/4 -right-1/4 w-[500px] h-[500px] rounded-full blur-3xl ${
-            dark ? "bg-emerald-400/20" : vivid ? "bg-emerald-400/30" : "bg-emerald-400/15"
+          className={`absolute top-1/4 -right-1/4 h-[500px] w-[500px] rounded-full blur-3xl ${
+            vivid ? "bg-accent-shine/25" : "bg-accent-shine/15"
           }`}
           animate={{ x: [0, -30, 0], y: [0, 20, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className={`absolute bottom-0 -left-1/4 w-[400px] h-[400px] rounded-full blur-3xl ${
-            dark ? "bg-teal-400/15" : vivid ? "bg-teal-400/25" : "bg-teal-400/10"
+          className={`absolute bottom-0 -left-1/4 h-[400px] w-[400px] rounded-full blur-3xl ${
+            vivid ? "bg-purple-500/20" : "bg-purple-500/10"
           }`}
           animate={{ x: [0, 25, 0], y: [0, -15, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
-        <div
-          className={
-            dark
-              ? "absolute inset-0 bg-ink-950/92 backdrop-blur-[1px]"
-              : "absolute inset-0 bg-cream-50/80 dark:bg-ink-950/85 backdrop-blur-[1px]"
-          }
-        />
+        <div className="absolute inset-0 bg-black/92 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-panel-glow opacity-60" />
       </div>
       {children}
     </div>

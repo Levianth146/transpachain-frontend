@@ -9,6 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        accent: {
+          shine: "#64CEFB",
+        },
         ink: {
           950: "#0c0a09",
           900: "#1c1917",
@@ -30,7 +33,9 @@ const config: Config = {
       },
       backgroundImage: {
         "hero-gradient":
-          "linear-gradient(135deg, #0c0a09 0%, #1c1917 40%, #14532d 100%)",
+          "linear-gradient(135deg, #000000 0%, #0c0a09 40%, #0a1628 100%)",
+        "panel-glow":
+          "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(100,206,251,0.15), transparent)",
         "grain":
           "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E\")",
       },

@@ -2,9 +2,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { List, X } from "@phosphor-icons/react";
+import { Menu, X } from "lucide-react";
 import { ConnectWallet } from "./ConnectWallet";
-import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS = [
   { href: "/", label: "Campaigns" },
@@ -20,31 +19,36 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="p-2 rounded-lg border border-gray-200 dark:border-zinc-700"
+        className="rounded-full border border-gray-700 p-2 text-white/80 transition-colors hover:text-white"
         aria-label="Menu"
       >
-        {open ? <X size={22} /> : <List size={22} />}
+        {open ? <X size={20} /> : <Menu size={20} />}
       </button>
       {open && (
-        <div className="absolute left-0 right-0 top-full bg-white dark:bg-ink-900 border-b shadow-lg z-50 p-4 flex flex-col gap-3">
-          {LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              className={`text-sm font-medium py-2 ${
-                pathname === href ? "text-emerald-600" : "text-gray-700 dark:text-gray-300"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-          <ConnectWallet />
-          <ThemeToggle />
+        <div className="absolute left-0 right-0 top-full z-50 border-b border-gray-800 bg-black/95 p-4 shadow-lg backdrop-blur-md">
+          <div className="mx-auto flex max-w-7xl flex-col gap-1">
+            {LINKS.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                  pathname === href
+                    ? "bg-white/10 text-white"
+                    : "text-white/80 hover:bg-white/5 hover:text-white"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+            <div className="mt-3 border-t border-gray-800 pt-3">
+              <ConnectWallet />
+            </div>
+          </div>
         </div>
       )}
     </div>

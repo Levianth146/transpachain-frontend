@@ -94,7 +94,7 @@ export default function CampaignDetailPage({ params }: Props) {
 
   return (
     <AnimatedGradientBackground variant="dark" className="min-h-screen">
-    <main className="max-w-5xl mx-auto px-4 py-10">
+    <main className="mx-auto max-w-5xl px-4 py-10">
 
       <CampaignImage
         imageUrl={campaign.imageUrl}
@@ -107,8 +107,8 @@ export default function CampaignDetailPage({ params }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100 mb-1">{campaign.title}</h1>
-          <p className="text-gray-500">by {campaign.orgName}</p>
+          <h1 className="mb-1 text-3xl font-bold text-white">{campaign.title}</h1>
+          <p className="text-white/60">by {campaign.orgName}</p>
         </div>
         <span className={`text-sm px-3 py-1 rounded-full font-medium ${badge.color}`}>
           {badge.label}
@@ -118,19 +118,19 @@ export default function CampaignDetailPage({ params }: Props) {
       <LearnMoreLink className="mb-4" />
 
       {/* Description */}
-      <p className="text-gray-600 dark:text-gray-300 mb-6">{campaign.description}</p>
+      <p className="mb-6 text-white/70">{campaign.description}</p>
 
       {/* Progress */}
       <GlassPanel className="p-5 mb-6">
-        <div className="flex justify-between text-sm text-gray-500 mb-2">
-          <span className="text-lg font-bold text-gray-900 dark:text-cream-100">{raised.toFixed(fractionDigits)} {tokenLabel} raised</span>
+        <div className="mb-2 flex justify-between text-sm text-white/60">
+          <span className="text-lg font-bold text-white">{raised.toFixed(fractionDigits)} {tokenLabel} raised</span>
           <span>Goal: {goal.toFixed(fractionDigits)} {tokenLabel}</span>
         </div>
-        <div className="w-full bg-gray-100 dark:bg-zinc-800 rounded-full h-3 mb-2">
+        <div className="mb-2 h-3 w-full rounded-full bg-white/10">
           <div className="bg-gradient-to-r from-emerald-500 to-teal-400 h-3 rounded-full transition-all"
             style={{ width: `${progress}%` }} />
         </div>
-        <div className="flex justify-between text-sm text-gray-500 mb-3">
+        <div className="mb-3 flex justify-between text-sm text-white/60">
           <span>{progress.toFixed(0)}% funded</span>
           <span>{campaign.donorCount} donors</span>
         </div>

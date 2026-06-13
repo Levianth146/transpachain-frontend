@@ -45,21 +45,18 @@ export function CampaignFilter({ onFilter, total }: Props) {
 
   return (
     <div className="mb-6 space-y-3">
-      {/* Search bar */}
       <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">🔍</span>
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-white/40">🔍</span>
         <input
           type="text"
           placeholder="Search campaigns..."
           value={filters.search}
-          onChange={e => update("search", e.target.value)}
-          className="w-full pl-8 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white"
+          onChange={(e) => update("search", e.target.value)}
+          className="w-full rounded-lg border border-gray-700 bg-white/5 py-2 pl-8 pr-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent-shine/50"
         />
       </div>
 
-      {/* Category + Status filters */}
-      <div className="flex flex-wrap gap-2 items-center">
-        {/* Category pills */}
+      <div className="flex flex-wrap items-center gap-2">
         <div className="flex flex-wrap gap-1.5">
           {CATEGORIES.map((cat) => {
             const val = cat === "All" ? "" : cat.toLowerCase();
@@ -69,10 +66,10 @@ export function CampaignFilter({ onFilter, total }: Props) {
                 key={cat}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => update("category", val)}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                   active
                     ? "bg-emerald-600 text-white shadow-sm"
-                    : "bg-white border text-gray-600 hover:border-emerald-400 hover:text-emerald-600"
+                    : "border border-gray-700 text-white/70 hover:border-gray-600 hover:text-white"
                 }`}
               >
                 {cat}
@@ -81,29 +78,28 @@ export function CampaignFilter({ onFilter, total }: Props) {
           })}
         </div>
 
-        {/* Divider */}
-        <div className="w-px h-5 bg-gray-200 hidden sm:block" />
+        <div className="hidden h-5 w-px bg-gray-700 sm:block" />
 
-        {/* Status select */}
         <select
           value={filters.status}
-          onChange={e => update("status", e.target.value)}
-          className="px-3 py-1 rounded-full text-xs font-medium border bg-white text-gray-600 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          onChange={(e) => update("status", e.target.value)}
+          className="rounded-full border border-gray-700 bg-white/5 px-3 py-1 text-xs font-medium text-white/70 focus:outline-none focus:ring-2 focus:ring-accent-shine/50"
         >
           {STATUSES.map((s) => (
-            <option key={s.value} value={s.value}>{s.label}</option>
+            <option key={s.value} value={s.value} className="bg-black">
+              {s.label}
+            </option>
           ))}
         </select>
 
-        {/* Results count + reset */}
-        <div className="flex items-center gap-2 ml-auto">
-          <span className="text-xs text-gray-400">{total} campaigns</span>
+        <div className="ml-auto flex items-center gap-2">
+          <span className="text-xs text-white/40">{total} campaigns</span>
           {hasFilters && (
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               onClick={reset}
-              className="text-xs text-gray-400 hover:text-gray-600 underline"
+              className="text-xs text-white/40 underline transition-colors hover:text-white/70"
             >
               Clear filters
             </motion.button>

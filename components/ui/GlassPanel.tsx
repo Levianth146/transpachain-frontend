@@ -20,7 +20,7 @@ export function GlassPanel({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
       whileHover={hover ? { y: -2, transition: { duration: 0.2 } } : undefined}
-      className={`rounded-2xl border border-white/60 dark:border-white/10 bg-white/70 dark:bg-ink-900/60 backdrop-blur-md shadow-lg shadow-emerald-900/5 ${className}`}
+      className={`rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-lg shadow-black/20 ${className}`}
     >
       {children}
     </motion.div>

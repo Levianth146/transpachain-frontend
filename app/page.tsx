@@ -7,10 +7,16 @@ export default function HomePage() {
       <Web3HeroAnimated />
       <section
         id="campaigns"
-        className="relative bg-gradient-to-b from-black via-ink-950 to-ink-950 max-w-6xl mx-auto px-4 py-16"
+        className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
       >
-        <h2 className="text-3xl font-display font-bold mb-2 text-cream-100">Active Campaigns</h2>
-        <p className="text-gray-400 mb-8">Transparent charity powered by Ethereum — donate in ETH or USDC</p>
+        <div className="mb-8 border-t border-gray-800 pt-12">
+          <h2 className="mb-2 text-3xl font-bold tracking-tight text-white">
+            Active Campaigns
+          </h2>
+          <p className="text-white/60">
+            Transparent charity powered by Ethereum — donate in ETH or USDC
+          </p>
+        </div>
         <CampaignList />
       </section>
     </main>

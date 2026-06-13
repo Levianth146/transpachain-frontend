@@ -4,11 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-cream-50 text-ink-900 antialiased;
-  }
-
-  .dark body {
-    @apply bg-ink-950 text-cream-100;
+    @apply bg-black text-white antialiased;
   }
 }
 
