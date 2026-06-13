@@ -23,9 +23,9 @@ export function CampaignStatusTimeline({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="bg-white dark:bg-ink-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5"
+      className="rounded-xl border border-white/10 bg-white/[0.03] p-5"
     >
-      <h3 className="font-semibold mb-4 text-gray-900 dark:text-cream-100">Campaign journey</h3>
+      <h3 className="mb-4 font-semibold text-white">Campaign journey</h3>
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           {status === 0 ? (
@@ -36,33 +36,33 @@ export function CampaignStatusTimeline({
             <XCircle className="text-red-500" size={22} weight="fill" />
           )}
           <div>
-            <p className="text-sm font-medium">
+            <p className="text-sm font-medium text-white">
               {status === 0 && `Active — ${daysLeft}d left`}
               {status === 1 && "Goal reached — completed"}
               {status === 2 && "Failed — donors may refund"}
               {status === 3 && "Cancelled"}
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-white/50">
               Milestones released: {completedMilestones} / {totalMilestones}
             </p>
           </div>
         </div>
-        <ul className="border-l-2 border-emerald-200 pl-4 space-y-3 ml-2">
+        <ul className="ml-2 space-y-3 border-l-2 border-emerald-500/30 pl-4">
           <li className="text-sm">
-            <span className="font-medium">1. Donors contribute</span>
-            <p className="text-xs text-gray-500">Funds enter escrow (minus 1% platform fee).</p>
+            <span className="font-medium text-white">1. Donors contribute</span>
+            <p className="text-xs text-white/50">Funds enter escrow (minus 1% platform fee).</p>
           </li>
           <li className="text-sm">
-            <span className="font-medium">2. Org submits proof</span>
-            <p className="text-xs text-gray-500">Creates a DAO proposal per milestone.</p>
+            <span className="font-medium text-white">2. Org submits proof</span>
+            <p className="text-xs text-white/50">Creates a DAO proposal per milestone.</p>
           </li>
           <li className="text-sm">
-            <span className="font-medium">3. Donors vote (51% quorum)</span>
-            <p className="text-xs text-gray-500">24h timelock after queue, then funds release.</p>
+            <span className="font-medium text-white">3. Donors vote (51% quorum)</span>
+            <p className="text-xs text-white/50">24h timelock after queue, then funds release.</p>
           </li>
           <li className="text-sm">
-            <span className="font-medium">4. Refund path</span>
-            <p className="text-xs text-gray-500">
+            <span className="font-medium text-white">4. Refund path</span>
+            <p className="text-xs text-white/50">
               If failed or past deadline — proportional refund from remaining escrow.
             </p>
           </li>

@@ -34,7 +34,7 @@ export function OrgProfileForm() {
 
   if (!address) {
     return (
-      <p className="text-sm text-gray-500">Connect wallet to register your organization profile.</p>
+      <p className="text-sm text-white/50">Connect wallet to register your organization profile.</p>
     );
   }
 
@@ -62,58 +62,58 @@ export function OrgProfileForm() {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-ink-900 border rounded-xl p-6 space-y-4"
+      className="space-y-4 rounded-xl border border-white/10 bg-white/[0.03] p-6"
     >
       <div className="flex items-center gap-2">
-        <Buildings size={24} className="text-gold-500" weight="duotone" />
-        <h2 className="text-lg font-semibold">Organization profile</h2>
+        <Buildings size={24} className="text-accent-shine" weight="duotone" />
+        <h2 className="text-lg font-semibold text-white">Organization profile</h2>
         {status && (
-          <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 capitalize">
+          <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-xs capitalize text-amber-300">
             {status}
           </span>
         )}
       </div>
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-white/50">
         Off-chain details help verifiers assess legitimacy before granting ORG_ROLE on-chain.
       </p>
       <input
         placeholder="Legal name"
         value={legalName}
         onChange={(e) => setLegalName(e.target.value)}
-        className="w-full border rounded-lg px-3 py-2 text-sm"
+        className="w-full rounded-lg border border-gray-700 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent-shine/50"
       />
       <textarea
         placeholder="Mission & activities"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         rows={3}
-        className="w-full border rounded-lg px-3 py-2 text-sm"
+        className="w-full rounded-lg border border-gray-700 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent-shine/50"
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <input
           placeholder="Website"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
-          className="border rounded-lg px-3 py-2 text-sm"
+          className="rounded-lg border border-gray-700 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent-shine/50"
         />
         <input
           placeholder="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          className="border rounded-lg px-3 py-2 text-sm"
+          className="rounded-lg border border-gray-700 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent-shine/50"
         />
       </div>
       <input
         placeholder="Registration doc IPFS CID (optional)"
         value={registrationDocCID}
         onChange={(e) => setRegistrationDocCID(e.target.value)}
-        className="w-full border rounded-lg px-3 py-2 text-sm font-mono"
+        className="w-full rounded-lg border border-gray-700 bg-white/5 px-3 py-2 text-sm font-mono text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent-shine/50"
       />
       <input
         placeholder="Contact email"
         value={contactEmail}
         onChange={(e) => setContactEmail(e.target.value)}
-        className="w-full border rounded-lg px-3 py-2 text-sm"
+        className="w-full rounded-lg border border-gray-700 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-accent-shine/50"
       />
       <button
         type="button"

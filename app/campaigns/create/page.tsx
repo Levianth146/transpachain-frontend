@@ -72,15 +72,17 @@ export default function CreateCampaignPage() {
   const goalPlaceholder = paymentTokenNum === 1 ? "1000" : "2.0";
 
   if (isSuccess) return (
+    <AnimatedGradientBackground variant="dark" className="min-h-screen">
     <main className="mx-auto max-w-2xl px-4 py-10 text-center">
       <div className="mb-4 text-5xl">🎉</div>
       <h1 className="mb-2 text-2xl font-bold text-white">Campaign Created!</h1>
       <p className="mb-6 text-white/60">Your campaign has been deployed on Sepolia.</p>
-      <button onClick={() => router.push("/")}
+      <button onClick={() => router.push("/campaigns")}
         className="rounded-full bg-emerald-600 px-6 py-2 text-white transition-colors hover:bg-emerald-500">
         View Campaigns
       </button>
     </main>
+    </AnimatedGradientBackground>
   );
 
   if (!isConnected) return (

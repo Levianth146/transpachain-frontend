@@ -302,13 +302,13 @@ export default function AdminPage() {
   const isVerifierWriting = isGrantVerifierPending || isGrantVerifierConfirming || isRevokeVerifierPending || isRevokeVerifierConfirming;
 
   const stats = [
-    { label: "Total Campaigns", value: totalCampaigns?.toString() ?? "—", color: "text-gray-900 dark:text-cream-100" },
+    { label: "Total Campaigns", value: totalCampaigns?.toString() ?? "—", color: "text-white" },
     { label: "Verified Orgs", value: verifiedOrgs.length.toString(), color: "text-emerald-600" },
     { label: "Your Role", value: isAdmin ? "Admin" : "Verifier", color: "text-purple-600" },
   ];
 
   return (
-    <AnimatedGradientBackground className="min-h-screen">
+    <AnimatedGradientBackground variant="dark" className="min-h-screen">
     <main className="max-w-3xl mx-auto px-4 py-10 space-y-6">
 
       <AdminPendingPanel />
@@ -319,8 +319,8 @@ export default function AdminPage() {
             <Shield size={24} className="text-emerald-600" />
           </div>
           <div>
-            <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100">Admin Panel</h1>
-            <p className="text-sm text-gray-500">
+            <h1 className="text-3xl font-bold text-white">Admin Panel</h1>
+            <p className="text-sm text-white/50">
               <span className="font-mono">{address ? truncate(address) : ""}</span>
             </p>
           </div>

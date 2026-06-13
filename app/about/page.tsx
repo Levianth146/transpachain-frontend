@@ -51,10 +51,10 @@ export default function AboutPage() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3 mb-2">
             <Heart size={32} className="text-emerald-500" weight="duotone" />
-            <h1 className="text-4xl font-bold text-white">About TranspaChain</h1>
+            <h1 className="text-4xl font-bold text-white">About OpenHeart</h1>
           </div>
           <p className="text-lg leading-relaxed text-white/70">
-            TranspaChain is a transparent charity platform on Ethereum where every donation is escrowed in ETH or USDC,
+            OpenHeart is a transparent giving platform on Ethereum where every donation is escrowed in ETH or USDC,
             every release is voted on by donors using quadratic weighting, and every transaction is verifiable on-chain.
           </p>
         </motion.div>

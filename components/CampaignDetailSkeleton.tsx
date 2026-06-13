@@ -1,14 +1,18 @@
+import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+
 export function CampaignDetailSkeleton() {
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10 animate-pulse">
-      <div className="w-full h-64 bg-gray-200 dark:bg-zinc-800 rounded-xl mb-6" />
-      <div className="h-8 bg-gray-200 dark:bg-zinc-800 rounded w-2/3 mb-4" />
-      <div className="h-4 bg-gray-100 dark:bg-zinc-700 rounded w-full mb-6" />
-      <div className="h-24 bg-gray-100 dark:bg-zinc-800 rounded-xl mb-6" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="h-48 bg-gray-100 dark:bg-zinc-800 rounded-xl" />
-        <div className="h-48 bg-gray-100 dark:bg-zinc-800 rounded-xl" />
-      </div>
-    </main>
+    <AnimatedGradientBackground variant="dark" className="min-h-screen">
+      <main className="mx-auto max-w-5xl animate-pulse px-4 py-10">
+        <div className="mb-6 h-64 w-full rounded-xl bg-white/10" />
+        <div className="mb-4 h-8 w-2/3 rounded bg-white/10" />
+        <div className="mb-6 h-4 w-full rounded bg-white/5" />
+        <div className="mb-6 h-24 rounded-xl bg-white/5" />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="h-48 rounded-xl bg-white/5" />
+          <div className="h-48 rounded-xl bg-white/5" />
+        </div>
+      </main>
+    </AnimatedGradientBackground>
   );
 }

@@ -96,8 +96,8 @@ export function Web3HeroAnimated() {
         >
           <div className="max-w-md text-left text-sm leading-relaxed text-white/70 sm:text-base">
             <p>
-              Donate into on-chain escrow on Ethereum Sepolia. Milestone proof is verified,
-              donors govern releases through quadratic voting — funds move only when the community approves.
+              OpenHeart is transparent giving on Ethereum Sepolia — donations lock in on-chain escrow,
+              milestone proof is verified, and donors govern releases through quadratic voting.
             </p>
           </div>
 
@@ -136,7 +136,7 @@ export function Web3HeroAnimated() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mb-4 text-[10px] font-medium uppercase tracking-[0.2em] text-white/60 sm:text-xs"
           >
-            Transparent charity on Ethereum Sepolia
+            Open giving. On-chain accountability.
           </motion.p>
 
           <motion.h1
@@ -145,9 +145,9 @@ export function Web3HeroAnimated() {
             transition={{ duration: 0.7, delay: 0.35 }}
             className="text-4xl font-bold uppercase tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
           >
-            <span className="block text-white">Give with</span>
+            <span className="block text-white">Give with an</span>
             <span className="block">
-              <ShinyText>Transparency.</ShinyText>
+              <ShinyText>Open Heart.</ShinyText>
             </span>
           </motion.h1>
 
@@ -158,7 +158,7 @@ export function Web3HeroAnimated() {
             className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:gap-4"
           >
             <Link
-              href="#campaigns"
+              href="/campaigns"
               className="group inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white ring-1 ring-white/20 transition-all hover:bg-white hover:text-black hover:ring-white"
             >
               Browse Campaigns

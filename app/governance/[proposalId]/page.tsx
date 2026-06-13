@@ -101,7 +101,7 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
   return (
     <AnimatedGradientBackground variant="dark" className="min-h-screen">
     <main className="max-w-3xl mx-auto px-4 py-10">
-      <Link href="/governance" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 mb-6">
+      <Link href="/governance" className="mb-6 inline-flex items-center gap-1 text-sm text-white/50 transition-colors hover:text-accent-shine">
         <ArrowLeft size={14} /> Back to governance
       </Link>
 
@@ -110,12 +110,12 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Scales size={28} className="text-gold-500" weight="duotone" />
-              <h1 className="text-3xl font-display text-gray-900 dark:text-cream-100">
+              <h1 className="text-3xl font-bold text-white">
                 Proposal #{resolvedParams.proposalId}
               </h1>
             </div>
-            <p className="text-gray-600 dark:text-gray-300">{campaignTitle}</p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-white/70">{campaignTitle}</p>
+            <p className="mt-1 text-sm text-white/50">
               Milestone {milestoneIndex + 1}
               {proofUrl ? (
                 <> ·{" "}

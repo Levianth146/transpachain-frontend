@@ -12,7 +12,7 @@ export function Logo({ className = "", variant = "default" }: LogoProps) {
     <Link
       href="/"
       className={`group flex select-none items-center gap-2.5 ${className}`}
-      aria-label="TranspaChain home"
+      aria-label="OpenHeart home"
     >
       <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20">
         <img
@@ -27,13 +27,13 @@ export function Logo({ className = "", variant = "default" }: LogoProps) {
         <span className="text-[1.125rem] font-semibold tracking-tight sm:text-[1.25rem]">
           {isLight ? (
             <span className="text-white transition-colors duration-200 group-hover:text-white/90">
-              TranspaChain
+              OpenHeart
             </span>
           ) : (
             <>
-              <span className="text-white transition-colors duration-200">Transpa</span>
+              <span className="text-white transition-colors duration-200">Open</span>
               <span className="bg-gradient-to-r from-accent-shine via-white to-accent-shine bg-clip-text text-transparent">
-                Chain
+                Heart
               </span>
             </>
           )}

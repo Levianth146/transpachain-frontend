@@ -122,10 +122,10 @@ export default function DashboardPage() {
                       <p className="text-sm font-bold text-emerald-400">
                         {Number(formatEther(BigInt(d.amount))).toFixed(3)} ETH
                       </p>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        d.status === "released" ? "bg-blue-100 text-blue-700" :
-                        d.status === "refunded" ? "bg-gray-100 text-gray-600" :
-                        "bg-yellow-100 text-yellow-700"
+                      <span className={`rounded-full px-2 py-0.5 text-xs ${
+                        d.status === "released" ? "bg-blue-500/20 text-blue-300" :
+                        d.status === "refunded" ? "bg-gray-500/20 text-gray-300" :
+                        "bg-yellow-500/20 text-yellow-300"
                       }`}>
                         {d.status}
                       </span>

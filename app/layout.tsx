@@ -9,9 +9,9 @@ import { ConditionalNav } from "@/components/ConditionalNav";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "TranspaChain — Transparent Charity Platform",
+  title: "OpenHeart — Transparent Giving Platform",
   description:
-    "Blockchain-powered charity with milestone-based fund release and DAO governance",
+    "Open-hearted charity on Ethereum — milestone-based escrow, donor governance, and on-chain accountability",
   icons: {
     icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
   },
@@ -25,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ConditionalNav />
           {children}
           <footer className="border-t border-gray-800 bg-black px-6 py-8 text-center text-sm text-white/50">
+            <p className="mb-1 font-medium text-white/70">OpenHeart</p>
             <p className="mb-2">Sepolia testnet demo — not financial advice.</p>
             <Link href="/legal" className="text-accent-shine transition-colors hover:text-white">
               Legal &amp; Disclaimer

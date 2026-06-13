@@ -8,12 +8,22 @@ import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { keccak256, toBytes } from "viem";
 
 const NAV_LINKS = [
-  { href: "/", label: "Campaigns" },
+  { href: "/campaigns", label: "Campaigns" },
   { href: "/campaigns/create", label: "Create" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/governance", label: "Governance" },
   { href: "/about", label: "About" },
 ];
+
+function isNavActive(pathname: string, href: string): boolean {
+  if (href === "/campaigns") {
+    return (
+      pathname === "/campaigns" ||
+      (pathname.startsWith("/campaigns/") && !pathname.startsWith("/campaigns/create"))
+    );
+  }
+  return pathname === href;
+}
 
 const ADMIN_ROLE = keccak256(toBytes("ADMIN_ROLE"));
 const VERIFIER_ROLE = keccak256(toBytes("VERIFIER_ROLE"));
@@ -64,7 +74,7 @@ export function ClientNav() {
     <div className="flex items-center gap-4">
       <nav className="flex items-center gap-1 rounded-full border border-gray-700 px-1.5 py-1">
         {links.map(({ href, label }) => {
-          const active = pathname === href;
+          const active = isNavActive(pathname, href);
           return (
             <Link
               key={href}

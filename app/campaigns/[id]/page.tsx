@@ -23,10 +23,10 @@ import { useSocketEvents } from "@/hooks/useSocket";
 import { CampaignStatus } from "@/types";
 
 const STATUS_BADGE: Record<number, { label: string; color: string }> = {
-  0: { label: "Active",     color: "bg-emerald-100 text-emerald-800" },
-  1: { label: "Completed",  color: "bg-blue-100 text-blue-800"       },
-  2: { label: "Failed",     color: "bg-red-100 text-red-800"         },
-  3: { label: "Cancelled",  color: "bg-gray-100 text-gray-800"       },
+  0: { label: "Active",     color: "bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-500/30" },
+  1: { label: "Completed",  color: "bg-blue-500/20 text-blue-300 ring-1 ring-blue-500/30"       },
+  2: { label: "Failed",     color: "bg-red-500/20 text-red-300 ring-1 ring-red-500/30"         },
+  3: { label: "Cancelled",  color: "bg-gray-500/20 text-gray-300 ring-1 ring-gray-500/30"       },
 };
 
 interface Props { params: Promise<{ id: string }> }
@@ -65,7 +65,11 @@ export default function CampaignDetailPage({ params }: Props) {
   });
 
   if (loading) return <CampaignDetailSkeleton />;
-  if (!campaign || campaign.error)  return <div className="p-8 text-center">Campaign not found</div>;
+  if (!campaign || campaign.error) return (
+    <AnimatedGradientBackground variant="dark" className="min-h-screen">
+      <div className="p-8 text-center text-white/70">Campaign not found</div>
+    </AnimatedGradientBackground>
+  );
 
   const toWei = (v: unknown) => {
     try {

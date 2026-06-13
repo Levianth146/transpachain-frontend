@@ -6,13 +6,23 @@ import { Menu, X } from "lucide-react";
 import { ConnectWallet } from "./ConnectWallet";
 
 const LINKS = [
-  { href: "/", label: "Campaigns" },
+  { href: "/campaigns", label: "Campaigns" },
   { href: "/campaigns/create", label: "Create" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/governance", label: "Governance" },
   { href: "/about", label: "About" },
   { href: "/admin", label: "Admin" },
 ];
+
+function isNavActive(pathname: string, href: string): boolean {
+  if (href === "/campaigns") {
+    return (
+      pathname === "/campaigns" ||
+      (pathname.startsWith("/campaigns/") && !pathname.startsWith("/campaigns/create"))
+    );
+  }
+  return pathname === href;
+}
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -37,7 +47,7 @@ export function MobileNav() {
                 href={href}
                 onClick={() => setOpen(false)}
                 className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                  pathname === href
+                  isNavActive(pathname, href)
                     ? "bg-white/10 text-white"
                     : "text-white/80 hover:bg-white/5 hover:text-white"
                 }`}
