@@ -7,7 +7,7 @@ import { CampaignListSkeleton } from "./CampaignCardSkeleton";
 import { CampaignFilter, FilterState } from "./CampaignFilter";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { motion } from "framer-motion";
-import { PlusCircle } from "@phosphor-icons/react";
+import { ArrowRight } from "@phosphor-icons/react";
 
 export function CampaignList() {
   const [allCampaigns, setAllCampaigns] = useState<any[]>([]);
@@ -63,17 +63,20 @@ export function CampaignList() {
     <div className="text-center py-20 px-4 max-w-md mx-auto">
       <p className="text-5xl mb-4">📋</p>
       <h3 className="mb-2 text-xl font-semibold text-white">No campaigns yet</h3>
-      <p className="mb-6 text-sm leading-relaxed text-white/60">
+      <p className="text-sm leading-relaxed text-white/60">
         Campaigns appear here after a verified organization creates one on-chain via Sepolia.
         Each campaign locks donations in escrow until donors approve milestone releases.
       </p>
-      <Link
-        href="/campaigns/create"
-        className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
-      >
-        <PlusCircle size={18} weight="duotone" />
-        Create a Campaign
-      </Link>
+      <p className="mt-4 text-sm text-white/50">
+        Verified org?{" "}
+        <Link
+          href="/campaigns/create"
+          className="inline-flex items-center gap-1 text-holo-mint transition-colors hover:text-white"
+        >
+          Go to create
+          <ArrowRight size={14} weight="bold" aria-hidden />
+        </Link>
+      </p>
     </div>
   );
 

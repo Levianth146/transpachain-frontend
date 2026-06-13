@@ -1,10 +1,34 @@
 import Link from "next/link";
 import { PageShell } from "@/components/PageShell";
 import { GlassPanel } from "@/components/ui/GlassPanel";
+import { ADDRESSES } from "@/lib/contracts";
+import { USDC_ADDRESS } from "@/lib/erc20";
 
 export const metadata = {
   title: "Legal & Disclaimer — TranspaChain",
 };
+
+const SEPOLIA_ETHERSCAN = "https://sepolia.etherscan.io";
+
+const CONTRACTS = [
+  { name: "CharityCore", address: ADDRESSES.charityCore, role: "Campaign registry, org verification, and lifecycle management" },
+  { name: "DonationVault", address: ADDRESSES.donationVault, role: "ETH/USDC escrow, milestone proofs, and donor refunds" },
+  { name: "GovernanceDAO", address: ADDRESSES.governanceDAO, role: "Quadratic voting, quorum checks, and timelocked fund releases" },
+  { name: "ImpactNFT", address: ADDRESSES.impactNFT, role: "Tiered donor badges (Bronze, Silver, Gold) minted on donation" },
+] as const;
+
+function EtherscanLink({ address, label }: { address: string; label?: string }) {
+  return (
+    <a
+      href={`${SEPOLIA_ETHERSCAN}/address/${address}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-mono text-sm text-holo-mint transition-colors hover:text-white"
+    >
+      {label ?? address}
+    </a>
+  );
+}
 
 export default function LegalPage() {
   return (
@@ -25,7 +49,19 @@ export default function LegalPage() {
           <ul className="list-disc space-y-1 pl-5">
             <li>Do not send mainnet ETH or real assets expecting utility or returns.</li>
             <li>Sepolia tokens have no monetary value.</li>
+            <li>All campaigns, donations, governance votes, and Impact NFTs operate on Sepolia for demonstration purposes.</li>
           </ul>
+        </section>
+
+        <section className="space-y-2">
+          <h2 className="text-xl font-semibold text-white">Platform mechanics</h2>
+          <p>
+            TranspaChain escrowes donations in ETH or USDC via the DonationVault contract. Organizations submit
+            milestone evidence to IPFS; an admin reviews submissions before proposals become visible to donors.
+            Fund releases require quadratic-weighted donor votes (√donation weight), a 51% quorum, and a 24-hour
+            timelock. Failed or cancelled campaigns enable on-chain refund claims. Donors receive Impact NFT tiers
+            (Bronze, Silver, or Gold) as transferable testnet badges.
+          </p>
         </section>
 
         <section className="space-y-2">
@@ -39,9 +75,10 @@ export default function LegalPage() {
         <section className="space-y-2">
           <h2 className="text-xl font-semibold text-white">Impact NFTs</h2>
           <p>
-            Impact NFTs are transferable ERC-721 badges on testnet. They are souvenirs of
-            participation, not securities or guarantees of future value. Any secondary market
-            activity is outside TranspaChain&apos;s control.
+            Impact NFTs are transferable ERC-721 badges on Sepolia testnet. They are souvenirs of
+            participation, not securities or guarantees of future value. Tier assignment (Bronze, Silver, Gold)
+            reflects donation thresholds per campaign and may be upgraded on further contributions. Any secondary
+            market activity is outside TranspaChain&apos;s control.
           </p>
         </section>
 
@@ -54,22 +91,34 @@ export default function LegalPage() {
           </p>
         </section>
 
-        <section className="space-y-2">
-          <h2 className="text-xl font-semibold text-white">Transparency</h2>
+        <section className="space-y-3">
+          <h2 className="text-xl font-semibold text-white">Transparency &amp; contract addresses</h2>
           <p>
-            Verify transactions on{" "}
+            Verify all transactions on{" "}
             <a
-              href="https://sepolia.etherscan.io"
+              href={SEPOLIA_ETHERSCAN}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-holo-mint hover:text-white transition-colors"
+              className="text-holo-mint transition-colors hover:text-white"
             >
               Sepolia Etherscan
             </a>
-            . CharityCore:{" "}
-            <code className="rounded bg-white/10 px-1.5 py-0.5 text-sm text-white/90">
-              0x6fEEF9276B2215F0d41a0c7515Ea6718099552d4
-            </code>
+            . Deployed contract addresses (from environment configuration):
+          </p>
+          <ul className="space-y-3">
+            {CONTRACTS.map((c) => (
+              <li key={c.name} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                <p className="font-semibold text-white">{c.name}</p>
+                <p className="mt-1 text-xs leading-relaxed text-white/60">{c.role}</p>
+                <p className="mt-2">
+                  <EtherscanLink address={c.address} />
+                </p>
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm">
+            USDC (Sepolia test token) used for USDC-denominated campaigns:{" "}
+            <EtherscanLink address={USDC_ADDRESS} label={`${USDC_ADDRESS.slice(0, 10)}…${USDC_ADDRESS.slice(-8)}`} />
           </p>
         </section>
 
