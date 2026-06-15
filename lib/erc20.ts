@@ -24,6 +24,6 @@ export const ERC20_ABI = [
 /** Circle USDC on Ethereum Sepolia */
 export const USDC_ADDRESS =
   (process.env.NEXT_PUBLIC_USDC_ADDRESS ||
-    "0x1c7D4B196CbEBB0b5044c23B72C5E7C6E7e6e7e") as `0x${string}`;
+    "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238") as `0x${string}`;
 
 export const USDC_DECIMALS = 6;
