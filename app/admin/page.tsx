@@ -159,6 +159,7 @@ export default function AdminPage() {
   const [verifierAddr, setVerifierAddr] = useState("");
   const [verifiedOrgs, setVerifiedOrgs] = useState<string[]>([]);
   const [orgsLoading, setOrgsLoading]   = useState(false);
+  const [indexedCampaigns, setIndexedCampaigns] = useState<number | null>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -242,6 +243,13 @@ export default function AdminPage() {
   }, [mounted, isAdmin, isVerifier, fetchVerifiedOrgs]);
 
   useEffect(() => {
+    if (!mounted || (!isAdmin && !isVerifier)) return;
+    api.getStats()
+      .then((s) => setIndexedCampaigns(typeof s.totalCampaigns === "number" ? s.totalCampaigns : null))
+      .catch(() => setIndexedCampaigns(null));
+  }, [mounted, isAdmin, isVerifier]);
+
+  useEffect(() => {
     if (verifySuccess) {
       addToast({ type: "success", title: "Org verified!", message: truncate(orgAddress) });
       refetchOrgStatus();
@@ -302,10 +310,22 @@ export default function AdminPage() {
   const isOrgWriting      = isVerifyPending || isVerifyConfirming || isRevokePending || isRevokeConfirming;
   const isVerifierWriting = isGrantVerifierPending || isGrantVerifierConfirming || isRevokeVerifierPending || isRevokeVerifierConfirming;
 
+  const onChainCampaigns = totalCampaigns != null ? Number(totalCampaigns) : null;
+  const campaignsMismatch =
+    onChainCampaigns != null &&
+    indexedCampaigns != null &&
+    onChainCampaigns !== indexedCampaigns;
+  const campaignStatValue =
+    onChainCampaigns == null
+      ? "—"
+      : campaignsMismatch
+        ? `${onChainCampaigns} on-chain · ${indexedCampaigns} indexed`
+        : String(onChainCampaigns);
+
   const stats = [
-    { label: "Total Campaigns", value: totalCampaigns?.toString() ?? "—", color: "text-white" },
-    { label: "Verified Orgs", value: verifiedOrgs.length.toString(), color: "text-holo-mint" },
-    { label: "Your Role", value: isAdmin ? "Admin" : "Verifier", color: "text-holo-lavender" },
+    { label: "Total Campaigns", value: campaignStatValue, color: campaignsMismatch ? "text-amber-300" : "text-white", warn: campaignsMismatch },
+    { label: "Verified Orgs", value: verifiedOrgs.length.toString(), color: "text-holo-mint", warn: false },
+    { label: "Your Role", value: isAdmin ? "Admin" : "Verifier", color: "text-holo-lavender", warn: false },
   ];
 
   return (
@@ -328,11 +348,17 @@ export default function AdminPage() {
       <AdminPendingPanel />
 
       <div className="grid grid-cols-3 gap-4">
-        {stats.map(({ label, value, color }, i) => (
+        {stats.map(({ label, value, color, warn }, i) => (
           <MotionCard key={label} index={i}>
             <GlassPanel hover={false} holoBorder className={`bg-gradient-to-br ${STAT_GRADIENTS[i]} p-4 text-center`}>
               <p className={`text-2xl font-bold ${color}`}>{value}</p>
-              <p className="mt-0.5 text-xs text-white/50">{label}</p>
+              <p className="mt-0.5 text-xs text-white/50 flex items-center justify-center gap-1">
+                {warn && <AlertCircle size={12} className="text-amber-400 shrink-0" />}
+                {label}
+              </p>
+              {warn && (
+                <p className="mt-1 text-[10px] text-amber-400/90">Indexer behind — restart backend or wait for backfill</p>
+              )}
             </GlassPanel>
           </MotionCard>
         ))}
