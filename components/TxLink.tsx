@@ -14,6 +14,10 @@ export function tokenExplorerUrl(address: string, tokenId: string | number) {
   return `${SEPOLIA_BASE}/nft/${address}/${tokenId}`;
 }
 
+export function nftContractExplorerUrl(address: string) {
+  return `${SEPOLIA_BASE}/token/${address}`;
+}
+
 export function TxLink({
   hash,
   label = "View on SepoliaScan",

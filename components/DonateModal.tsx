@@ -8,7 +8,7 @@ import { ADDRESSES } from "@/lib/contracts";
 import { ERC20_ABI, USDC_ADDRESS, USDC_DECIMALS } from "@/lib/erc20";
 import { HandCoins, Lock, ShieldCheck } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import { TxLink } from "@/components/TxLink";
+import { TxLink, nftContractExplorerUrl } from "@/components/TxLink";
 import { tierFromEthAmount, tierImagePath, tierLabel } from "@/lib/nft";
 import Image from "next/image";
 
@@ -106,7 +106,6 @@ export function DonateModal({
   if (ethSuccess || usdcDonateSuccess) {
     const tier = successTier ?? 0;
     const txHash = ethHash ?? usdcHash;
-    const openseaUrl = `https://testnets.opensea.io/assets/sepolia/${ADDRESSES.impactNFT}`;
     return (
       <div className="glass-card space-y-4 p-5 text-center">
         <Image
@@ -126,12 +125,12 @@ export function DonateModal({
         <div className="flex flex-col gap-2 text-xs">
           <TxLink hash={txHash} label="View transaction" />
           <a
-            href={openseaUrl}
+            href={nftContractExplorerUrl(ADDRESSES.impactNFT)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-holo-lavender hover:underline"
           >
-            View on OpenSea Sepolia
+            View Impact NFT on Etherscan
           </a>
         </div>
       </div>
