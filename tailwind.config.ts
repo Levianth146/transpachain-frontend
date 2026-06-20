@@ -9,9 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          purple: "#6f38da",
+          "purple-deep": "#2d14bc",
+          "purple-light": "#a074ff",
+        },
         accent: {
           shine: "#64CEFB",
-          purple: "#a855f7",
+          purple: "#8c67ff",
+        },
+        surface: {
+          base: "#040506",
+          elevated: "#0a0a0c",
+          card: "#141414",
         },
         holo: {
           mint: "var(--holo-mint)",
@@ -45,6 +55,10 @@ const config: Config = {
           "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,234,212,0.12), transparent)",
         "holo-gradient":
           "linear-gradient(135deg, var(--holo-mint) 0%, var(--holo-lavender) 35%, var(--holo-pink) 65%, var(--holo-silver) 100%)",
+        "premium-gradient":
+          "linear-gradient(135deg, #6f38da 0%, #8c67ff 50%, #a074ff 100%)",
+        "hero-mesh":
+          "radial-gradient(ellipse 100% 80% at 50% -20%, rgba(111,56,218,0.35), transparent 60%)",
         "holo-gradient-subtle":
           "linear-gradient(135deg, rgba(94,234,212,0.15) 0%, rgba(196,181,253,0.12) 50%, rgba(249,168,212,0.1) 100%)",
         "grain":

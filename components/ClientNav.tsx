@@ -72,7 +72,7 @@ export function ClientNav() {
 
   return (
     <div className="flex items-center gap-4">
-      <nav className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1.5 shadow-[inset_0_0_0_1px_rgba(94,234,212,0.08)] backdrop-blur-sm">
+      <nav className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.03] p-1.5 shadow-[inset_0_0_0_1px_rgba(140,103,255,0.1)] backdrop-blur-sm">
         {links.map(({ href, label }) => {
           const active = isNavActive(pathname, href);
           return (

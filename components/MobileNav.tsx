@@ -33,13 +33,13 @@ export function MobileNav() {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="rounded-full border border-gray-700 p-2 text-white/80 transition-colors hover:text-white"
+        className="rounded-full border border-white/15 bg-white/[0.04] p-2 text-white/80 transition-colors hover:border-white/25 hover:text-white"
         aria-label="Menu"
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
       {open && (
-        <div className="absolute left-0 right-0 top-full z-50 border-b border-gray-800 bg-black/95 p-4 shadow-lg backdrop-blur-md">
+        <div className="absolute left-0 right-0 top-full z-50 border-b border-white/10 bg-black/90 p-4 shadow-2xl backdrop-blur-[20px]">
           <div className="mx-auto flex max-w-7xl flex-col gap-1">
             {LINKS.map(({ href, label }) => (
               <Link
@@ -55,7 +55,7 @@ export function MobileNav() {
                 {label}
               </Link>
             ))}
-            <div className="mt-3 border-t border-gray-800 pt-3">
+            <div className="mt-3 border-t border-white/10 pt-3">
               <ConnectWallet />
             </div>
           </div>
