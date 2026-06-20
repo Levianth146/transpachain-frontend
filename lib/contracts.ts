@@ -29,6 +29,7 @@ export const CHARITY_CORE_ABI = [
   { name: "getCharityProgress", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "raised", type: "uint256" }, { name: "goal", type: "uint256" }, { name: "progressBps", type: "uint256" }, { name: "deadline", type: "uint256" }, { name: "isExpired", type: "bool" }, { name: "timeLeft", type: "uint256" }] },
   { name: "cancelCampaign", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
   { name: "finalizeCampaign", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
+  { name: "canFinalize", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "eligible", type: "bool" }, { name: "goalReached", type: "bool" }, { name: "expired", type: "bool" }] },
   { name: "extendDeadline", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }, { name: "newDeadline", type: "uint256" }], outputs: [] },
   { name: "MAX_EXTENSION", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "isOrgVerified", type: "function", stateMutability: "view", inputs: [{ name: "org", type: "address" }], outputs: [{ name: "", type: "bool" }] },

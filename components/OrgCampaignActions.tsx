@@ -5,6 +5,7 @@ import {
   useCancelCampaign,
   useExtendDeadline,
   useFinalizeCampaign,
+  useCanFinalize,
 } from "@/hooks/useCharityCore";
 import { useSubmitMilestoneProof } from "@/hooks/useDonationVault";
 import { addToast } from "@/components/Toast";
@@ -14,6 +15,7 @@ import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { api } from "@/lib/api";
 import { TxLink } from "@/components/TxLink";
 import { FileUploadButton } from "@/components/FileUploadButton";
+import { formatContractError } from "@/lib/formatContractError";
 
 const FE_MAX_EXTENSIONS = 2;
 const SECONDS_PER_DAY = 24 * 3600;
@@ -37,6 +39,9 @@ export function OrgCampaignActions({
   deadline,
   totalMilestones,
   completedMilestones,
+  raisedWei,
+  goalWei,
+  isExpired,
 }: {
   campaignId: bigint;
   orgAddress: string;
@@ -44,6 +49,9 @@ export function OrgCampaignActions({
   deadline: number;
   totalMilestones: number;
   completedMilestones: number;
+  raisedWei?: bigint;
+  goalWei?: bigint;
+  isExpired?: boolean;
 }) {
   const { address } = useAccount();
   const isOrg =
@@ -56,6 +64,21 @@ export function OrgCampaignActions({
   });
   const maxExtensionSec = Number(maxExtensionRaw ?? 30 * SECONDS_PER_DAY);
   const maxExtensionDays = Math.floor(maxExtensionSec / SECONDS_PER_DAY);
+
+  const { data: canFinalizeRaw } = useCanFinalize(campaignId);
+  const canFinalizeTuple = canFinalizeRaw as
+    | readonly [boolean, boolean, boolean]
+    | undefined;
+  const finalizeEligible = canFinalizeTuple?.[0] ?? false;
+  const goalReachedOnChain = canFinalizeTuple?.[1] ?? false;
+  const expiredOnChain = canFinalizeTuple?.[2] ?? isExpired ?? false;
+
+  const goalReached =
+    goalReachedOnChain ||
+    (raisedWei !== undefined &&
+      goalWei !== undefined &&
+      goalWei > 0n &&
+      raisedWei >= goalWei);
 
   const { cancelCampaign, isPending: cancelling } = useCancelCampaign();
   const { extendDeadline, isPending: extending, isSuccess: extended } = useExtendDeadline();
@@ -96,6 +119,14 @@ export function OrgCampaignActions({
 
   const extensionsRemaining = Math.max(0, FE_MAX_EXTENSIONS - extensionsUsed);
   const atExtensionLimit = extensionsUsed >= FE_MAX_EXTENSIONS;
+
+  const finalizeDisabledReason = finalizeEligible
+    ? null
+    : goalReached
+    ? "Waiting for on-chain sync — refresh if goal was just met"
+    : !expiredOnChain
+    ? "Finalize when the funding goal is met or the deadline has passed"
+    : "Campaign cannot be finalized in its current state";
 
   const handleExtend = () => {
     const newDeadline = BigInt(deadline) + BigInt(extendDays * SECONDS_PER_DAY);
@@ -139,6 +170,40 @@ export function OrgCampaignActions({
     }
   };
 
+  const handleFinalize = async () => {
+    try {
+      await finalizeCampaign(campaignId);
+      addToast({
+        type: "info",
+        title: "Finalizing campaign…",
+        message: goalReachedOnChain ? "Goal reached — marking successful" : "Deadline passed — closing campaign",
+      });
+    } catch (e) {
+      addToast({
+        type: "error",
+        title: "Finalize failed",
+        message: formatContractError(e),
+      });
+    }
+  };
+
+  const handleCancel = async () => {
+    try {
+      await cancelCampaign(campaignId);
+      addToast({
+        type: "info",
+        title: "Cancelling campaign…",
+        message: "Donors can claim proportional refunds after cancellation",
+      });
+    } catch (e) {
+      addToast({
+        type: "error",
+        title: "Cancel failed",
+        message: formatContractError(e),
+      });
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -146,6 +211,12 @@ export function OrgCampaignActions({
       className="bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/50 rounded-xl p-5 space-y-4"
     >
       <h3 className="font-semibold text-amber-900 dark:text-amber-200">Organization actions</h3>
+
+      {goalReached && (
+        <p className="text-xs text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg px-3 py-2">
+          Funding goal reached — new donations are blocked. You can finalize now to close fundraising.
+        </p>
+      )}
 
       <div className="space-y-2">
         <label className="text-xs font-medium text-gray-600">Submit milestone proof (IPFS CID)</label>
@@ -196,6 +267,9 @@ export function OrgCampaignActions({
             {proofTxHash && <span className="block mt-1"><TxLink hash={proofTxHash} /></span>}
           </p>
         )}
+        <p className="text-xs text-gray-500">
+          If a vote fails, you can submit additional evidence for the same milestone.
+        </p>
       </div>
 
       <div className="space-y-2 border-t border-amber-200/40 pt-3">
@@ -322,31 +396,45 @@ export function OrgCampaignActions({
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          disabled={finalizing}
-          onClick={() => {
-            finalizeCampaign(campaignId);
-            addToast({ type: "info", title: "Finalizing campaign…" });
-          }}
-          className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm disabled:opacity-50"
-        >
-          <CheckCircle size={16} />
-          Finalize
-        </button>
-        <button
-          type="button"
-          disabled={cancelling}
-          onClick={() => {
-            cancelCampaign(campaignId);
-            addToast({ type: "info", title: "Cancelling campaign…", message: "Only if zero donors" });
-          }}
-          className="flex items-center gap-1 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm disabled:opacity-50"
-        >
-          <XCircle size={16} />
-          Cancel
-        </button>
+      <div className="flex flex-wrap gap-2 items-start">
+        <div className="space-y-1">
+          <button
+            type="button"
+            disabled={finalizing || !finalizeEligible}
+            title={finalizeDisabledReason ?? undefined}
+            onClick={handleFinalize}
+            className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <CheckCircle size={16} />
+            Finalize
+          </button>
+          {!finalizeEligible && finalizeDisabledReason && (
+            <p className="text-xs text-amber-800 dark:text-amber-300 max-w-xs">{finalizeDisabledReason}</p>
+          )}
+          {finalizeEligible && (
+            <p className="text-xs text-gray-500 max-w-xs">
+              {goalReachedOnChain
+                ? "Goal met — finalize to stop fundraising and proceed with milestones."
+                : expiredOnChain
+                ? "Deadline passed — finalize as failed or cancel to refund donors."
+                : "Ready to finalize."}
+            </p>
+          )}
+        </div>
+        <div className="space-y-1">
+          <button
+            type="button"
+            disabled={cancelling}
+            onClick={handleCancel}
+            className="flex items-center gap-1 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg text-sm disabled:opacity-50"
+          >
+            <XCircle size={16} />
+            Cancel &amp; refund
+          </button>
+          <p className="text-xs text-gray-500 max-w-xs">
+            Cancel anytime — donors claim proportional refunds from escrow.
+          </p>
+        </div>
       </div>
     </motion.div>
   );

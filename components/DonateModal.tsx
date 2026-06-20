@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther, parseUnits } from "viem";
 import { useDonate, useDonateUSDC } from "@/hooks/useDonationVault";
+import { useCharityProgress } from "@/hooks/useCharityCore";
 import { addToast } from "@/components/Toast";
 import { ADDRESSES } from "@/lib/contracts";
 import { ERC20_ABI, USDC_ADDRESS, USDC_DECIMALS } from "@/lib/erc20";
@@ -45,6 +46,13 @@ export function DonateModal({
   const { isSuccess: approveSuccess } = useWaitForTransactionReceipt({ hash: approveHash });
 
   const parsedAmount = isUSDC ? parseUnits(amount || "0", USDC_DECIMALS) : parseEther(amount || "0");
+
+  const { data: progressRaw } = useCharityProgress(campaignId);
+  const progress = progressRaw as readonly [bigint, bigint, bigint, bigint, boolean, bigint] | undefined;
+  const goalReached =
+    progress !== undefined &&
+    progress[1] > 0n &&
+    progress[0] >= progress[1];
 
   const { data: allowance, refetch: refetchAllowance } = useReadContract({
     address: USDC_ADDRESS,
@@ -157,6 +165,11 @@ export function DonateModal({
         </span>
       </div>
 
+      {goalReached && (
+        <p className="text-xs text-amber-300/90 mb-2 rounded-lg bg-amber-500/10 px-2 py-1.5">
+          Funding goal reached — donations are closed until the org finalizes.
+        </p>
+      )}
       <p className="text-xs text-white/50 mb-2">
         Token: {isUSDC ? "USDC (Sepolia)" : "ETH"} · 1% platform fee · Net amount enters escrow.
       </p>
@@ -181,7 +194,7 @@ export function DonateModal({
         )}
         <button
           onClick={handleDonate}
-          disabled={!isConnected || busy || (isUSDC && needsApprove)}
+          disabled={!isConnected || busy || (isUSDC && needsApprove) || goalReached}
           className="w-full py-2 bg-holo-mint/90 text-ink-950 rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-holo-mint"
         >
           {busy ? "Confirm in wallet..." : isUSDC && needsApprove ? "2. Donate (after approve)" : "Donate"}

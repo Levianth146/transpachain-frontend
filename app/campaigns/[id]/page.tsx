@@ -193,6 +193,9 @@ export default function CampaignDetailPage({ params }: Props) {
             deadline={Number(campaign.deadline) || 0}
             totalMilestones={totalMilestones}
             completedMilestones={completedMilestones}
+            raisedWei={onChainRaisedWei}
+            goalWei={onChainGoalWei}
+            isExpired={prog?.[4]}
           />
         </div>
         <div className="space-y-4">

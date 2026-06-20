@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import { parseEther } from "viem";
 import { parseCampaignGoalAmount } from "@/lib/format";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
-import { gasWithBuffer } from "@/lib/contractWrite";
+import { gasWithBuffer, simulateContractWrite } from "@/lib/contractWrite";
 
 // ─── Read hooks ────────────────────────────────────────────────
 // UI data architecture: metadata from Mongo/API; amounts from getCharityProgress on-chain.
@@ -85,7 +85,15 @@ export function useCampaignProgressBatch(campaignIds: number[]) {
   });
 }
 
-// ─── Write hooks ───────────────────────────────────────────────
+export function useCanFinalize(campaignId: bigint) {
+  return useReadContract({
+    address: ADDRESSES.charityCore,
+    abi: CHARITY_CORE_ABI,
+    functionName: "canFinalize",
+    args: [campaignId],
+    query: { enabled: campaignId > 0n },
+  });
+}
 
 export function useCreateCampaign() {
   const { address } = useAccount();
@@ -142,24 +150,20 @@ export function useCancelCampaign() {
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
 
   const cancelCampaign = async (campaignId: bigint) => {
-    const gas = await gasWithBuffer(
-      publicClient,
-      {
-        address: ADDRESSES.charityCore,
-        abi: CHARITY_CORE_ABI,
-        functionName: "cancelCampaign",
-        args: [campaignId],
-        account: address,
-      },
-      250000n
-    );
-    writeContract({
-      address:      ADDRESSES.charityCore,
-      abi:          CHARITY_CORE_ABI,
-      functionName: "cancelCampaign",
-      args:         [campaignId],
-      gas,
-    });
+    const params = {
+      address: ADDRESSES.charityCore,
+      abi: CHARITY_CORE_ABI,
+      functionName: "cancelCampaign" as const,
+      args: [campaignId] as const,
+      account: address,
+    };
+    try {
+      await simulateContractWrite(publicClient, params);
+    } catch (e) {
+      throw e;
+    }
+    const gas = await gasWithBuffer(publicClient, params, 350000n);
+    writeContract({ ...params, gas });
   };
 
   return { cancelCampaign, hash, isPending, isSuccess, error };
@@ -172,24 +176,16 @@ export function useFinalizeCampaign() {
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
 
   const finalizeCampaign = async (campaignId: bigint) => {
-    const gas = await gasWithBuffer(
-      publicClient,
-      {
-        address: ADDRESSES.charityCore,
-        abi: CHARITY_CORE_ABI,
-        functionName: "finalizeCampaign",
-        args: [campaignId],
-        account: address,
-      },
-      300000n
-    );
-    writeContract({
-      address:      ADDRESSES.charityCore,
-      abi:          CHARITY_CORE_ABI,
-      functionName: "finalizeCampaign",
-      args:         [campaignId],
-      gas,
-    });
+    const params = {
+      address: ADDRESSES.charityCore,
+      abi: CHARITY_CORE_ABI,
+      functionName: "finalizeCampaign" as const,
+      args: [campaignId] as const,
+      account: address,
+    };
+    await simulateContractWrite(publicClient, params);
+    const gas = await gasWithBuffer(publicClient, params, 300000n);
+    writeContract({ ...params, gas });
   };
 
   return { finalizeCampaign, hash, isPending, isSuccess, error };
