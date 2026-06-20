@@ -9,9 +9,11 @@ import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { ProposalListItem } from "@/components/ProposalListItem";
 import { ConnectWallet } from "@/components/ConnectWallet";
 import { useAccount } from "wagmi";
+import { useOnChainPlatformStats } from "@/hooks/useOnChainPlatformStats";
 
 export default function GovernanceHubPage() {
   const { isConnected } = useAccount();
+  const onChain = useOnChainPlatformStats();
   const [proposals, setProposals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,6 +23,11 @@ export default function GovernanceHubPage() {
       setLoading(false);
     });
   }, []);
+
+  const totalCampaigns =
+    onChain.ready && onChain.totalCampaigns != null ? onChain.totalCampaigns : null;
+  const visibleProposals =
+    totalCampaigns === 0 ? [] : proposals;
 
   return (
     <PageShell
@@ -53,11 +60,11 @@ export default function GovernanceHubPage() {
 
       {loading ? (
         <p className="text-white/50">Loading proposals…</p>
-      ) : proposals.length === 0 ? (
+      ) : visibleProposals.length === 0 ? (
         <p className="text-white/60">No proposals indexed yet. Submit a milestone proof on an active campaign.</p>
       ) : (
         <ul className="space-y-4">
-          {proposals.map((p, i) => (
+          {visibleProposals.map((p, i) => (
             <ProposalListItem key={p.proposalId} proposal={p} index={i} />
           ))}
         </ul>
