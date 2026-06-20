@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   formatCampaignAmount,
   formatCampaignAmountLabel,
+  getCampaignFractionDigits,
   getPaymentTokenLabel,
 } from "@/lib/format";
 import { api } from "@/lib/api";
@@ -88,7 +89,7 @@ export default function CampaignDetailPage({ params }: Props) {
   );
 
   const tokenLabel = getPaymentTokenLabel(paymentToken);
-  const fractionDigits = paymentToken === 1 ? 2 : 4;
+  const fractionDigits = getCampaignFractionDigits(paymentToken);
 
   const toWei = (v: unknown) => {
     try {

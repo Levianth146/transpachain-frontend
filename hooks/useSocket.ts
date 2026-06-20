@@ -26,6 +26,7 @@ type SocketHandlers = Partial<{
   proposalDefeated: (data: { proposalId?: number }) => void;
   proposalQueued: (data: { proposalId?: number }) => void;
   campaignFinalized: (data: { campaignId?: number }) => void;
+  orgVerified: (data: { org?: string; verified?: boolean }) => void;
 }>;
 
 export function useSocketEvents(handlers: SocketHandlers) {
@@ -43,6 +44,7 @@ export function useSocketEvents(handlers: SocketHandlers) {
       ["proposalDefeated", "proposalDefeated"],
       ["proposalQueued", "proposalQueued"],
       ["campaignFinalized", "campaignFinalized"],
+      ["orgVerified", "orgVerified"],
     ];
 
     for (const [key, event] of pairs) {

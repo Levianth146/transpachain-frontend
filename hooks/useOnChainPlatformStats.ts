@@ -1,18 +1,27 @@
 "use client";
 
 import { useMemo } from "react";
-import { useCampaignProgressBatch, useTotalCampaigns } from "@/hooks/useCharityCore";
+import {
+  useCampaignPaymentTokens,
+  useCampaignProgressBatch,
+  useTotalCampaigns,
+} from "@/hooks/useCharityCore";
 
-type CampaignLike = {
-  campaignId: number;
-  paymentToken?: number;
-};
-
-/** Aggregate on-chain raised totals and campaign count for hero stats. */
-export function useOnChainPlatformStats(campaigns: CampaignLike[]) {
-  const ids = campaigns.map((c) => c.campaignId);
-  const { data: progressResults, isSuccess: progressReady } = useCampaignProgressBatch(ids);
+/**
+ * Aggregate on-chain raised totals across ALL campaigns (ids 1..totalCampaigns).
+ * Amounts always from getCharityProgress; paymentToken from getCampaign for ETH/USDC split.
+ */
+export function useOnChainPlatformStats() {
   const { data: totalOnChain, isSuccess: totalReady } = useTotalCampaigns();
+  const total = totalOnChain !== undefined ? Number(totalOnChain) : 0;
+
+  const ids = useMemo(
+    () => (total > 0 ? Array.from({ length: total }, (_, i) => i + 1) : []),
+    [total]
+  );
+
+  const { data: progressResults, isSuccess: progressReady } = useCampaignProgressBatch(ids);
+  const { data: campaignResults, isSuccess: tokensReady } = useCampaignPaymentTokens(ids);
 
   return useMemo(() => {
     let totalEth = 0n;
@@ -25,18 +34,26 @@ export function useOnChainPlatformStats(campaigns: CampaignLike[]) {
         const raised = result.result[0] as bigint;
         const campaignId = ids[index];
         raisedById.set(campaignId, raised);
-        const paymentToken = campaigns[index]?.paymentToken ?? 0;
+
+        let paymentToken = 0;
+        const campResult = campaignResults?.[index];
+        if (campResult?.status === "success" && campResult.result) {
+          paymentToken = Number((campResult.result as { paymentToken?: number }).paymentToken ?? 0);
+        }
+
         if (paymentToken === 1) totalUsdc += raised;
         else totalEth += raised;
       });
     }
 
+    const ready = totalReady && (total === 0 || (progressReady && tokensReady));
+
     return {
-      ready: progressReady && totalReady,
+      ready,
       totalCampaigns: totalOnChain !== undefined ? Number(totalOnChain) : null,
       totalEthWei: totalEth,
       totalUsdcWei: totalUsdc,
       raisedById,
     };
-  }, [campaigns, ids, progressReady, progressResults, totalOnChain, totalReady]);
+  }, [campaignResults, ids, progressReady, progressResults, tokensReady, total, totalOnChain, totalReady]);
 }

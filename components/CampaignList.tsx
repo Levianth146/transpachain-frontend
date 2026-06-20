@@ -10,6 +10,32 @@ import { useCampaignProgressBatch } from "@/hooks/useCharityCore";
 import { motion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 
+/** Metadata from API; raised amounts from on-chain batch reads (see CampaignCard). */
+function dedupeByCampaignId<T extends { campaignId: number }>(rows: T[]): T[] {
+  const seen = new Set<number>();
+  return rows.filter((row) => {
+    const id = Number(row.campaignId);
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+}
+
+async function fetchAllCampaigns() {
+  let page = 1;
+  let pages = 1;
+  const all: Awaited<ReturnType<typeof api.getCampaigns>>["campaigns"] = [];
+
+  while (page <= pages) {
+    const data = await api.getCampaigns(page, 100);
+    all.push(...(data.campaigns ?? []));
+    pages = data.pages ?? 1;
+    page += 1;
+  }
+
+  return dedupeByCampaignId(all);
+}
+
 export function CampaignList() {
   const [allCampaigns, setAllCampaigns] = useState<any[]>([]);
   const [filtered, setFiltered]         = useState<any[]>([]);
@@ -17,12 +43,13 @@ export function CampaignList() {
   const [mounted, setMounted]     = useState(false);
 
   const load = () => {
-    api.getCampaigns(1, 50).then((data) => {
-      const campaigns = data.campaigns ?? [];
-      setAllCampaigns(campaigns);
-      setFiltered(campaigns);
-      setLoading(false);
-    });
+    fetchAllCampaigns()
+      .then((campaigns) => {
+        setAllCampaigns(campaigns);
+        setFiltered(campaigns);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -68,7 +95,7 @@ export function CampaignList() {
       result = result.filter(c => c.status === Number(filters.status));
     }
 
-    setFiltered(result);
+    setFiltered(dedupeByCampaignId(result));
   };
 
   if (!mounted) return null;
@@ -78,7 +105,7 @@ export function CampaignList() {
   if (allCampaigns.length === 0) return (
     <div className="text-center py-20 px-4 max-w-md mx-auto">
       <p className="text-5xl mb-4">📋</p>
-      <h3 className="mb-2 text-xl font-semibold text-white">No campaigns yet</h3>
+      <h3 className="mb-2 text-xl font-display font-semibold text-white">No campaigns yet</h3>
       <p className="text-sm leading-relaxed text-white/60">
         Campaigns appear here after a verified organization creates one on-chain via Sepolia.
         Each campaign locks donations in escrow until donors approve milestone releases.

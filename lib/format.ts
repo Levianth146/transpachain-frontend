@@ -1,5 +1,10 @@
 import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
 
+/** Decimals for display — use everywhere list + detail show raised/goal */
+export function getCampaignFractionDigits(paymentToken: number): number {
+  return paymentToken === 1 ? 2 : 4;
+}
+
 /** Decimals for campaign payment token (0 = ETH, 1 = USDC) */
 export function getPaymentTokenDecimals(paymentToken: number): 6 | 18 {
   return paymentToken === 1 ? 6 : 18;
@@ -27,7 +32,7 @@ export function formatCampaignAmountLabel(
   fractionDigits?: number
 ): string {
   const label = getPaymentTokenLabel(paymentToken);
-  const digits = fractionDigits ?? (paymentToken === 1 ? 2 : 4);
+  const digits = fractionDigits ?? getCampaignFractionDigits(paymentToken);
   const num = Number(formatCampaignAmount(amount, paymentToken));
   if (!Number.isFinite(num)) return `0 ${label}`;
   return `${num.toFixed(digits)} ${label}`;

@@ -18,6 +18,7 @@ import { addToast } from "@/components/Toast";
 import { AdminOrgProfiles } from "@/components/AdminOrgProfiles";
 import { AdminPendingPanel } from "@/components/AdminPendingPanel";
 import { api } from "@/lib/api";
+import { useSocketEvents } from "@/hooks/useSocket";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageShell } from "@/components/PageShell";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
@@ -67,28 +68,28 @@ function OrgRow({
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center justify-between py-3 px-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 hover:bg-emerald-50/80 transition-colors group"
+      className="flex items-center justify-between py-3 px-4 rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:border-holo-mint/30 transition-colors group"
     >
       <div className="flex items-center gap-3 min-w-0">
-        <BadgeCheck size={16} className="text-emerald-500 shrink-0" />
+        <BadgeCheck size={16} className="text-holo-mint shrink-0" />
         <div className="min-w-0">
-          <p className="font-mono text-sm text-gray-800 dark:text-gray-200 truncate">{address}</p>
-          <p className="text-xs text-gray-400 mt-0.5">{campaignCount} campaign{campaignCount !== 1 ? "s" : ""}</p>
+          <p className="font-mono text-sm text-white/90 truncate">{address}</p>
+          <p className="text-xs text-white/50 mt-0.5">{campaignCount} campaign{campaignCount !== 1 ? "s" : ""}</p>
         </div>
       </div>
       <div className="flex items-center gap-2 shrink-0 ml-3">
         <button
           onClick={() => copy(address)}
-          className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-md hover:bg-emerald-100 text-gray-400"
+          className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-md hover:bg-white/10 text-white/50"
           title="Copy address"
         >
-          {copied ? <CheckCircle size={13} className="text-emerald-500" /> : <Copy size={13} />}
+          {copied ? <CheckCircle size={13} className="text-holo-mint" /> : <Copy size={13} />}
         </button>
         <button
           onClick={() => onRevoke(address)}
           disabled={isRevoking}
-          className="text-xs px-2.5 py-1 rounded-md bg-red-50 text-red-600 border border-red-100
-                     hover:bg-red-100 disabled:opacity-40 transition-colors font-medium"
+          className="text-xs px-2.5 py-1 rounded-md bg-red-500/15 text-red-300 border border-red-500/30
+                     hover:bg-red-500/25 disabled:opacity-40 transition-colors font-medium"
         >
           Revoke
         </button>
@@ -160,6 +161,7 @@ export default function AdminPage() {
   const [verifiedOrgs, setVerifiedOrgs] = useState<string[]>([]);
   const [orgsLoading, setOrgsLoading]   = useState(false);
   const [indexedCampaigns, setIndexedCampaigns] = useState<number | null>(null);
+  const [lastRevokedAddress, setLastRevokedAddress] = useState<string | null>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -242,6 +244,10 @@ export default function AdminPage() {
     if (mounted && (isAdmin || isVerifier)) fetchVerifiedOrgs();
   }, [mounted, isAdmin, isVerifier, fetchVerifiedOrgs]);
 
+  useSocketEvents({
+    orgVerified: () => fetchVerifiedOrgs(),
+  });
+
   useEffect(() => {
     if (!mounted || (!isAdmin && !isVerifier)) return;
     api.getStats()
@@ -259,11 +265,15 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (revokeSuccess) {
-      addToast({ type: "info", title: "Org revoked", message: truncate(orgAddress) });
+      addToast({
+        type: "info",
+        title: "Org revoked",
+        message: truncate(lastRevokedAddress ?? orgAddress),
+      });
       refetchOrgStatus();
-      setTimeout(fetchVerifiedOrgs, 3000);
+      setTimeout(fetchVerifiedOrgs, 1500);
     }
-  }, [revokeSuccess]);
+  }, [revokeSuccess, lastRevokedAddress, orgAddress, fetchVerifiedOrgs, refetchOrgStatus]);
 
   useEffect(() => {
     if (grantVerifierSuccess) {
@@ -280,6 +290,7 @@ export default function AdminPage() {
   }, [revokeVerifierSuccess]);
 
   const handleQuickRevoke = (addr: string) => {
+    setLastRevokedAddress(addr);
     writeRevoke({
       address:      ADDRESSES.charityCore,
       abi:          CHARITY_CORE_ABI,
@@ -366,25 +377,27 @@ export default function AdminPage() {
       </div>
 
       <Section icon={UserCheck} title="Verifier workflow — verify organization" delay={0.1}>
-        <ol className="text-xs text-gray-500 dark:text-gray-400 mb-4 space-y-1 list-decimal list-inside">
+        <ol className="text-xs text-white/50 mb-4 space-y-1 list-decimal list-inside">
           <li>Review off-chain application below</li>
           <li>Paste org wallet address and check verification status</li>
           <li>Click Verify Org to grant ORG_ROLE on-chain</li>
         </ol>
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Organization wallet address</label>
+            <label className="block text-sm font-medium text-white/80 mb-1">Organization wallet address</label>
             <input
               type="text"
               value={orgAddress}
               onChange={e => setOrgAddress(e.target.value)}
               placeholder="0x..."
-              className="w-full border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-ink-900 dark:border-zinc-700"
+              className="input-glass font-mono"
             />
           </div>
           {orgAddress.length === 42 && (
-            <div className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg ${
-              isOrgVerified ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-gray-50 text-gray-600 border border-gray-100"
+            <div className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg border ${
+              isOrgVerified
+                ? "bg-holo-mint/10 text-holo-mint border-holo-mint/30"
+                : "bg-white/[0.03] text-white/60 border-white/10"
             }`}>
               {isOrgVerified ? <><UserCheck size={14} /> Verified organization</> : <><UserX size={14} /> Not verified</>}
             </div>
@@ -393,13 +406,16 @@ export default function AdminPage() {
             <button
               onClick={() => writeVerify({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "verifyOrg", args: [orgAddress as `0x${string}`], gas: 200000n })}
               disabled={!orgAddress || isOrgWriting || Boolean(isOrgVerified)}
-              className="flex-1 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-emerald-700 flex items-center justify-center gap-1.5 transition-colors"
+              className="flex-1 py-2 bg-holo-gradient text-black rounded-lg text-sm font-semibold disabled:opacity-50 hover:opacity-90 flex items-center justify-center gap-1.5 transition-opacity"
             >
               <UserCheck size={14} />
               {isVerifyPending || isVerifyConfirming ? "Verifying…" : "Verify org"}
             </button>
             <button
-              onClick={() => writeRevoke({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "revokeOrg", args: [orgAddress as `0x${string}`], gas: 200000n })}
+              onClick={() => {
+                setLastRevokedAddress(orgAddress);
+                writeRevoke({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "revokeOrg", args: [orgAddress as `0x${string}`], gas: 200000n });
+              }}
               disabled={!orgAddress || isOrgWriting || !isOrgVerified}
               className="flex-1 py-2 bg-red-500 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-red-600 flex items-center justify-center gap-1.5 transition-colors"
             >
@@ -439,7 +455,7 @@ export default function AdminPage() {
             <button
               type="button"
               onClick={fetchVerifiedOrgs}
-              className="w-full mt-2 py-2 text-xs text-gray-400 hover:text-gray-600 flex items-center justify-center gap-1.5 hover:bg-white/30 rounded-lg transition-colors"
+              className="w-full mt-2 py-2 text-xs text-white/50 hover:text-holo-mint flex items-center justify-center gap-1.5 hover:bg-white/[0.04] rounded-lg transition-colors"
             >
               <RefreshCw size={12} /> Refresh list
             </button>

@@ -6,6 +6,7 @@ import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import type { Campaign } from "@/types";
 
 // ─── Read hooks ────────────────────────────────────────────────
+// UI data architecture: metadata from Mongo/API; amounts from getCharityProgress on-chain.
 
 export function useCampaign(campaignId: bigint) {
   return useReadContract({
@@ -50,6 +51,21 @@ export function useCharityProgress(campaignId: bigint) {
     abi:          CHARITY_CORE_ABI,
     functionName: "getCharityProgress",
     args:         [campaignId],
+  });
+}
+
+/** Batch-read paymentToken from getCampaign for platform stats aggregation. */
+export function useCampaignPaymentTokens(campaignIds: number[]) {
+  const contracts = campaignIds.map((id) => ({
+    address: ADDRESSES.charityCore,
+    abi: CHARITY_CORE_ABI,
+    functionName: "getCampaign" as const,
+    args: [BigInt(id)] as const,
+  }));
+
+  return useReadContracts({
+    contracts,
+    query: { enabled: campaignIds.length > 0 },
   });
 }
 
