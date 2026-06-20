@@ -13,6 +13,7 @@ import { CalendarPlus, XCircle, CheckCircle, FileArrowUp, Warning } from "@phosp
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { api } from "@/lib/api";
 import { TxLink } from "@/components/TxLink";
+import { FileUploadButton } from "@/components/FileUploadButton";
 
 const FE_MAX_EXTENSIONS = 2;
 const SECONDS_PER_DAY = 24 * 3600;
@@ -67,6 +68,8 @@ export function OrgCampaignActions({
   } = useSubmitMilestoneProof();
 
   const [proofCID, setProofCID] = useState("");
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [proofUploading, setProofUploading] = useState(false);
   const [evidenceTitle, setEvidenceTitle] = useState("");
   const [evidenceDesc, setEvidenceDesc] = useState("");
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
@@ -118,6 +121,24 @@ export function OrgCampaignActions({
 
   const deadlineDate = new Date(deadline * 1000).toLocaleDateString();
 
+  const handleProofFileChange = async (file: File | null) => {
+    setProofFile(file);
+    if (!file) return;
+    setProofUploading(true);
+    try {
+      const up = await api.uploadFile(file);
+      const cid = up.cid ?? up.IpfsHash ?? "";
+      if (!cid) throw new Error("No CID returned");
+      setProofCID(cid);
+      addToast({ type: "success", title: "Image uploaded", message: `CID: ${cid.slice(0, 12)}…` });
+    } catch {
+      setProofFile(null);
+      addToast({ type: "error", title: "Upload failed", message: "Could not upload to IPFS — paste CID manually" });
+    } finally {
+      setProofUploading(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -141,15 +162,24 @@ export function OrgCampaignActions({
               </option>
             ))}
           </select>
+        </div>
+        <FileUploadButton
+          file={proofFile}
+          onFileChange={handleProofFileChange}
+          uploading={proofUploading}
+          disabled={submitting}
+          buttonLabel="Upload proof image"
+        />
+        <div className="flex gap-2 flex-wrap">
           <input
             value={proofCID}
             onChange={(e) => setProofCID(e.target.value)}
-            placeholder="Qm..."
-            className="flex-1 min-w-[120px] border rounded-lg px-3 py-1.5 text-sm"
+            placeholder="Qm... (auto-filled after upload, or paste CID)"
+            className="flex-1 min-w-[120px] border rounded-lg px-3 py-1.5 text-sm font-mono"
           />
           <button
             type="button"
-            disabled={submitting || !proofCID.trim()}
+            disabled={submitting || proofUploading || !proofCID.trim()}
             onClick={() => {
               submitMilestoneProof(campaignId, milestoneIdx, proofCID.trim());
               addToast({ type: "info", title: "Submitting milestone proof…" });
@@ -182,7 +212,11 @@ export function OrgCampaignActions({
           placeholder="Detailed description"
           className="w-full border rounded-lg px-3 py-1.5 text-sm min-h-[60px]"
         />
-        <input type="file" accept="image/*" onChange={(e) => setEvidenceFile(e.target.files?.[0] ?? null)} className="text-xs" />
+        <FileUploadButton
+          file={evidenceFile}
+          onFileChange={setEvidenceFile}
+          disabled={evidenceSubmitting}
+        />
         <button
           type="button"
           disabled={evidenceSubmitting || !evidenceTitle.trim()}
