@@ -86,6 +86,7 @@ export function DonateModal({
       abi: ERC20_ABI,
       functionName: "approve",
       args: [ADDRESSES.donationVault, parsedAmount],
+      gas: 100000n,
     });
   };
 
@@ -120,24 +121,24 @@ export function DonateModal({
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white/90 dark:bg-zinc-900/90 border border-gold-200/30 rounded-xl p-5 shadow-sm"
+      className="rounded-xl border border-holo-mint/20 bg-gradient-to-br from-ink-900/90 to-ink-950/90 p-5 backdrop-blur-sm"
     >
-      <h3 className="font-semibold mb-3 flex items-center gap-2 text-ink-900 dark:text-cream-100">
-        <HandCoins size={20} weight="duotone" className="text-emerald-600" />
+      <h3 className="font-semibold mb-3 flex items-center gap-2 text-white">
+        <HandCoins size={20} weight="duotone" className="text-holo-mint" />
         Make a Donation
       </h3>
 
       <div className="flex flex-wrap gap-2 mb-3">
-        <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200/50">
+        <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-holo-mint/10 text-holo-mint border border-holo-mint/30">
           <Lock size={10} weight="duotone" /> Escrowed on-chain
         </span>
-        <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border border-purple-200/50">
+        <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-holo-lavender/10 text-holo-lavender border border-holo-lavender/30">
           <ShieldCheck size={10} weight="duotone" /> DAO-governed release
         </span>
       </div>
 
-      <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-        Token: {isUSDC ? "USDC (Sepolia)" : "ETH"} · Unlike traditional charity, your funds stay in the vault until milestones pass a donor vote.
+      <p className="text-xs text-white/50 mb-2">
+        Token: {isUSDC ? "USDC (Sepolia)" : "ETH"} · 1% platform fee · Net amount enters escrow.
       </p>
       <div className="flex flex-col gap-2">
         <input
@@ -145,7 +146,7 @@ export function DonateModal({
           placeholder={isUSDC ? "Amount in USDC" : "Amount in ETH"}
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="w-full border border-gray-200 dark:border-zinc-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-zinc-800"
+          className="w-full border border-white/10 rounded-lg px-3 py-2 text-sm bg-black/40 text-white placeholder:text-white/30"
           min="0"
           step={isUSDC ? "1" : "0.001"}
         />
@@ -153,7 +154,7 @@ export function DonateModal({
           <button
             onClick={handleApprove}
             disabled={!isConnected || busy}
-            className="w-full py-2 bg-gold-500 text-ink-950 rounded-lg text-sm font-medium disabled:opacity-50"
+            className="w-full py-2 bg-holo-gradient text-ink-950 rounded-lg text-sm font-medium disabled:opacity-50"
           >
             {approvePending ? "Approving..." : "1. Approve USDC"}
           </button>
@@ -161,14 +162,14 @@ export function DonateModal({
         <button
           onClick={handleDonate}
           disabled={!isConnected || busy || (isUSDC && needsApprove)}
-          className="w-full py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-emerald-700"
+          className="w-full py-2 bg-holo-mint/90 text-ink-950 rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-holo-mint"
         >
           {busy ? "Confirm in wallet..." : isUSDC && needsApprove ? "2. Donate (after approve)" : "Donate"}
         </button>
       </div>
-      {!isConnected && <p className="text-xs text-amber-600 mt-2">Connect wallet to donate</p>}
+      {!isConnected && <p className="text-xs text-amber-400 mt-2">Connect wallet to donate</p>}
       {(ethError || usdcDonateError) && (
-        <p className="text-xs text-red-500 mt-2">{(ethError || usdcDonateError)?.message}</p>
+        <p className="text-xs text-red-400 mt-2">{(ethError || usdcDonateError)?.message}</p>
       )}
     </motion.div>
   );

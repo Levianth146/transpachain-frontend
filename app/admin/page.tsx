@@ -285,6 +285,7 @@ export default function AdminPage() {
       abi:          CHARITY_CORE_ABI,
       functionName: "revokeOrg",
       args:         [addr as `0x${string}`],
+      gas:          200000n,
     });
   };
 
@@ -390,7 +391,7 @@ export default function AdminPage() {
           )}
           <div className="flex gap-2 pt-1">
             <button
-              onClick={() => writeVerify({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "verifyOrg", args: [orgAddress as `0x${string}`] })}
+              onClick={() => writeVerify({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "verifyOrg", args: [orgAddress as `0x${string}`], gas: 200000n })}
               disabled={!orgAddress || isOrgWriting || Boolean(isOrgVerified)}
               className="flex-1 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-emerald-700 flex items-center justify-center gap-1.5 transition-colors"
             >
@@ -398,7 +399,7 @@ export default function AdminPage() {
               {isVerifyPending || isVerifyConfirming ? "Verifying…" : "Verify org"}
             </button>
             <button
-              onClick={() => writeRevoke({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "revokeOrg", args: [orgAddress as `0x${string}`] })}
+              onClick={() => writeRevoke({ address: ADDRESSES.charityCore, abi: CHARITY_CORE_ABI, functionName: "revokeOrg", args: [orgAddress as `0x${string}`], gas: 200000n })}
               disabled={!orgAddress || isOrgWriting || !isOrgVerified}
               className="flex-1 py-2 bg-red-500 text-white rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-red-600 flex items-center justify-center gap-1.5 transition-colors"
             >

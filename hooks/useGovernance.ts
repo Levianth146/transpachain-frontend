@@ -74,6 +74,7 @@ export function useCastVote() {
       abi:          GOVERNANCE_DAO_ABI,
       functionName: "castVote",
       args:         [proposalId, choice],
+      gas:          250000n,
     });
   };
 
@@ -84,7 +85,7 @@ export function useQueueProposal() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
   const queue = (proposalId: bigint) =>
-    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "queueProposal", args: [proposalId] });
+    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "queueProposal", args: [proposalId], gas: 200000n });
   return { queue, hash, isPending, isSuccess, error };
 }
 
@@ -92,7 +93,7 @@ export function useExecuteProposal() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
   const execute = (proposalId: bigint) =>
-    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "executeProposal", args: [proposalId] });
+    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "executeProposal", args: [proposalId], gas: 400000n });
   return { execute, hash, isPending, isSuccess, error };
 }
 
@@ -100,7 +101,7 @@ export function useResubmitProposal() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
   const resubmit = (proposalId: bigint) =>
-    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "resubmitProposal", args: [proposalId] });
+    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "resubmitProposal", args: [proposalId], gas: 350000n });
   return { resubmit, hash, isPending, isSuccess, error };
 }
 
@@ -113,6 +114,7 @@ export function useCloseProposal() {
       abi: GOVERNANCE_DAO_ABI,
       functionName: "closeProposal",
       args: [proposalId, reason],
+      gas: 250000n,
     });
   return { closeProposal, hash, isPending, isConfirming, isSuccess, error };
 }

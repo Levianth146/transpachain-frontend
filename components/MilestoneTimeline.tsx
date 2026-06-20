@@ -1,9 +1,17 @@
 "use client";
 import { useMilestone } from "@/hooks/useDonationVault";
-import { formatEther } from "viem";
+import { formatCampaignAmountLabel } from "@/lib/format";
 import type { Campaign } from "@/types";
 
-function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: number }) {
+function MilestoneItem({
+  campaignId,
+  index,
+  paymentToken,
+}: {
+  campaignId: bigint;
+  index: number;
+  paymentToken: number;
+}) {
   const { data: m } = useMilestone(campaignId, index);
   const milestone = m as any;
 
@@ -29,7 +37,7 @@ function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: numbe
           <p className="text-xs text-white/50">
             {(() => {
               try {
-                return `${formatEther(BigInt(milestone.releaseAmount))} ETH`;
+                return formatCampaignAmountLabel(BigInt(milestone.releaseAmount), paymentToken);
               } catch {
                 return "— ETH";
               }
@@ -43,6 +51,7 @@ function MilestoneItem({ campaignId, index }: { campaignId: bigint; index: numbe
 
 export function MilestoneTimeline({ campaignId, campaign }: { campaignId: bigint; campaign: Campaign }) {
   const count = Math.max(0, Number(campaign.totalMilestones) || 0);
+  const paymentToken = (campaign as { paymentToken?: number }).paymentToken ?? 0;
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
       <h3 className="mb-4 font-semibold text-white">Milestone Timeline</h3>
@@ -51,7 +60,7 @@ export function MilestoneTimeline({ campaignId, campaign }: { campaignId: bigint
           <p className="text-sm text-white/50">No milestones configured.</p>
         ) : (
           Array.from({ length: count }, (_, i) => (
-            <MilestoneItem key={i} campaignId={campaignId} index={i} />
+            <MilestoneItem key={i} campaignId={campaignId} index={i} paymentToken={paymentToken} />
           ))
         )}
       </div>

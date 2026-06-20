@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { formatEther } from "viem";
 import { motion } from "framer-motion";
 import { Coins, Heart, CheckCircle, TrendUp } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
+import { formatCampaignAmountLabel, sumDonationsByToken } from "@/lib/format";
 import { NFTGallery } from "@/components/NFTGallery";
 import { ConnectWallet } from "@/components/ConnectWallet";
 import { OrgProfileForm } from "@/components/OrgProfileForm";
@@ -13,6 +13,7 @@ import { GlassPanel } from "@/components/ui/GlassPanel";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { DonorNotifications } from "@/components/DonorNotifications";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+import { TxLink } from "@/components/TxLink";
 
 const STAT_ICONS = [Coins, Heart, CheckCircle];
 
@@ -49,10 +50,20 @@ export default function DashboardPage() {
     </AnimatedGradientBackground>
   );
 
+  const totals = sumDonationsByToken(donations);
+  const ethDonated = formatCampaignAmountLabel(totals.ethNet, 0, 4);
+  const usdcDonated = formatCampaignAmountLabel(totals.usdcNet, 1, 2);
+
   const stats = summary ? [
     {
-      label: "ETH Donated",
-      value: Number(formatEther(BigInt(summary.totalDonated ?? "0"))).toFixed(3),
+      label: "ETH Donated (net)",
+      value: ethDonated,
+      sub: totals.ethGross > totals.ethNet ? "Gross incl. 1% fee tracked separately" : undefined,
+    },
+    {
+      label: "USDC Donated (net)",
+      value: usdcDonated,
+      sub: totals.usdcNet > 0n ? "Sepolia test USDC" : "No USDC donations yet",
     },
     {
       label: "Campaigns Supported",
@@ -82,14 +93,17 @@ export default function DashboardPage() {
       <DonorNotifications />
 
       {stats.length > 0 && (
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, i) => {
-            const Icon = STAT_ICONS[i];
+            const Icon = STAT_ICONS[i % STAT_ICONS.length];
             return (
-              <GlassPanel key={stat.label} delay={i * 0.08} holoBorder className={`bg-gradient-to-br ${STAT_GRADIENTS[i]} p-5 text-center`}>
-                <Icon size={24} className={`mx-auto mb-2 ${STAT_COLORS[i]}`} weight="duotone" />
-                <p className={`text-3xl font-bold ${STAT_COLORS[i]}`}>{stat.value}</p>
+              <GlassPanel key={stat.label} delay={i * 0.08} holoBorder className={`bg-gradient-to-br ${STAT_GRADIENTS[i % STAT_GRADIENTS.length]} p-5 text-center`}>
+                <Icon size={24} className={`mx-auto mb-2 ${STAT_COLORS[i % STAT_COLORS.length]}`} weight="duotone" />
+                <p className={`text-2xl font-bold ${STAT_COLORS[i % STAT_COLORS.length]}`}>{stat.value}</p>
                 <p className="mt-1 text-sm text-white/60">{stat.label}</p>
+                {"sub" in stat && stat.sub && (
+                  <p className="mt-1 text-[10px] text-white/40">{stat.sub}</p>
+                )}
               </GlassPanel>
             );
           })}
@@ -100,15 +114,19 @@ export default function DashboardPage() {
         <NFTGallery address={address as string} />
 
         <GlassPanel holoBorder className="p-5">
-          <h3 className="mb-4 flex items-center gap-2 font-semibold">
+          <h3 className="mb-4 flex items-center gap-2 font-semibold text-white">
             <Coins size={18} className="text-holo-mint" weight="duotone" />
             Donation History
+            <span className="ml-auto text-[10px] font-normal text-white/40 uppercase">Indexed</span>
           </h3>
           {donations.length === 0 ? (
             <p className="text-sm text-white/50">No donations yet. Browse campaigns to make your first impact!</p>
           ) : (
             <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
-              {donations.map((d: any, i: number) => (
+              {donations.map((d: any, i: number) => {
+                const token = d.tokenType ?? 0;
+                const net = d.netAmount ?? d.amount;
+                return (
                 <motion.div
                   key={d.txHash}
                   initial={{ opacity: 0, x: -8 }}
@@ -118,11 +136,11 @@ export default function DashboardPage() {
                 >
                   <div>
                     <p className="text-sm font-medium text-white">Campaign #{d.campaignId}</p>
-                    <p className="font-mono text-xs text-white/40">{d.txHash.slice(0, 10)}…</p>
+                    <TxLink hash={d.txHash} className="mt-0.5" />
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-holo-mint">
-                      {Number(formatEther(BigInt(d.amount))).toFixed(3)} ETH
+                      {formatCampaignAmountLabel(net, token, token === 1 ? 2 : 4)}
                     </p>
                     <span className={`rounded-full px-2 py-0.5 text-xs ${
                       d.status === "released" ? "bg-holo-lavender/20 text-holo-lavender" :
@@ -133,7 +151,7 @@ export default function DashboardPage() {
                     </span>
                   </div>
                 </motion.div>
-              ))}
+              );})}
             </div>
           )}
         </GlassPanel>

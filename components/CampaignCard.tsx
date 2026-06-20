@@ -117,22 +117,17 @@ export function CampaignCard({ campaign }: { campaign: any }) {
           {/* Progress */}
           <div className="mt-auto">
             <div className="flex justify-between text-xs mb-1.5">
-              <span className="flex items-center gap-1 font-bold text-white">
-                <TrendingUp size={11} className="text-emerald-400" />
+              <span className="flex items-center gap-1 font-bold text-holo-mint">
+                <TrendingUp size={11} />
                 {raised.toFixed(fractionDigits)} {tokenLabel}
               </span>
-              <span className="font-semibold text-emerald-400">{progress.toFixed(0)}%</span>
+              <span className="font-semibold text-holo-lavender">{progress.toFixed(0)}%</span>
             </div>
 
             <div className="mb-3 h-2 w-full rounded-full bg-white/10">
               <div
-                className="h-2 rounded-full transition-all duration-500"
-                style={{
-                  width: `${progress}%`,
-                  background: progress >= 100
-                    ? "linear-gradient(90deg, #059669, #10b981)"
-                    : "linear-gradient(90deg, #10b981, #34d399)",
-                }}
+                className="h-2 rounded-full bg-holo-gradient transition-all duration-500"
+                style={{ width: `${progress}%` }}
               />
             </div>
 

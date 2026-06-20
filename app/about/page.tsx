@@ -5,6 +5,7 @@ import { PageShell } from "@/components/PageShell";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { HowItWorksBlock } from "@/components/HowItWorksBlock";
 import { TrustSecurityStrip } from "@/components/TrustSecurityStrip";
+import { FoundingTeam } from "@/components/FoundingTeam";
 
 const ANTI_ABUSE = [
   {
@@ -103,6 +104,8 @@ export default function AboutPage() {
             ))}
           </div>
         </GlassPanel>
+
+        <FoundingTeam />
       </div>
     </PageShell>
   );

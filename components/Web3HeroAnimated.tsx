@@ -41,6 +41,8 @@ export function Web3HeroAnimated() {
     totalCampaigns: 0,
     activeCampaigns: 0,
     totalDonated: "0",
+    totalDonatedEth: "0",
+    totalDonatedUsdc: "0",
     countUniqueDonors: 0,
   });
 
@@ -60,7 +62,10 @@ export function Web3HeroAnimated() {
   });
 
   const ethDonated = parseFloat(
-    (Number(BigInt(stats.totalDonated || "0")) / 1e18).toFixed(2)
+    (Number(BigInt(stats.totalDonatedEth || stats.totalDonated || "0")) / 1e18).toFixed(2)
+  );
+  const usdcDonated = parseFloat(
+    (Number(BigInt(stats.totalDonatedUsdc || "0")) / 1e6).toFixed(0)
   );
 
   return (
@@ -101,7 +106,7 @@ export function Web3HeroAnimated() {
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 text-left lg:justify-self-end lg:max-w-md">
+          <div className="grid grid-cols-2 gap-4 text-left sm:grid-cols-4 lg:justify-self-end lg:max-w-2xl">
             <div>
               <div className="text-xl font-semibold text-white sm:text-2xl">
                 <AnimatedCounter value={stats.totalCampaigns} />
@@ -115,7 +120,15 @@ export function Web3HeroAnimated() {
                 <AnimatedCounter value={ethDonated} suffix=" ETH" />
               </div>
               <div className="mt-1 flex items-center gap-1 text-xs text-white/50">
-                <Coins size={12} /> Raised
+                <Coins size={12} /> Raised (net)
+              </div>
+            </div>
+            <div>
+              <div className="text-xl font-semibold text-holo-lavender sm:text-2xl">
+                <AnimatedCounter value={usdcDonated} suffix=" USDC" />
+              </div>
+              <div className="mt-1 flex items-center gap-1 text-xs text-white/50">
+                <Coins size={12} /> USDC (net)
               </div>
             </div>
             <div>

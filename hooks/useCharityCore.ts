@@ -73,6 +73,7 @@ export function useCreateCampaign() {
       functionName: "createCampaign",
       args:         [metadataCID, parseCampaignGoalAmount(goalAmount, paymentToken), deadlineTimestamp, totalMilestones, paymentToken, category],
       value:        parseEther("0.001"), // creation deposit
+      gas:          500000n,
     });
   };
 
@@ -89,6 +90,7 @@ export function useCancelCampaign() {
       abi:          CHARITY_CORE_ABI,
       functionName: "cancelCampaign",
       args:         [campaignId],
+      gas:          200000n,
     });
   };
 
@@ -105,6 +107,7 @@ export function useFinalizeCampaign() {
       abi:          CHARITY_CORE_ABI,
       functionName: "finalizeCampaign",
       args:         [campaignId],
+      gas:          250000n,
     });
   };
 
@@ -121,6 +124,7 @@ export function useExtendDeadline() {
       abi:          CHARITY_CORE_ABI,
       functionName: "extendDeadline",
       args:         [campaignId, newDeadline],
+      gas:          200000n,
     });
   };
 

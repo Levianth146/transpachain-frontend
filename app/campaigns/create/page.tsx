@@ -32,9 +32,26 @@ export default function CreateCampaignPage() {
     paymentToken: "0",
     daysUntilDeadline: "30",
   });
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadError(null);
+    setUploading(true);
+    try {
+      const { url, cid } = await api.uploadFile(file);
+      setForm((prev) => ({ ...prev, imageUrl: url || `ipfs://${cid}` }));
+    } catch {
+      setUploadError("Upload failed — check Pinata keys on backend or paste a URL manually.");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -152,10 +169,18 @@ export default function CreateCampaignPage() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-white/80">Image URL</label>
+          <label className="mb-1 block text-sm font-medium text-white/80">Campaign Image</label>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-holo-mint/30 bg-holo-mint/10 px-4 py-2 text-sm font-medium text-holo-mint transition hover:bg-holo-mint/20">
+              {uploading ? "Uploading…" : "Upload to IPFS"}
+              <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+            </label>
+            <span className="text-xs text-white/40">or paste URL below</span>
+          </div>
+          {uploadError && <p className="mt-1 text-xs text-red-400">{uploadError}</p>}
           <input name="imageUrl" value={form.imageUrl} onChange={handleChange}
-            className={INPUT_CLASS}
-            placeholder="https://images.unsplash.com/... or ipfs://Qm..." />
+            className={`${INPUT_CLASS} mt-2`}
+            placeholder="https://gateway.pinata.cloud/ipfs/... or ipfs://Qm..." />
           {form.imageUrl && !normalizeImageUrl(form.imageUrl) && (
             <p className="mt-1 text-xs text-amber-400">Invalid URL — use https:// or ipfs://. A category fallback will be shown instead.</p>
           )}
