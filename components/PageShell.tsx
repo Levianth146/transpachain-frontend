@@ -37,43 +37,37 @@ export function PageShell({
   return (
     <AnimatedGradientBackground variant="dark" className="min-h-screen">
       <div className="relative">
-        {/* Top gradient glow */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(94,234,212,0.12),transparent_70%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(94,234,212,0.1),transparent_70%)]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-[radial-gradient(ellipse_60%_40%_at_70%_0%,rgba(196,181,253,0.08),transparent_70%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(168,85,247,0.08),transparent_70%)]"
         />
 
-        {/* Subtle grid overlay */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:linear-gradient(to_bottom,black_0%,transparent_60%)]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)]"
         />
 
         <main
-          className={`relative mx-auto ${MAX_WIDTH[maxWidth]} px-4 py-10 sm:px-6 lg:px-8 ${className}`}
+          className={`relative mx-auto ${MAX_WIDTH[maxWidth]} px-4 py-12 sm:px-6 lg:px-8 lg:py-14 ${className}`}
         >
           <motion.header
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="mb-8"
+            className="mb-10"
           >
-            {eyebrow && (
-              <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.2em] text-holo-mint/70 sm:text-xs">
-                {eyebrow}
-              </p>
-            )}
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            {eyebrow && <p className="section-eyebrow mb-3">{eyebrow}</p>}
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
                   {title}
                 </h1>
                 {description && (
-                  <p className="mt-2 max-w-2xl text-base leading-relaxed text-white/70">
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
                     {description}
                   </p>
                 )}

@@ -4,11 +4,10 @@ import { useReadContract } from "wagmi";
 import { motion } from "framer-motion";
 import { ADDRESSES, IMPACT_NFT_ABI } from "@/lib/contracts";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { Medal, Info, Copy, GameController } from "@phosphor-icons/react";
-import { useState } from "react";
+import { Medal, GameController, ArrowSquareOut } from "@phosphor-icons/react";
 import Image from "next/image";
 import { tierImagePath, tierLabel } from "@/lib/nft";
-import { ContractLink, tokenExplorerUrl } from "@/components/TxLink";
+import { tokenExplorerUrl } from "@/components/TxLink";
 
 const TIER_STYLE: Record<number, {
   label: string;
@@ -19,26 +18,28 @@ const TIER_STYLE: Record<number, {
 }> = {
   0: {
     label: "Bronze",
-    gradient: "from-amber-900/40 via-orange-950/30 to-black",
-    glow: "shadow-[0_0_24px_rgba(255,153,0,0.25)]",
-    border: "border-amber-500/60",
-    scanline: "rgba(255,180,0,0.08)",
+    gradient: "from-amber-900/50 via-orange-950/40 to-[#0a0618]",
+    glow: "shadow-[0_0_32px_rgba(255,153,0,0.3)]",
+    border: "border-amber-500/50",
+    scanline: "rgba(255,180,0,0.07)",
   },
   1: {
     label: "Silver",
-    gradient: "from-slate-400/25 via-zinc-800/40 to-black",
-    glow: "shadow-[0_0_24px_rgba(192,192,192,0.2)]",
-    border: "border-cyan-300/50",
-    scanline: "rgba(0,255,255,0.06)",
+    gradient: "from-slate-500/30 via-zinc-900/50 to-[#050d18]",
+    glow: "shadow-[0_0_32px_rgba(103,232,249,0.25)]",
+    border: "border-cyan-300/40",
+    scanline: "rgba(0,255,255,0.05)",
   },
   2: {
     label: "Gold",
-    gradient: "from-yellow-500/30 via-amber-600/20 to-black",
-    glow: "shadow-[0_0_28px_rgba(255,215,0,0.35)]",
-    border: "border-yellow-400/70",
-    scanline: "rgba(255,255,0,0.08)",
+    gradient: "from-yellow-600/35 via-amber-900/30 to-[#120828]",
+    glow: "shadow-[0_0_36px_rgba(255,215,0,0.35)]",
+    border: "border-yellow-400/55",
+    scanline: "rgba(255,255,0,0.06)",
   },
 };
+
+const OPENSEA_BASE = "https://testnets.opensea.io/assets/sepolia";
 
 function NFTCard({ tokenId, index }: { tokenId: bigint; index: number }) {
   const { data: meta } = useReadContract({
@@ -49,7 +50,7 @@ function NFTCard({ tokenId, index }: { tokenId: bigint; index: number }) {
   });
 
   if (!meta) return (
-    <div className="h-44 rounded-xl bg-black/40 border border-white/10 animate-pulse" />
+    <div className="aspect-[3/4] rounded-2xl bg-black/40 border border-white/10 animate-pulse" />
   );
 
   const m = meta as Record<string, unknown>;
@@ -63,50 +64,46 @@ function NFTCard({ tokenId, index }: { tokenId: bigint; index: number }) {
       href={tokenExplorerUrl(ADDRESSES.impactNFT, tokenId.toString())}
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ opacity: 0, scale: 0.92 }}
+      initial={{ opacity: 0, scale: 0.94 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.06 }}
-      whileHover={{ scale: 1.03, y: -4 }}
-      className={`relative overflow-hidden rounded-xl border-2 ${tier.border} bg-gradient-to-br ${tier.gradient} p-4 text-center ${tier.glow} block`}
+      transition={{ delay: index * 0.07 }}
+      whileHover={{ scale: 1.02, y: -6 }}
+      className={`relative flex aspect-[3/4] flex-col overflow-hidden rounded-2xl border ${tier.border} bg-gradient-to-b ${tier.gradient} ${tier.glow}`}
     >
       <div
-        className="absolute inset-0 pointer-events-none opacity-60"
+        className="absolute inset-0 pointer-events-none opacity-50"
         style={{
           backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${tier.scanline} 2px, ${tier.scanline} 4px)`,
         }}
       />
-      <div
-        className="absolute inset-0 pointer-events-none opacity-20"
-        style={{
-          backgroundImage: `repeating-conic-gradient(rgba(255,255,255,0.04) 0% 25%, transparent 0% 50%)`,
-          backgroundSize: "6px 6px",
-        }}
-      />
-      <motion.div
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        className="relative mb-2 flex justify-center"
-      >
-        <Image
-          src={tierImagePath(tierIdx)}
-          alt={tier.label}
-          width={80}
-          height={80}
-          className="rounded-lg border border-white/20 image-rendering-pixelated"
-          style={{ imageRendering: "pixelated" }}
-        />
-      </motion.div>
-      <p className="relative font-display text-sm font-bold uppercase tracking-wider text-white">
-        {tierLabel(tierIdx)}
-      </p>
-      <p className="relative text-[10px] text-white/50 mt-1 font-mono">Campaign #{campaignId}</p>
-      <p className="relative text-[10px] text-holo-mint mt-1 font-mono">#{tokenId.toString()}</p>
-      {score > 0 && (
-        <div className="relative mt-2 inline-flex items-center gap-1 text-[10px] bg-black/40 rounded-full px-2 py-0.5 border border-white/10">
-          <Medal size={10} weight="duotone" className="text-holo-mint" />
-          Impact {score}
-        </div>
-      )}
+      <div className="relative flex flex-1 items-center justify-center p-4 pt-6">
+        <motion.div
+          animate={{ y: [0, -4, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Image
+            src={tierImagePath(tierIdx)}
+            alt={tier.label}
+            width={140}
+            height={140}
+            className="rounded-xl border border-white/20 shadow-2xl image-rendering-pixelated"
+            style={{ imageRendering: "pixelated" }}
+          />
+        </motion.div>
+      </div>
+      <div className="relative border-t border-white/10 bg-black/40 px-4 py-3 text-center backdrop-blur-sm">
+        <p className="font-display text-sm font-bold uppercase tracking-widest text-white">
+          {tierLabel(tierIdx)}
+        </p>
+        <p className="mt-0.5 text-[10px] font-mono text-white/45">Campaign #{campaignId}</p>
+        <p className="text-[10px] font-mono text-holo-mint/80">#{tokenId.toString()}</p>
+        {score > 0 && (
+          <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/50 px-2 py-0.5 text-[10px]">
+            <Medal size={10} weight="duotone" className="text-holo-mint" />
+            Impact {score}
+          </div>
+        )}
+      </div>
     </motion.a>
   );
 }
@@ -114,7 +111,6 @@ function NFTCard({ tokenId, index }: { tokenId: bigint; index: number }) {
 export function NFTGallery({ address }: { address: string }) {
   const { address: connectedAddress } = useAccount();
   const walletAddress = (address ?? connectedAddress) as `0x${string}` | undefined;
-  const [copied, setCopied] = useState(false);
 
   const { data: tokenIdsRaw } = useReadContract({
     address:      ADDRESSES.impactNFT,
@@ -125,58 +121,48 @@ export function NFTGallery({ address }: { address: string }) {
   });
   const tokenIds = tokenIdsRaw as bigint[] | undefined;
 
-  const copyContract = () => {
-    navigator.clipboard.writeText(ADDRESSES.impactNFT);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
-
   const emptyState = (msg: string) => (
-    <GlassPanel holoBorder className="p-5 h-full">
+    <GlassPanel holoBorder className="p-6 h-full">
       <h3 className="font-display font-semibold mb-3 flex items-center gap-2 text-white">
-        <GameController size={18} className="text-holo-pink" weight="duotone" />
+        <GameController size={20} className="text-holo-pink" weight="duotone" />
         My Impact NFTs
       </h3>
       <p className="text-sm text-white/50">{msg}</p>
     </GlassPanel>
   );
 
-  if (!walletAddress) return emptyState("Connect wallet to view your retro donor badges.");
+  if (!walletAddress) return emptyState("Connect wallet to view your retro synthwave donor badges.");
 
   if (!tokenIds || tokenIds.length === 0) {
-    return emptyState("No badges yet. Donate to earn Bronze, Silver, or Gold pixel tiers!");
+    return emptyState("No badges yet. Donate to earn Bronze, Silver, or Gold impact tiers!");
   }
 
   return (
-    <GlassPanel holoBorder className="p-5 h-full">
-      <h3 className="font-display font-semibold mb-2 flex items-center gap-2 text-white">
-        <GameController size={18} className="text-holo-pink" weight="duotone" />
-        My Impact NFTs
-        <span className="ml-auto text-xs font-normal bg-holo-pink/10 text-holo-pink px-2 py-0.5 rounded-full border border-holo-pink/30">
-          {tokenIds.length} retro
+    <GlassPanel holoBorder className="p-6 h-full">
+      <div className="mb-4 flex items-center gap-2">
+        <GameController size={20} className="text-holo-pink" weight="duotone" />
+        <h3 className="font-display font-semibold text-white">My Impact NFTs</h3>
+        <span className="ml-auto rounded-full border border-holo-pink/30 bg-holo-pink/10 px-2.5 py-0.5 text-xs font-normal text-holo-pink">
+          {tokenIds.length} badge{tokenIds.length === 1 ? "" : "s"}
         </span>
-      </h3>
-
-      <div className="flex items-start gap-2 text-[11px] text-white/50 bg-black/30 rounded-lg px-2.5 py-2 mb-4 border border-white/10">
-        <Info size={14} className="shrink-0 mt-0.5 text-holo-mint" />
-        <div>
-          <p>
-            One badge per campaign. MetaMask needs valid IPFS metadata — run{" "}
-            <code className="text-holo-lavender">setTierMetadataCID</code> on ImpactNFT if you see a checkerboard.
-          </p>
-          <button
-            type="button"
-            onClick={copyContract}
-            className="mt-1 inline-flex items-center gap-1 text-holo-mint hover:underline"
-          >
-            <Copy size={11} />
-            {copied ? "Copied!" : "Copy NFT contract · "}
-            <ContractLink address={ADDRESSES.impactNFT} name="Etherscan" className="inline" />
-          </button>
-        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <p className="mb-4 text-xs leading-relaxed text-white/45">
+        One badge per campaign. View in MetaMask or on OpenSea — if art doesn&apos;t appear, open the
+        NFT menu and tap <strong className="text-white/60">Refresh metadata</strong>.
+      </p>
+
+      <a
+        href={`${OPENSEA_BASE}/${ADDRESSES.impactNFT}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mb-5 inline-flex items-center gap-1.5 text-xs text-holo-mint hover:underline"
+      >
+        <ArrowSquareOut size={13} />
+        View collection on OpenSea
+      </a>
+
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-2">
         {tokenIds.map((tokenId, i) => (
           <NFTCard key={tokenId.toString()} tokenId={tokenId} index={i} />
         ))}

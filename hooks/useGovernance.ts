@@ -1,7 +1,9 @@
 "use client";
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useReadContract, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
+import { useAccount } from "wagmi";
 import { ADDRESSES, GOVERNANCE_DAO_ABI } from "@/lib/contracts";
 import { VoteChoice } from "@/types";
+import { gasWithBuffer } from "@/lib/contractWrite";
 
 // ─── Read hooks ────────────────────────────────────────────────
 
@@ -65,16 +67,29 @@ export function useVotingPower(campaignId: bigint, voter: `0x${string}` | undefi
 // ─── Write hooks ───────────────────────────────────────────────
 
 export function useCastVote() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const castVote = (proposalId: bigint, choice: VoteChoice) => {
+  const castVote = async (proposalId: bigint, choice: VoteChoice) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.governanceDAO,
+        abi: GOVERNANCE_DAO_ABI,
+        functionName: "castVote",
+        args: [proposalId, choice],
+        account: address,
+      },
+      300000n
+    );
     writeContract({
       address:      ADDRESSES.governanceDAO,
       abi:          GOVERNANCE_DAO_ABI,
       functionName: "castVote",
       args:         [proposalId, choice],
-      gas:          250000n,
+      gas,
     });
   };
 
@@ -82,39 +97,117 @@ export function useCastVote() {
 }
 
 export function useQueueProposal() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
-  const queue = (proposalId: bigint) =>
-    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "queueProposal", args: [proposalId], gas: 200000n });
+
+  const queue = async (proposalId: bigint) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.governanceDAO,
+        abi: GOVERNANCE_DAO_ABI,
+        functionName: "queueProposal",
+        args: [proposalId],
+        account: address,
+      },
+      250000n
+    );
+    writeContract({
+      address: ADDRESSES.governanceDAO,
+      abi: GOVERNANCE_DAO_ABI,
+      functionName: "queueProposal",
+      args: [proposalId],
+      gas,
+    });
+  };
   return { queue, hash, isPending, isSuccess, error };
 }
 
 export function useExecuteProposal() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
-  const execute = (proposalId: bigint) =>
-    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "executeProposal", args: [proposalId], gas: 400000n });
+
+  const execute = async (proposalId: bigint) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.governanceDAO,
+        abi: GOVERNANCE_DAO_ABI,
+        functionName: "executeProposal",
+        args: [proposalId],
+        account: address,
+      },
+      450000n
+    );
+    writeContract({
+      address: ADDRESSES.governanceDAO,
+      abi: GOVERNANCE_DAO_ABI,
+      functionName: "executeProposal",
+      args: [proposalId],
+      gas,
+    });
+  };
   return { execute, hash, isPending, isSuccess, error };
 }
 
 export function useResubmitProposal() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
-  const resubmit = (proposalId: bigint) =>
-    writeContract({ address: ADDRESSES.governanceDAO, abi: GOVERNANCE_DAO_ABI, functionName: "resubmitProposal", args: [proposalId], gas: 350000n });
+
+  const resubmit = async (proposalId: bigint) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.governanceDAO,
+        abi: GOVERNANCE_DAO_ABI,
+        functionName: "resubmitProposal",
+        args: [proposalId],
+        account: address,
+      },
+      400000n
+    );
+    writeContract({
+      address: ADDRESSES.governanceDAO,
+      abi: GOVERNANCE_DAO_ABI,
+      functionName: "resubmitProposal",
+      args: [proposalId],
+      gas,
+    });
+  };
   return { resubmit, hash, isPending, isSuccess, error };
 }
 
 export function useCloseProposal() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
-  const closeProposal = (proposalId: bigint, reason: string) =>
+
+  const closeProposal = async (proposalId: bigint, reason: string) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.governanceDAO,
+        abi: GOVERNANCE_DAO_ABI,
+        functionName: "closeProposal",
+        args: [proposalId, reason],
+        account: address,
+      },
+      300000n
+    );
     writeContract({
       address: ADDRESSES.governanceDAO,
       abi: GOVERNANCE_DAO_ABI,
       functionName: "closeProposal",
       args: [proposalId, reason],
-      gas: 250000n,
+      gas,
     });
+  };
   return { closeProposal, hash, isPending, isConfirming, isSuccess, error };
 }

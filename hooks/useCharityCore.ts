@@ -1,9 +1,10 @@
 "use client";
-import { useReadContract, useReadContracts, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useReadContract, useReadContracts, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
+import { useAccount } from "wagmi";
 import { parseEther } from "viem";
 import { parseCampaignGoalAmount } from "@/lib/format";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
-import type { Campaign } from "@/types";
+import { gasWithBuffer } from "@/lib/contractWrite";
 
 // ─── Read hooks ────────────────────────────────────────────────
 // UI data architecture: metadata from Mongo/API; amounts from getCharityProgress on-chain.
@@ -87,24 +88,47 @@ export function useCampaignProgressBatch(campaignIds: number[]) {
 // ─── Write hooks ───────────────────────────────────────────────
 
 export function useCreateCampaign() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const createCampaign = (
+  const createCampaign = async (
     metadataCID: string,
     goalAmount: string,
     deadlineTimestamp: bigint,
     totalMilestones: number,
-    paymentToken: number, // 0 = ETH, 1 = USDC
+    paymentToken: number,
     category: string
   ) => {
+    const value = parseEther("0.001");
+    const args = [
+      metadataCID,
+      parseCampaignGoalAmount(goalAmount, paymentToken),
+      deadlineTimestamp,
+      totalMilestones,
+      paymentToken,
+      category,
+    ] as const;
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.charityCore,
+        abi: CHARITY_CORE_ABI,
+        functionName: "createCampaign",
+        args,
+        value,
+        account: address,
+      },
+      550000n
+    );
     writeContract({
       address:      ADDRESSES.charityCore,
       abi:          CHARITY_CORE_ABI,
       functionName: "createCampaign",
-      args:         [metadataCID, parseCampaignGoalAmount(goalAmount, paymentToken), deadlineTimestamp, totalMilestones, paymentToken, category],
-      value:        parseEther("0.001"), // creation deposit
-      gas:          500000n,
+      args,
+      value,
+      gas,
     });
   };
 
@@ -112,16 +136,29 @@ export function useCreateCampaign() {
 }
 
 export function useCancelCampaign() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const cancelCampaign = (campaignId: bigint) => {
+  const cancelCampaign = async (campaignId: bigint) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.charityCore,
+        abi: CHARITY_CORE_ABI,
+        functionName: "cancelCampaign",
+        args: [campaignId],
+        account: address,
+      },
+      250000n
+    );
     writeContract({
       address:      ADDRESSES.charityCore,
       abi:          CHARITY_CORE_ABI,
       functionName: "cancelCampaign",
       args:         [campaignId],
-      gas:          200000n,
+      gas,
     });
   };
 
@@ -129,16 +166,29 @@ export function useCancelCampaign() {
 }
 
 export function useFinalizeCampaign() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const finalizeCampaign = (campaignId: bigint) => {
+  const finalizeCampaign = async (campaignId: bigint) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.charityCore,
+        abi: CHARITY_CORE_ABI,
+        functionName: "finalizeCampaign",
+        args: [campaignId],
+        account: address,
+      },
+      300000n
+    );
     writeContract({
       address:      ADDRESSES.charityCore,
       abi:          CHARITY_CORE_ABI,
       functionName: "finalizeCampaign",
       args:         [campaignId],
-      gas:          250000n,
+      gas,
     });
   };
 
@@ -146,16 +196,29 @@ export function useFinalizeCampaign() {
 }
 
 export function useExtendDeadline() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const extendDeadline = (campaignId: bigint, newDeadline: bigint) => {
+  const extendDeadline = async (campaignId: bigint, newDeadline: bigint) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.charityCore,
+        abi: CHARITY_CORE_ABI,
+        functionName: "extendDeadline",
+        args: [campaignId, newDeadline],
+        account: address,
+      },
+      250000n
+    );
     writeContract({
       address:      ADDRESSES.charityCore,
       abi:          CHARITY_CORE_ABI,
       functionName: "extendDeadline",
       args:         [campaignId, newDeadline],
-      gas:          200000n,
+      gas,
     });
   };
 

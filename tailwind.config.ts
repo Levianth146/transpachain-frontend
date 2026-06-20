@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         accent: {
           shine: "#64CEFB",
+          purple: "#a855f7",
         },
         holo: {
           mint: "var(--holo-mint)",

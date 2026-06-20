@@ -1,7 +1,9 @@
 "use client";
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useReadContract, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from "wagmi";
+import { useAccount } from "wagmi";
 import { parseEther } from "viem";
 import { ADDRESSES, DONATION_VAULT_ABI } from "@/lib/contracts";
+import { gasWithBuffer } from "@/lib/contractWrite";
 
 // ─── Read hooks ────────────────────────────────────────────────
 
@@ -65,17 +67,32 @@ export function useCanRefund(campaignId: bigint, donor: `0x${string}` | undefine
 // ─── Write hooks ───────────────────────────────────────────────
 
 export function useDonate() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const donate = (campaignId: bigint, amountEth: string) => {
+  const donate = async (campaignId: bigint, amountEth: string) => {
+    const value = parseEther(amountEth);
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.donationVault,
+        abi: DONATION_VAULT_ABI,
+        functionName: "donate",
+        args: [campaignId],
+        value,
+        account: address,
+      },
+      350000n
+    );
     writeContract({
       address:      ADDRESSES.donationVault,
       abi:          DONATION_VAULT_ABI,
       functionName: "donate",
       args:         [campaignId],
-      value:        parseEther(amountEth),
-      gas:          300000n,   // fix: Sepolia block gas limit too low for auto-estimate
+      value,
+      gas,
     });
   };
 
@@ -83,16 +100,29 @@ export function useDonate() {
 }
 
 export function useDonateUSDC() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const donateUSDC = (campaignId: bigint, amountUSDC: bigint) => {
+  const donateUSDC = async (campaignId: bigint, amountUSDC: bigint) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.donationVault,
+        abi: DONATION_VAULT_ABI,
+        functionName: "donateUSDC",
+        args: [campaignId, amountUSDC],
+        account: address,
+      },
+      350000n
+    );
     writeContract({
       address:      ADDRESSES.donationVault,
       abi:          DONATION_VAULT_ABI,
       functionName: "donateUSDC",
       args:         [campaignId, amountUSDC],
-      gas:          300000n,   // fix: Sepolia block gas limit too low for auto-estimate
+      gas,
     });
   };
 
@@ -100,16 +130,29 @@ export function useDonateUSDC() {
 }
 
 export function useClaimRefund() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const claimRefund = (campaignId: bigint) => {
+  const claimRefund = async (campaignId: bigint) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.donationVault,
+        abi: DONATION_VAULT_ABI,
+        functionName: "claimRefund",
+        args: [campaignId],
+        account: address,
+      },
+      250000n
+    );
     writeContract({
       address:      ADDRESSES.donationVault,
       abi:          DONATION_VAULT_ABI,
       functionName: "claimRefund",
       args:         [campaignId],
-      gas:          200000n,
+      gas,
     });
   };
 
@@ -117,16 +160,29 @@ export function useClaimRefund() {
 }
 
 export function useSubmitMilestoneProof() {
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const submitMilestoneProof = (campaignId: bigint, milestoneIndex: number, proofCID: string) => {
+  const submitMilestoneProof = async (campaignId: bigint, milestoneIndex: number, proofCID: string) => {
+    const gas = await gasWithBuffer(
+      publicClient,
+      {
+        address: ADDRESSES.donationVault,
+        abi: DONATION_VAULT_ABI,
+        functionName: "submitMilestoneProof",
+        args: [campaignId, milestoneIndex, proofCID],
+        account: address,
+      },
+      350000n
+    );
     writeContract({
       address:      ADDRESSES.donationVault,
       abi:          DONATION_VAULT_ABI,
       functionName: "submitMilestoneProof",
       args:         [campaignId, milestoneIndex, proofCID],
-      gas:          300000n,
+      gas,
     });
   };
   

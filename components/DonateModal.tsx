@@ -94,9 +94,9 @@ export function DonateModal({
     if (!amount || isNaN(Number(amount))) return;
     addToast({ type: "pending", title: "Donation pending...", message: "Confirm in MetaMask" });
     if (isUSDC) {
-      donateUSDC(campaignId, parsedAmount);
+      void donateUSDC(campaignId, parsedAmount);
     } else {
-      donate(campaignId, amount);
+      void donate(campaignId, amount);
     }
   };
 
@@ -106,13 +106,34 @@ export function DonateModal({
   if (ethSuccess || usdcDonateSuccess) {
     const tier = successTier ?? 0;
     const txHash = ethHash ?? usdcHash;
+    const openseaUrl = `https://testnets.opensea.io/assets/sepolia/${ADDRESSES.impactNFT}`;
     return (
-      <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 text-center space-y-3">
-        <Image src={tierImagePath(tier)} alt={tierLabel(tier)} width={96} height={96} className="mx-auto rounded-lg" />
-        <p className="text-emerald-700 dark:text-emerald-400 font-medium">
-          You received a Donor Badge NFT — {tierLabel(tier)}
+      <div className="glass-card space-y-4 p-5 text-center">
+        <Image
+          src={tierImagePath(tier)}
+          alt={tierLabel(tier)}
+          width={120}
+          height={120}
+          className="mx-auto rounded-xl border border-white/20 shadow-lg image-rendering-pixelated"
+          style={{ imageRendering: "pixelated" }}
+        />
+        <p className="font-display font-semibold text-holo-mint">
+          {tierLabel(tier)} Impact NFT minted!
         </p>
-        <TxLink hash={txHash} label="View on SepoliaScan" />
+        <p className="text-xs leading-relaxed text-white/50">
+          Check MetaMask → NFTs. If you see a placeholder, tap ⋯ → <strong className="text-white/70">Refresh metadata</strong>.
+        </p>
+        <div className="flex flex-col gap-2 text-xs">
+          <TxLink hash={txHash} label="View transaction" />
+          <a
+            href={openseaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-holo-lavender hover:underline"
+          >
+            View on OpenSea Sepolia
+          </a>
+        </div>
       </div>
     );
   }

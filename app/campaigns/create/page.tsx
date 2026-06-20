@@ -72,7 +72,7 @@ export default function CreateCampaignPage() {
       Math.floor(Date.now() / 1000) + Number(form.daysUntilDeadline) * 24 * 3600
     );
 
-    createCampaign(
+    void createCampaign(
       cid,
       form.goalAmount,
       deadline,
