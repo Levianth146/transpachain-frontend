@@ -125,6 +125,9 @@ export function CampaignCard({
 
           <h3 className="mb-1 line-clamp-2 font-display text-base font-bold leading-snug text-white">
             {campaign.title ?? `Campaign #${campaign.campaignId}`}
+            {campaign.title && campaign.campaignId != null && (
+              <span className="ml-1.5 text-xs font-normal text-white/40">#{campaign.campaignId}</span>
+            )}
           </h3>
 
           {campaign.orgName && (
