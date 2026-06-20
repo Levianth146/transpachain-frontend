@@ -42,11 +42,21 @@ function getTimeLeft(deadline: number): string {
   return `${hours}h left`;
 }
 
-export function CampaignCard({ campaign }: { campaign: any }) {
+export function CampaignCard({
+  campaign,
+  onChainRaisedWei,
+}: {
+  campaign: any;
+  onChainRaisedWei?: bigint;
+}) {
   const paymentToken = campaign.paymentToken ?? 0;
   const tokenLabel   = getPaymentTokenLabel(paymentToken);
   const fractionDigits = paymentToken === 1 ? 2 : 3;
-  const raised      = Number(formatCampaignAmount(campaign.raisedAmount ?? "0", paymentToken));
+  const indexedRaised = Number(formatCampaignAmount(campaign.raisedAmount ?? "0", paymentToken));
+  const raised =
+    onChainRaisedWei !== undefined
+      ? Number(formatCampaignAmount(onChainRaisedWei, paymentToken))
+      : indexedRaised;
   const goal        = Number(formatCampaignAmount(campaign.goalAmount ?? "0", paymentToken));
   const progress    = goal > 0 ? Math.min((raised / goal) * 100, 100) : 0;
   const badge       = STATUS_BADGE[campaign.status as CampaignStatus];

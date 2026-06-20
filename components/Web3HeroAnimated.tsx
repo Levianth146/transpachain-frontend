@@ -6,6 +6,7 @@ import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import { ArrowRight, Target, Coins, Users } from "lucide-react";
 import { api } from "@/lib/api";
 import { useSocketEvents } from "@/hooks/useSocket";
+import { useOnChainPlatformStats } from "@/hooks/useOnChainPlatformStats";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ShinyText } from "@/components/ui/ShinyText";
 
@@ -45,10 +46,16 @@ export function Web3HeroAnimated() {
     totalDonatedUsdc: "0",
     countUniqueDonors: 0,
   });
+  const [campaigns, setCampaigns] = useState<Array<{ campaignId: number; paymentToken?: number }>>([]);
 
   const loadStats = () => {
     api.getStats().then(setStats).catch(() => {});
+    api.getCampaigns(1, 100).then((data) => {
+      setCampaigns(data.campaigns ?? []);
+    }).catch(() => {});
   };
+
+  const onChain = useOnChainPlatformStats(campaigns);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsMounted(true), 100);
@@ -62,11 +69,25 @@ export function Web3HeroAnimated() {
   });
 
   const ethDonated = parseFloat(
-    (Number(BigInt(stats.totalDonatedEth || stats.totalDonated || "0")) / 1e18).toFixed(2)
+    (
+      Number(
+        onChain.ready
+          ? onChain.totalEthWei
+          : BigInt(stats.totalDonatedEth || stats.totalDonated || "0")
+      ) / 1e18
+    ).toFixed(2)
   );
   const usdcDonated = parseFloat(
-    (Number(BigInt(stats.totalDonatedUsdc || "0")) / 1e6).toFixed(0)
+    (
+      Number(
+        onChain.ready ? onChain.totalUsdcWei : BigInt(stats.totalDonatedUsdc || "0")
+      ) / 1e6
+    ).toFixed(0)
   );
+  const totalCampaigns =
+    onChain.ready && onChain.totalCampaigns != null
+      ? onChain.totalCampaigns
+      : stats.totalCampaigns;
 
   return (
     <section className="relative isolate h-screen min-h-[640px] overflow-hidden bg-black text-white">
@@ -109,7 +130,7 @@ export function Web3HeroAnimated() {
           <div className="grid grid-cols-2 gap-4 text-left sm:grid-cols-4 lg:justify-self-end lg:max-w-2xl">
             <div>
               <div className="text-xl font-semibold text-white sm:text-2xl">
-                <AnimatedCounter value={stats.totalCampaigns} />
+                <AnimatedCounter value={totalCampaigns} />
               </div>
               <div className="mt-1 flex items-center gap-1 text-xs text-white/50">
                 <Target size={12} /> Campaigns

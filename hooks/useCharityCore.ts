@@ -1,5 +1,5 @@
 "use client";
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useReadContract, useReadContracts, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther } from "viem";
 import { parseCampaignGoalAmount } from "@/lib/format";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
@@ -50,6 +50,21 @@ export function useCharityProgress(campaignId: bigint) {
     abi:          CHARITY_CORE_ABI,
     functionName: "getCharityProgress",
     args:         [campaignId],
+  });
+}
+
+/** Batch-read on-chain raised/goal for list views (net after platform fee). */
+export function useCampaignProgressBatch(campaignIds: number[]) {
+  const contracts = campaignIds.map((id) => ({
+    address: ADDRESSES.charityCore,
+    abi: CHARITY_CORE_ABI,
+    functionName: "getCharityProgress" as const,
+    args: [BigInt(id)] as const,
+  }));
+
+  return useReadContracts({
+    contracts,
+    query: { enabled: campaignIds.length > 0 },
   });
 }
 

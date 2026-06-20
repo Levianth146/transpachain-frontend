@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api } from "@/lib/api";
 import { CampaignCard } from "./CampaignCard";
 import { CampaignListSkeleton } from "./CampaignCardSkeleton";
 import { CampaignFilter, FilterState } from "./CampaignFilter";
 import { useSocketEvents } from "@/hooks/useSocket";
+import { useCampaignProgressBatch } from "@/hooks/useCharityCore";
 import { motion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 
@@ -33,6 +34,21 @@ export function CampaignList() {
     donationReceived: () => load(),
     campaignCreated: () => load(),
   });
+
+  const campaignIds = useMemo(
+    () => filtered.map((c) => Number(c.campaignId)),
+    [filtered]
+  );
+  const { data: progressResults } = useCampaignProgressBatch(campaignIds);
+  const onChainRaisedById = useMemo(() => {
+    const map = new Map<number, bigint>();
+    if (!progressResults) return map;
+    progressResults.forEach((result, index) => {
+      if (result.status !== "success" || !result.result) return;
+      map.set(campaignIds[index], result.result[0] as bigint);
+    });
+    return map;
+  }, [campaignIds, progressResults]);
 
   const handleFilter = (filters: FilterState) => {
     let result = [...allCampaigns];
@@ -94,7 +110,10 @@ export function CampaignList() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
             >
-              <CampaignCard campaign={campaign} />
+              <CampaignCard
+                campaign={campaign}
+                onChainRaisedWei={onChainRaisedById.get(Number(campaign.campaignId))}
+              />
             </motion.div>
           ))}
         </div>

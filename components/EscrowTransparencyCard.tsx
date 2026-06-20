@@ -10,11 +10,9 @@ import { ADDRESSES } from "@/lib/contracts";
 export function EscrowTransparencyCard({
   campaignId,
   paymentToken = 0,
-  indexedRaised,
 }: {
   campaignId: bigint;
   paymentToken?: number;
-  indexedRaised?: number;
 }) {
   const { address } = useAccount();
   const { data: escrow } = useCampaignEscrow(campaignId);
@@ -42,7 +40,7 @@ export function EscrowTransparencyCard({
         <ContractLink address={ADDRESSES.donationVault} name="DonationVault" /> until donors approve
         milestones via DAO vote, or refunds apply if the campaign fails.
       </p>
-      <div className="grid grid-cols-2 gap-3 text-sm">
+        <div className="grid grid-cols-2 gap-3 text-sm">
         <div className="rounded-lg bg-white/5 p-3 border border-white/10">
           <p className="text-xs text-white/50 flex items-center gap-1">
             <Lock size={12} /> In escrow (on-chain)
@@ -52,15 +50,6 @@ export function EscrowTransparencyCard({
           </p>
           <p className="text-[10px] text-white/40 mt-1">Live vault balance · net after 1% fee</p>
         </div>
-        {indexedRaised !== undefined && (
-          <div className="rounded-lg bg-white/5 p-3 border border-white/10">
-            <p className="text-xs text-white/50">Indexed raised</p>
-            <p className="text-lg font-bold mt-1 text-white/80">
-              {indexedRaised.toFixed(fractionDigits)} {unit}
-            </p>
-            <p className="text-[10px] text-white/40 mt-1">MongoDB · may lag if RPC paused</p>
-          </div>
-        )}
         {address && (
           <div className="rounded-lg bg-white/5 p-3 border border-white/10">
             <p className="text-xs text-white/50 flex items-center gap-1">

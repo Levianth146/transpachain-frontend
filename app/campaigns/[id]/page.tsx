@@ -116,9 +116,6 @@ export default function CampaignDetailPage({ params }: Props) {
 
   const raised = onChainRaisedWei !== undefined ? onChainRaised : indexedRaised;
   const progress  = goal > 0 && Number.isFinite(raised) ? Math.min((raised / goal) * 100, 100) : 0;
-  const indexedLag =
-    onChainRaisedWei !== undefined &&
-    Math.abs(onChainRaised - indexedRaised) > 0.0001;
 
   const badge     = STATUS_BADGE[campaign.status] ?? STATUS_BADGE[0];
 
@@ -165,12 +162,6 @@ export default function CampaignDetailPage({ params }: Props) {
           </div>
           <span>Goal: {goal.toFixed(fractionDigits)} {tokenLabel}</span>
         </div>
-        {indexedLag && (
-          <p className="mb-2 text-[11px] text-amber-300/90">
-            Indexed total {indexedRaised.toFixed(fractionDigits)} {tokenLabel} — backend catching up.
-            Escrow &amp; on-chain verification show live values.
-          </p>
-        )}
         <div className="mb-2 h-3 w-full rounded-full bg-white/10">
           <div className="h-3 rounded-full bg-holo-gradient transition-all"
             style={{ width: `${progress}%` }} />
@@ -207,7 +198,6 @@ export default function CampaignDetailPage({ params }: Props) {
           <EscrowTransparencyCard
             campaignId={campaignId}
             paymentToken={paymentToken}
-            indexedRaised={indexedRaised}
           />
           <DonateModal campaignId={campaignId} paymentToken={paymentToken} />
           <RefundPanel campaignId={campaignId} paymentToken={paymentToken} />
