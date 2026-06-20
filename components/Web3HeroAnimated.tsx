@@ -80,7 +80,8 @@ export function Web3HeroAnimated() {
   const usdcDonated = Number(onChain.totalUsdcWei) / 1e6;
   const totalCampaigns =
     onChain.ready && onChain.totalCampaigns != null ? onChain.totalCampaigns : 0;
-  const donors = donorCount ?? 0;
+  const donors =
+    onChain.ready && totalCampaigns === 0 ? 0 : (donorCount ?? 0);
 
   const statPills = [
     {
