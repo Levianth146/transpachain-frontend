@@ -27,25 +27,25 @@ const FOOTER_LINKS: Record<
 
 export function SiteFooter() {
   return (
-    <footer className="relative border-t border-white/[0.08] bg-black pb-28 md:pb-16">
+    <footer className="relative border-t border-slate-200/70 bg-white/60 pb-28 backdrop-blur-sm md:pb-16">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-teal/30 to-transparent"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(111,56,218,0.12),transparent_70%)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(20,184,166,0.06),transparent_70%)]"
       />
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_2.5fr]">
           <div>
-            <Logo variant="light" />
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/50">
+            <Logo />
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-500">
               Transparent charity on Ethereum Sepolia — milestone escrow, donor governance, and
               verifiable impact badges.
             </p>
-            <div className="mt-6 inline-flex rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3">
-              <p className="text-xs text-white/40">
+            <div className="mt-6 inline-flex rounded-2xl border border-slate-200/80 bg-white/70 px-4 py-3 shadow-sm">
+              <p className="text-xs text-slate-400">
                 Demo on Sepolia testnet ·{" "}
                 <GradientText className="text-xs font-medium">transpachain.site</GradientText>
               </p>
@@ -55,7 +55,7 @@ export function SiteFooter() {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             {Object.entries(FOOTER_LINKS).map(([group, links]) => (
               <div key={group}>
-                <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   {group}
                 </p>
                 <ul className="mt-4 space-y-3">
@@ -66,14 +66,14 @@ export function SiteFooter() {
                           href={href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-white/60 transition-colors hover:text-white hover:scale-105 inline-block"
+                          className="inline-block text-sm text-slate-500 transition-colors hover:text-brand-navy"
                         >
                           {label}
                         </a>
                       ) : (
                         <Link
                           href={href}
-                          className="text-sm text-white/60 transition-all hover:text-white hover:scale-105 inline-block"
+                          className="inline-block text-sm text-slate-500 transition-colors hover:text-brand-navy"
                         >
                           {label}
                         </Link>
@@ -84,10 +84,10 @@ export function SiteFooter() {
               </div>
             ))}
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                 Network
               </p>
-              <ul className="mt-4 space-y-3 text-sm text-white/60">
+              <ul className="mt-4 space-y-3 text-sm text-slate-500">
                 <li>Sepolia testnet</li>
                 <li>ETH &amp; USDC escrow</li>
                 <li>On-chain governance</li>
@@ -96,13 +96,13 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-8 sm:flex-row">
-          <p className="text-xs text-white/35">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-200/60 pt-8 sm:flex-row">
+          <p className="text-xs text-slate-400">
             © {new Date().getFullYear()} TranspaChain. Built for transparent giving.
           </p>
           <Link
             href="/legal"
-            className="text-xs text-accent-purple transition-all hover:text-white hover:scale-105"
+            className="text-xs text-accent-purple transition-colors hover:text-brand-navy"
           >
             Legal &amp; Disclaimer
           </Link>

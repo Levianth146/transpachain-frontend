@@ -2,7 +2,7 @@ import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBack
 
 export function CampaignDetailSkeleton() {
   return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen">
+    <AnimatedGradientBackground variant="light" className="min-h-screen">
       <main className="mx-auto max-w-5xl animate-pulse px-4 py-10">
         <div className="mb-6 h-64 w-full rounded-xl bg-white/10" />
         <div className="mb-4 h-8 w-2/3 rounded bg-white/10" />

@@ -5,7 +5,7 @@ import { LandingTrustSection } from "@/components/LandingTrustSection";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen bg-surface-base">
       <Web3HeroAnimated />
       <LandingFeatures />
       <LandingHowItWorks />

@@ -12,15 +12,15 @@ const STEPS = [
     icon: Lock,
     title: "Donate to escrow",
     description: "Funds lock in DonationVault — ETH or USDC — until milestones are approved.",
-    accent: "from-brand-purple/20 to-transparent",
-    iconColor: "text-holo-mint",
+    accent: "from-teal-100/60 to-transparent",
+    iconColor: "text-brand-teal",
   },
   {
     step: "02",
     icon: FileMagnifyingGlass,
     title: "Verify evidence",
     description: "Orgs submit milestone proof; admin reviews before proposals reach donors.",
-    accent: "from-accent-shine/15 to-transparent",
+    accent: "from-cyan-100/50 to-transparent",
     iconColor: "text-accent-shine",
   },
   {
@@ -28,40 +28,40 @@ const STEPS = [
     icon: Scales,
     title: "Donors vote",
     description: "Quadratic voting with √donation weight, quorum, and 24h timelock.",
-    accent: "from-holo-pink/15 to-transparent",
-    iconColor: "text-holo-pink",
+    accent: "from-pink-100/50 to-transparent",
+    iconColor: "text-accent-pink",
   },
   {
     step: "04",
     icon: Medal,
     title: "Earn impact NFT",
     description: "Receive Bronze, Silver, or Gold badges minted to your wallet per campaign.",
-    accent: "from-gold-400/15 to-transparent",
-    iconColor: "text-gold-400",
+    accent: "from-amber-100/50 to-transparent",
+    iconColor: "text-gold-500",
   },
 ];
 
 export function LandingHowItWorks() {
   return (
-    <section className="relative bg-black py-28">
+    <section className="relative bg-surface-base py-28">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <p className="section-eyebrow mb-4">How it works</p>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl md:text-5xl">
               From donation to
               <GradientText className="ml-2">verified impact.</GradientText>
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-white/55 sm:text-lg">
+            <p className="mt-4 text-base leading-relaxed text-slate-500 sm:text-lg">
               Every step is on-chain and auditable — escrow, evidence, governance, and collectible
               proof of giving.
             </p>
           </div>
-          <Link href="/about" className="btn-secondary shrink-0 self-start hover:scale-110 lg:self-auto">
+          <Link href="/about" className="btn-secondary shrink-0 self-start lg:self-auto">
             Full workflow →
           </Link>
         </ScrollReveal>
@@ -79,18 +79,18 @@ export function LandingHowItWorks() {
                 aria-hidden
                 className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${accent} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
               />
-              <span className="relative text-[11px] font-semibold tracking-[0.2em] text-white/30">
+              <span className="relative text-[11px] font-semibold tracking-[0.2em] text-slate-300">
                 {step}
               </span>
               <div
-                className={`relative mt-4 inline-flex rounded-xl border border-white/10 bg-white/[0.04] p-3 ${iconColor} transition-transform group-hover:scale-110`}
+                className={`relative mt-4 inline-flex rounded-xl border border-slate-200/80 bg-white/80 p-3 ${iconColor} transition-transform group-hover:scale-110`}
               >
                 <Icon size={22} weight="duotone" />
               </div>
-              <h3 className="relative mt-4 font-display text-lg font-semibold text-white">
+              <h3 className="relative mt-4 font-display text-lg font-semibold text-brand-navy">
                 {title}
               </h3>
-              <p className="relative mt-2 text-sm leading-relaxed text-white/50">{description}</p>
+              <p className="relative mt-2 text-sm leading-relaxed text-slate-500">{description}</p>
             </BrowserWindowCard>
           ))}
         </div>

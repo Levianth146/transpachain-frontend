@@ -41,19 +41,19 @@ export function PageShell({
     browserTitle ?? (typeof title === "string" ? title : "TranspaChain");
 
   return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen bg-black pb-24">
+    <AnimatedGradientBackground variant="light" className="min-h-screen pb-24">
       <div className="relative">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(111,56,218,0.15),transparent_70%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(20,184,166,0.08),transparent_70%)]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(140,103,255,0.1),transparent_70%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(139,92,246,0.06),transparent_70%)]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)]"
+          className="pointer-events-none absolute inset-0 hero-grid-pattern opacity-40 [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)]"
         />
 
         <main
@@ -68,17 +68,15 @@ export function PageShell({
             {eyebrow && <p className="section-eyebrow mb-3">{eyebrow}</p>}
             <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+                <h1 className="font-display text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl lg:text-5xl">
                   {typeof title === "string" ? (
-                    <>
-                      <GradientText>{title}</GradientText>
-                    </>
+                    <GradientText>{title}</GradientText>
                   ) : (
                     title
                   )}
                 </h1>
                 {description && (
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-500 sm:text-lg">
                     {description}
                   </p>
                 )}

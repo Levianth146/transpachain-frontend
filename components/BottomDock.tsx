@@ -47,15 +47,15 @@ export function BottomDock() {
             <Link
               key={href}
               href={href}
-              className={`group flex flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 transition-all duration-200 hover:scale-110 sm:px-4 sm:py-2 ${
+              className={`group flex flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 transition-all duration-200 sm:px-4 sm:py-2 ${
                 active
-                  ? "bg-white/[0.08] text-white"
-                  : "text-white/55 hover:bg-white/[0.05] hover:text-white"
+                  ? "bg-teal-50 text-brand-navy"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-brand-navy"
               }`}
             >
               <Icon
                 size={18}
-                className={active ? "text-accent-purple" : "group-hover:text-accent-purple"}
+                className={active ? "text-brand-teal" : "group-hover:text-brand-teal"}
               />
               <span className="text-[10px] font-medium">{label}</span>
             </Link>

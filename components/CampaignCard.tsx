@@ -16,7 +16,7 @@ const STATUS_BADGE: Record<CampaignStatus, { label: string; color: string }> = {
   [CampaignStatus.Active]:     { label: "Active",    color: "bg-holo-mint/20 text-holo-mint ring-1 ring-holo-mint/30" },
   [CampaignStatus.Successful]: { label: "Completed", color: "bg-holo-lavender/20 text-holo-lavender ring-1 ring-holo-lavender/30" },
   [CampaignStatus.Failed]:     { label: "Failed",    color: "bg-red-500/20 text-red-300 ring-1 ring-red-500/30" },
-  [CampaignStatus.Cancelled]:  { label: "Cancelled", color: "bg-white/10 text-white/50 ring-1 ring-white/20" },
+  [CampaignStatus.Cancelled]:  { label: "Cancelled", color: "bg-slate-100 text-slate-500 ring-1 ring-slate-200" },
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -25,7 +25,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   disaster:    "bg-orange-500/15 text-orange-300",
   environment: "bg-holo-mint/15 text-holo-mint",
   community:   "bg-holo-lavender/15 text-holo-lavender",
-  general:     "bg-white/10 text-white/60",
+  general:     "bg-slate-100 text-slate-600",
 };
 
 const CATEGORY_ICONS: Record<string, any> = {
@@ -90,7 +90,7 @@ export function CampaignCard({
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ scale: 1.02, y: -4 }}
-        className="browser-window group flex h-full cursor-pointer flex-col overflow-hidden transition-all duration-300 hover:border-brand-purple/25 hover:shadow-2xl hover:shadow-brand-purple/10"
+        className="browser-window group flex h-full cursor-pointer flex-col overflow-hidden transition-all duration-300 hover:border-brand-teal/30 hover:shadow-lg hover:shadow-brand-teal/5"
       >
         <div className="browser-chrome py-2">
           <div className="browser-dots" aria-hidden>
@@ -135,27 +135,27 @@ export function CampaignCard({
               {campaign.category || "general"}
             </span>
             {timeLeft && !isUrgent && (
-              <span className="flex items-center gap-1 text-xs text-white/40">
+              <span className="flex items-center gap-1 text-xs text-slate-400">
                 <Clock size={10} /> {timeLeft}
               </span>
             )}
           </div>
 
-          <h3 className="mb-1 line-clamp-2 font-display text-base font-bold leading-snug text-white">
+          <h3 className="mb-1 line-clamp-2 font-display text-base font-bold leading-snug text-brand-navy">
             {campaign.title ?? `Campaign #${campaign.campaignId}`}
             {campaign.title && campaign.campaignId != null && (
-              <span className="ml-1.5 text-xs font-normal text-white/40">#{campaign.campaignId}</span>
+              <span className="ml-1.5 text-xs font-normal text-slate-400">#{campaign.campaignId}</span>
             )}
           </h3>
 
           {campaign.orgName && (
-            <p className="mb-2 flex items-center gap-1 text-xs text-white/50">
+            <p className="mb-2 flex items-center gap-1 text-xs text-slate-500">
               <Users size={10} /> {campaign.orgName}
             </p>
           )}
 
           {campaign.description && (
-            <p className="mb-4 line-clamp-2 flex-1 text-sm text-white/60">
+            <p className="mb-4 line-clamp-2 flex-1 text-sm text-slate-500">
               {campaign.description}
             </p>
           )}
@@ -171,15 +171,15 @@ export function CampaignCard({
               </span>
             </div>
 
-            <div className="mb-3 h-2 w-full rounded-full bg-white/10 overflow-hidden">
+            <div className="mb-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
               <div
                 className="h-2 rounded-full bg-holo-gradient transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
 
-            <div className="flex items-center justify-between text-xs text-white/50">
-              <span>Goal: <span className="font-medium text-white/70">{goal.toFixed(fractionDigits)} {tokenLabel}</span></span>
+            <div className="flex items-center justify-between text-xs text-slate-500">
+              <span>Goal: <span className="font-medium text-brand-navy">{goal.toFixed(fractionDigits)} {tokenLabel}</span></span>
               <span className="flex items-center gap-1">
                 <Users size={10} />
                 {campaign.donorCount ?? 0} donors

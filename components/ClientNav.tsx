@@ -30,7 +30,11 @@ const VERIFIER_ROLE = keccak256(toBytes("VERIFIER_ROLE"));
 const DEFAULT_ADMIN_ROLE =
   "0x0000000000000000000000000000000000000000000000000000000000000000" as const;
 
-export function ClientNav() {
+interface ClientNavProps {
+  linksOnly?: boolean;
+}
+
+export function ClientNav({ linksOnly = false }: ClientNavProps) {
   const mounted = useMounted();
   const pathname = usePathname();
   const { address } = useAccount();
@@ -70,26 +74,32 @@ export function ClientNav() {
     ...(showAdmin ? [{ href: "/admin", label: "Admin" }] : []),
   ];
 
+  const navLinks = (
+    <nav className="flex items-center gap-0.5">
+      {links.map(({ href, label }) => {
+        const active = isNavActive(pathname, href);
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
+              active
+                ? "bg-holo-gradient-subtle text-brand-navy ring-1 ring-slate-200/80"
+                : "text-slate-500 hover:text-brand-navy"
+            }`}
+          >
+            {label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+
+  if (linksOnly) return navLinks;
+
   return (
     <div className="flex items-center gap-4">
-      <nav className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.03] p-1.5 shadow-[inset_0_0_0_1px_rgba(140,103,255,0.1)] backdrop-blur-sm">
-        {links.map(({ href, label }) => {
-          const active = isNavActive(pathname, href);
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
-                active
-                  ? "bg-holo-gradient-subtle text-white ring-1 ring-white/10"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              {label}
-            </Link>
-          );
-        })}
-      </nav>
+      {navLinks}
       <ConnectWallet />
     </div>
   );

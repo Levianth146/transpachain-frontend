@@ -17,8 +17,8 @@ export function StatGradientCard({
   value,
   label,
   icon: Icon,
-  iconClassName = "text-brand-purple-deep",
-  valueClassName = "text-brand-purple-deep",
+  iconClassName = "text-brand-teal",
+  valueClassName = "text-brand-navy",
   delay = 0,
   className = "",
 }: StatGradientCardProps) {
@@ -34,7 +34,7 @@ export function StatGradientCard({
       <div className={`relative font-display text-2xl font-bold sm:text-3xl ${valueClassName}`}>
         {value}
       </div>
-      <div className="relative mt-2 flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-brand-purple-deep/70">
+      <div className="relative mt-2 flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-slate-500">
         {Icon && <Icon size={13} className="opacity-60" />}
         {label}
       </div>
