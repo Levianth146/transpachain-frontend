@@ -7,6 +7,7 @@ interface GlassPanelProps {
   delay?: number;
   hover?: boolean;
   holoBorder?: boolean;
+  index?: number;
 }
 
 export function GlassPanel({
@@ -15,6 +16,7 @@ export function GlassPanel({
   delay = 0,
   hover = true,
   holoBorder = false,
+  index = 0,
 }: GlassPanelProps) {
   const base =
     "rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-lg shadow-black/20";
@@ -23,10 +25,15 @@ export function GlassPanel({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
-      whileHover={hover ? { y: -2, transition: { duration: 0.2 } } : undefined}
+      initial={{ opacity: 0, scale: 0 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{
+        duration: 0.5,
+        delay: delay + index * 0.06,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      whileHover={hover ? { scale: 1.02, transition: { duration: 0.2 } } : undefined}
       className={`${base} ${holoBorder ? holo : ""} ${className}`}
     >
       {children}

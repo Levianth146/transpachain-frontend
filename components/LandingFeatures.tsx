@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Lock, ShieldCheck, Medal, ChartLineUp } from "@phosphor-icons/react";
 import { ArrowRight } from "lucide-react";
+import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
+import { GradientText } from "@/components/ui/GradientText";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 const FEATURES = [
   {
@@ -42,50 +44,49 @@ const FEATURES = [
 
 export function LandingFeatures() {
   return (
-    <section className="relative bg-[#070809] py-28">
+    <section className="relative bg-black py-28">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/30 to-transparent"
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 max-w-3xl">
+        <ScrollReveal className="mb-16 max-w-3xl">
           <p className="section-eyebrow mb-4">Why TranspaChain</p>
           <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
             Charity infrastructure
-            <span className="text-premium-gradient"> built for trust.</span>
+            <GradientText className="ml-2">built for trust.</GradientText>
           </h2>
           <p className="mt-5 text-base leading-relaxed text-white/55 sm:text-lg">
             A premium giving experience — milestone escrow, quadratic voting, and collectible impact
             badges — all verifiable on Ethereum Sepolia.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map(({ icon: Icon, title, description, accent, glow }, i) => (
-            <motion.div
+            <BrowserWindowCard
               key={title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: i * 0.08, duration: 0.5 }}
-              className={`premium-card group p-7 ${glow}`}
+              title={title}
+              delay={i * 0.08}
+              bodyClassName="p-7"
+              className={`premium-card group ${glow}`}
             >
               <div
-                className={`mb-5 inline-flex rounded-xl border border-white/10 bg-white/[0.04] p-3.5 ${accent}`}
+                className={`mb-5 inline-flex rounded-xl border border-white/10 bg-white/[0.04] p-3.5 ${accent} transition-transform group-hover:scale-110`}
               >
                 <Icon size={26} weight="duotone" />
               </div>
               <h3 className="font-display text-lg font-semibold text-white">{title}</h3>
               <p className="mt-2.5 text-sm leading-relaxed text-white/50">{description}</p>
-            </motion.div>
+            </BrowserWindowCard>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="cta-banner mt-20"
+        <BrowserWindowCard
+          title="Ready to make an impact?"
+          delay={0.2}
+          bodyClassName="p-8 sm:p-12"
+          className="cta-banner mt-20 border-0 bg-transparent shadow-none"
         >
           <div
             aria-hidden
@@ -102,16 +103,16 @@ export function LandingFeatures() {
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-3">
-              <Link href="/campaigns" className="btn-primary group">
+              <Link href="/campaigns" className="btn-primary group hover:scale-110">
                 Explore campaigns
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
-              <Link href="/campaigns/create" className="btn-secondary">
+              <Link href="/campaigns/create" className="btn-secondary hover:scale-110">
                 Create campaign
               </Link>
             </div>
           </div>
-        </motion.div>
+        </BrowserWindowCard>
       </div>
     </section>
   );

@@ -10,18 +10,13 @@ import { ConnectWallet } from "@/components/ConnectWallet";
 import { OrgProfileForm } from "@/components/OrgProfileForm";
 import { PageShell } from "@/components/PageShell";
 import { GlassPanel } from "@/components/ui/GlassPanel";
+import { StatGradientCard } from "@/components/ui/StatGradientCard";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { DonorNotifications } from "@/components/DonorNotifications";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { TxLink } from "@/components/TxLink";
 
 const STAT_ICONS = [Coins, Heart, CheckCircle];
-
-const STAT_GRADIENTS = [
-  "from-holo-mint/20 to-holo-lavender/10",
-  "from-holo-lavender/20 to-holo-pink/10",
-  "from-holo-pink/20 to-holo-silver/10",
-];
 
 const STAT_COLORS = ["text-holo-mint", "text-holo-lavender", "text-holo-pink"];
 
@@ -97,14 +92,24 @@ export default function DashboardPage() {
           {stats.map((stat, i) => {
             const Icon = STAT_ICONS[i % STAT_ICONS.length];
             return (
-              <GlassPanel key={stat.label} delay={i * 0.08} holoBorder className={`bg-gradient-to-br ${STAT_GRADIENTS[i % STAT_GRADIENTS.length]} p-5 text-center`}>
-                <Icon size={24} className={`mx-auto mb-2 ${STAT_COLORS[i % STAT_COLORS.length]}`} weight="duotone" />
-                <p className={`text-2xl font-bold ${STAT_COLORS[i % STAT_COLORS.length]}`}>{stat.value}</p>
-                <p className="mt-1 text-sm text-white/60">{stat.label}</p>
-                {"sub" in stat && stat.sub && (
-                  <p className="mt-1 text-[10px] text-white/40">{stat.sub}</p>
-                )}
-              </GlassPanel>
+              <StatGradientCard
+                key={stat.label}
+                label={stat.label}
+                icon={Icon}
+                delay={i * 0.08}
+                value={
+                  <>
+                    <p className={`text-2xl font-bold ${STAT_COLORS[i % STAT_COLORS.length]}`}>
+                      {stat.value}
+                    </p>
+                    {"sub" in stat && stat.sub && (
+                      <p className="mt-1 text-[10px] font-normal text-brand-purple-deep/60">
+                        {stat.sub}
+                      </p>
+                    )}
+                  </>
+                }
+              />
             );
           })}
         </div>

@@ -11,7 +11,7 @@ export function Logo({ className = "", variant = "default" }: LogoProps) {
   return (
     <Link
       href="/"
-      className={`group flex select-none items-center gap-2.5 ${className}`}
+      className={`group flex select-none items-center gap-2.5 transition-transform duration-200 hover:scale-110 ${className}`}
       aria-label="TranspaChain home"
     >
       <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full p-[2px] bg-holo-gradient shadow-[0_0_12px_rgba(94,234,212,0.25)]">

@@ -9,6 +9,9 @@ import { useSocketEvents } from "@/hooks/useSocket";
 import { useOnChainPlatformStats } from "@/hooks/useOnChainPlatformStats";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ConnectWallet } from "@/components/ConnectWallet";
+import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
+import { GradientText } from "@/components/ui/GradientText";
+import { StatGradientCard } from "@/components/ui/StatGradientCard";
 
 function AnimatedCounter({
   value,
@@ -89,7 +92,6 @@ export function Web3HeroAnimated() {
       value: totalCampaigns,
       label: "Campaigns",
       icon: Target,
-      color: "text-white",
       decimals: 0,
       suffix: "",
     },
@@ -97,7 +99,6 @@ export function Web3HeroAnimated() {
       value: onChain.ready ? ethDonated : 0,
       label: "Raised (net)",
       icon: Coins,
-      color: "text-brand-purple-light",
       decimals: 2,
       suffix: " ETH",
     },
@@ -105,7 +106,6 @@ export function Web3HeroAnimated() {
       value: onChain.ready ? usdcDonated : 0,
       label: "USDC (net)",
       icon: Coins,
-      color: "text-accent-shine",
       decimals: 0,
       suffix: " USDC",
     },
@@ -113,7 +113,6 @@ export function Web3HeroAnimated() {
       value: donors,
       label: formatDonorLabel(donors),
       icon: Users,
-      color: "text-holo-mint",
       decimals: 0,
       suffix: "",
     },
@@ -146,96 +145,73 @@ export function Web3HeroAnimated() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
         <SiteHeader variant="hero" />
 
-        <div className="flex flex-1 flex-col items-center justify-center pb-20 pt-28 text-center sm:pt-32 lg:pb-28 lg:pt-36">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 12 }}
-            transition={{ duration: 0.5 }}
-            className="section-eyebrow mb-8"
+        <div className="flex flex-1 flex-col items-center justify-center pb-20 pt-28 sm:pt-32 lg:pb-28 lg:pt-36">
+          <BrowserWindowCard
+            title="TranspaChain — Transparent Giving"
+            className="w-full max-w-5xl"
+            bodyClassName="px-6 py-10 sm:px-10 sm:py-14 text-center"
+            animate={false}
           >
-            Transparent giving · On-chain accountability
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: isMounted ? 1 : 0, scale: isMounted ? 1 : 0.95 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="section-eyebrow mb-8">
+                Transparent giving · On-chain accountability
+              </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 32 }}
-            transition={{ duration: 0.7, delay: 0.08 }}
-            className="max-w-5xl font-display text-5xl font-bold leading-[1.02] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6rem]"
-          >
-            <span className="block text-white">Give with</span>
-            <span className="block text-display-gradient">confidence.</span>
-          </motion.h1>
+              <h1 className="max-w-4xl mx-auto font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                <span className="block text-white">Give with</span>
+                <GradientText className="block">confidence.</GradientText>
+              </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 20 }}
-            transition={{ duration: 0.5, delay: 0.18 }}
-            className="mt-8 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg md:text-xl"
-          >
-            TranspaChain locks every donation in on-chain escrow. Milestone proof is verified,
-            releases are governed by donors, and your impact earns retro NFT badges.
-          </motion.p>
+              <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
+                TranspaChain locks every donation in on-chain escrow. Milestone proof is verified,
+                releases are governed by donors, and your impact earns retro NFT badges.
+              </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 20 }}
-            transition={{ duration: 0.5, delay: 0.28 }}
-            className="mt-12 flex flex-wrap items-center justify-center gap-4"
-          >
-            <Link href="/campaigns" className="btn-primary group">
-              Explore Campaigns
-              <ArrowRight
-                size={16}
-                className="transition-transform group-hover:translate-x-0.5"
-              />
-            </Link>
-            <ConnectWallet variant="hero" />
-            <Link href="/about" className="btn-secondary">
-              How it works
-            </Link>
-          </motion.div>
+              <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
+                <Link href="/campaigns" className="btn-primary group hover:scale-110">
+                  Explore Campaigns
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
+                </Link>
+                <ConnectWallet variant="hero" />
+                <Link href="/about" className="btn-secondary hover:scale-110">
+                  How it works
+                </Link>
+              </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isMounted ? 1 : 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-10 flex flex-wrap justify-center gap-8 text-sm text-white/45"
-          >
-            <span className="flex items-center gap-2">
-              <Lock size={14} className="text-holo-mint" /> Escrow-protected
-            </span>
-            <span className="flex items-center gap-2">
-              <Shield size={14} className="text-brand-purple-light" /> Donor governance
-            </span>
-            <span className="flex items-center gap-2">
-              <Users size={14} className="text-accent-shine" /> Verified orgs
-            </span>
-          </motion.div>
+              <div className="mt-10 flex flex-wrap justify-center gap-8 text-sm text-white/45">
+                <span className="flex items-center gap-2">
+                  <Lock size={14} className="text-holo-mint" /> Escrow-protected
+                </span>
+                <span className="flex items-center gap-2">
+                  <Shield size={14} className="text-brand-purple-light" /> Donor governance
+                </span>
+                <span className="flex items-center gap-2">
+                  <Users size={14} className="text-accent-shine" /> Verified orgs
+                </span>
+              </div>
+            </motion.div>
+          </BrowserWindowCard>
 
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 32 }}
-            transition={{ duration: 0.6, delay: 0.45 }}
-            className="mt-20 grid w-full max-w-4xl grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4"
-          >
-            {statPills.map(({ value, label, icon: Icon, color, decimals, suffix }, i) => (
-              <motion.div
+          <div className="mt-12 grid w-full max-w-4xl grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+            {statPills.map(({ value, label, icon: Icon, decimals, suffix }, i) => (
+              <StatGradientCard
                 key={label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + i * 0.08 }}
-                className="stat-pill-glow group text-left transition-all hover:border-brand-purple/30"
-              >
-                <div className={`relative font-display text-2xl font-bold sm:text-3xl ${color}`}>
+                label={label}
+                icon={Icon}
+                delay={0.15 + i * 0.08}
+                value={
                   <AnimatedCounter value={value} suffix={suffix} decimals={decimals} />
-                </div>
-                <div className="relative mt-2 flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-white/40">
-                  <Icon size={13} className="text-white/30" />
-                  {label}
-                </div>
-              </motion.div>
+                }
+              />
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

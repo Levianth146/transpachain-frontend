@@ -8,7 +8,7 @@ import { addToast } from "@/components/Toast";
 import { ADDRESSES } from "@/lib/contracts";
 import { ERC20_ABI, USDC_ADDRESS, USDC_DECIMALS } from "@/lib/erc20";
 import { HandCoins, Lock, ShieldCheck } from "@phosphor-icons/react";
-import { motion } from "framer-motion";
+import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
 import { TxLink, nftContractExplorerUrl } from "@/components/TxLink";
 import { tierFromEthAmount, tierImagePath, tierLabel } from "@/lib/nft";
 import Image from "next/image";
@@ -115,7 +115,7 @@ export function DonateModal({
     const tier = successTier ?? 0;
     const txHash = ethHash ?? usdcHash;
     return (
-      <div className="glass-card space-y-4 p-5 text-center">
+      <BrowserWindowCard title="Donation successful" animate={false} bodyClassName="space-y-4 p-5 text-center">
         <Image
           src={tierImagePath(tier)}
           alt={tierLabel(tier)}
@@ -141,16 +141,12 @@ export function DonateModal({
             View Impact NFT on Etherscan
           </a>
         </div>
-      </div>
+      </BrowserWindowCard>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-holo-mint/20 bg-gradient-to-br from-ink-900/90 to-ink-950/90 p-5 backdrop-blur-sm"
-    >
+    <BrowserWindowCard title="Make a Donation" animate={false} bodyClassName="p-5">
       <h3 className="font-semibold mb-3 flex items-center gap-2 text-white">
         <HandCoins size={20} weight="duotone" className="text-holo-mint" />
         Make a Donation
@@ -204,6 +200,6 @@ export function DonateModal({
       {(ethError || usdcDonateError) && (
         <p className="text-xs text-red-400 mt-2">{(ethError || usdcDonateError)?.message}</p>
       )}
-    </motion.div>
+    </BrowserWindowCard>
   );
 }

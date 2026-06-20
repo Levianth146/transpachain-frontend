@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+
 import { Check, X } from "@phosphor-icons/react";
 
 const ROWS = [
@@ -12,11 +12,7 @@ const ROWS = [
 
 export function TraditionalVsTranspaChain({ compact = false }: { compact?: boolean }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]"
-    >
+    <div className="overflow-hidden">
       <div className="border-b border-white/10 bg-white/[0.02] px-4 py-3">
         <h3 className="text-sm font-semibold text-accent-shine">
           Traditional Charity vs TranspaChain
@@ -62,6 +58,6 @@ export function TraditionalVsTranspaChain({ compact = false }: { compact?: boole
           </tbody>
         </table>
       </div>
-    </motion.div>
+    </div>
   );
 }

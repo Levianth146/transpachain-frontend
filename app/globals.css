@@ -29,7 +29,7 @@
   }
 
   body {
-    @apply bg-[#040506] text-white antialiased;
+    @apply bg-black text-white antialiased;
   }
 }
 
@@ -163,6 +163,71 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, #6f38da 0%, #8c67ff 50%, #2d14bc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .stat-gradient-card {
+    @apply rounded-2xl px-6 py-5 transition-transform duration-300;
+    background: linear-gradient(172deg, rgb(255, 253, 244) 22%, rgb(98, 39, 216) 100%);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+      0 16px 40px rgba(98, 39, 216, 0.25);
+  }
+
+  .stat-gradient-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.45),
+      0 20px 48px rgba(98, 39, 216, 0.35);
+  }
+
+  .browser-window {
+    @apply rounded-2xl border border-white/[0.08] bg-[#141414]/80 backdrop-blur-xl;
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+      0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .browser-chrome {
+    @apply flex items-center justify-between border-b border-white/[0.08] bg-white/[0.03] px-4 py-3;
+  }
+
+  .browser-dots {
+    @apply flex items-center gap-1.5;
+  }
+
+  .browser-dots-ghost {
+    @apply pointer-events-none opacity-0;
+  }
+
+  .browser-dot {
+    @apply h-2.5 w-2.5 rounded-full;
+  }
+
+  .browser-dot-red {
+    background: #ff5f57;
+  }
+
+  .browser-dot-yellow {
+    background: #febc2e;
+  }
+
+  .browser-dot-green {
+    background: #28c840;
+  }
+
+  .browser-dot-ghost {
+    @apply bg-white/20;
+  }
+
+  .browser-title {
+    @apply max-w-[50%] truncate text-center text-[11px] font-medium text-white/40;
   }
 
   .border-holo {

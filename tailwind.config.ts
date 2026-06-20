@@ -63,6 +63,10 @@ const config: Config = {
           "linear-gradient(135deg, rgba(94,234,212,0.15) 0%, rgba(196,181,253,0.12) 50%, rgba(249,168,212,0.1) 100%)",
         "grain":
           "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E\")",
+        "brand-gradient-text":
+          "linear-gradient(90deg, #6f38da 0%, #8c67ff 50%, #2d14bc 100%)",
+        "stat-card-gradient":
+          "linear-gradient(172deg, rgb(255,253,244) 22%, rgb(98,39,216) 100%)",
       },
     },
   },

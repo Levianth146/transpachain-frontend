@@ -1,13 +1,22 @@
 "use client";
+
 import { motion } from "framer-motion";
 
-interface MotionCardProps {
+interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
+  delay?: number;
   index?: number;
+  hoverScale?: boolean;
 }
 
-export function MotionCard({ children, className = "", index = 0 }: MotionCardProps) {
+export function ScrollReveal({
+  children,
+  className = "",
+  delay = 0,
+  index = 0,
+  hoverScale = false,
+}: ScrollRevealProps) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
@@ -15,10 +24,10 @@ export function MotionCard({ children, className = "", index = 0 }: MotionCardPr
       viewport={{ once: true, margin: "-50px" }}
       transition={{
         duration: 0.5,
-        delay: index * 0.08,
+        delay: delay + index * 0.08,
         ease: [0.22, 1, 0.36, 1],
       }}
-      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+      whileHover={hoverScale ? { scale: 1.03 } : undefined}
       className={className}
     >
       {children}

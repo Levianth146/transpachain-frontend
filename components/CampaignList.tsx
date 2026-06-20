@@ -7,7 +7,6 @@ import { CampaignListSkeleton } from "./CampaignCardSkeleton";
 import { CampaignFilter, FilterState } from "./CampaignFilter";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { useCampaignProgressBatch } from "@/hooks/useCharityCore";
-import { motion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 
 /** Metadata from API; raised amounts from on-chain batch reads (see CampaignCard). */
@@ -130,18 +129,12 @@ export function CampaignList() {
         <div className="py-20 text-center text-white/50">No campaigns match your filters.</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((campaign, i) => (
-            <motion.div
+          {filtered.map((campaign) => (
+            <CampaignCard
               key={campaign.campaignId}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <CampaignCard
-                campaign={campaign}
-                onChainRaisedWei={onChainRaisedById.get(Number(campaign.campaignId))}
-              />
-            </motion.div>
+              campaign={campaign}
+              onChainRaisedWei={onChainRaisedById.get(Number(campaign.campaignId))}
+            />
           ))}
         </div>
       )}

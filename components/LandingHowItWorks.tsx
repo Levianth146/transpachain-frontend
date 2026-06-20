@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Lock, FileMagnifyingGlass, Scales, Medal } from "@phosphor-icons/react";
+import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
+import { GradientText } from "@/components/ui/GradientText";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 const STEPS = [
   {
@@ -41,38 +43,37 @@ const STEPS = [
 
 export function LandingHowItWorks() {
   return (
-    <section className="relative bg-[#070809] py-28">
+    <section className="relative bg-black py-28">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <ScrollReveal className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <p className="section-eyebrow mb-4">How it works</p>
             <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
               From donation to
-              <span className="text-premium-gradient"> verified impact.</span>
+              <GradientText className="ml-2">verified impact.</GradientText>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-white/55 sm:text-lg">
               Every step is on-chain and auditable — escrow, evidence, governance, and collectible
               proof of giving.
             </p>
           </div>
-          <Link href="/about" className="btn-secondary shrink-0 self-start lg:self-auto">
+          <Link href="/about" className="btn-secondary shrink-0 self-start hover:scale-110 lg:self-auto">
             Full workflow →
           </Link>
-        </div>
+        </ScrollReveal>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map(({ step, icon: Icon, title, description, accent, iconColor }, i) => (
-            <motion.div
+            <BrowserWindowCard
               key={step}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="premium-card group relative overflow-hidden p-6"
+              title={`Step ${step}`}
+              delay={i * 0.1}
+              bodyClassName="group relative overflow-hidden p-6"
+              className="premium-card"
             >
               <div
                 aria-hidden
@@ -82,7 +83,7 @@ export function LandingHowItWorks() {
                 {step}
               </span>
               <div
-                className={`relative mt-4 inline-flex rounded-xl border border-white/10 bg-white/[0.04] p-3 ${iconColor}`}
+                className={`relative mt-4 inline-flex rounded-xl border border-white/10 bg-white/[0.04] p-3 ${iconColor} transition-transform group-hover:scale-110`}
               >
                 <Icon size={22} weight="duotone" />
               </div>
@@ -90,7 +91,7 @@ export function LandingHowItWorks() {
                 {title}
               </h3>
               <p className="relative mt-2 text-sm leading-relaxed text-white/50">{description}</p>
-            </motion.div>
+            </BrowserWindowCard>
           ))}
         </div>
       </div>

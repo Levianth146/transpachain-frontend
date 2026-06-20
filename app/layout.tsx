@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { ToastContainer } from "@/components/Toast";
 import { ConditionalNav } from "@/components/ConditionalNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { BottomDock } from "@/components/BottomDock";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ConditionalNav />
           {children}
           <SiteFooter />
+          <BottomDock />
           <ToastContainer />
         </Providers>
       </body>

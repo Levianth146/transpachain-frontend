@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   ShieldCheck,
   Lock,
@@ -10,6 +9,9 @@ import {
   Prohibit,
 } from "@phosphor-icons/react";
 import { TraditionalVsTranspaChain } from "@/components/TraditionalVsTranspaChain";
+import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
+import { GradientText } from "@/components/ui/GradientText";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 const TRUST_ITEMS = [
   {
@@ -50,44 +52,44 @@ export function LandingTrustSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
           <div>
-            <p className="section-eyebrow mb-4">Trust &amp; security</p>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Accountability
-              <span className="text-premium-gradient"> built into the protocol.</span>
-            </h2>
-            <p className="mt-4 max-w-lg text-base leading-relaxed text-white/55">
-              TranspaChain replaces blind trust with verifiable on-chain safeguards — designed for
-              donors who want proof, not promises.
-            </p>
+            <ScrollReveal>
+              <p className="section-eyebrow mb-4">Trust &amp; security</p>
+              <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Accountability
+                <GradientText className="ml-2">built into the protocol.</GradientText>
+              </h2>
+              <p className="mt-4 max-w-lg text-base leading-relaxed text-white/55">
+                TranspaChain replaces blind trust with verifiable on-chain safeguards — designed for
+                donors who want proof, not promises.
+              </p>
+            </ScrollReveal>
 
             <div className="mt-10 grid gap-3 sm:grid-cols-2">
               {TRUST_ITEMS.map(({ icon: Icon, label, detail }, i) => (
-                <motion.div
+                <BrowserWindowCard
                   key={label}
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.06 }}
-                  className="flex items-start gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-colors hover:border-brand-purple/25 hover:bg-white/[0.04]"
+                  title={label}
+                  delay={i * 0.06}
+                  bodyClassName="flex items-start gap-3 p-4 transition-colors hover:border-brand-purple/25"
+                  className="border-white/[0.08] bg-white/[0.02]"
                 >
                   <Icon size={20} className="mt-0.5 shrink-0 text-holo-mint" weight="duotone" />
                   <div>
                     <p className="text-sm font-semibold text-white">{label}</p>
                     <p className="mt-0.5 text-xs leading-relaxed text-white/45">{detail}</p>
                   </div>
-                </motion.div>
+                </BrowserWindowCard>
               ))}
             </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+          <BrowserWindowCard
+            title="Traditional vs TranspaChain"
+            delay={0.15}
+            bodyClassName="p-0"
           >
             <TraditionalVsTranspaChain />
-          </motion.div>
+          </BrowserWindowCard>
         </div>
       </div>
     </section>
