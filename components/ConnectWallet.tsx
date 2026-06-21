@@ -21,7 +21,7 @@ export function ConnectWallet() {
   if (isConnected && address) {
     return (
       <div className="flex items-center gap-2">
-        <span className="hidden font-mono text-xs text-slate-400 sm:inline">
+        <span className="hidden font-mono text-xs text-text-primary/40 sm:inline">
           {address.slice(0, 6)}…{address.slice(-4)}
         </span>
         <button onClick={() => disconnect()} className="btn-disconnect">

@@ -99,7 +99,7 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
   const isDemoProof = hasProofCid && (isPlaceholderProofCid(proofCID) || !isValidIpfsCid(proofCID));
 
   return (
-    <AnimatedGradientBackground variant="light" className="min-h-screen">
+    <AnimatedGradientBackground className="min-h-screen">
     <main className="max-w-3xl mx-auto px-4 py-10">
       <Link href="/governance" className="mb-6 inline-flex items-center gap-1 text-sm text-white/50 transition-colors hover:text-accent-shine">
         <ArrowLeft size={14} /> Back to governance

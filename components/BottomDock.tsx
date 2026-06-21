@@ -40,22 +40,22 @@ export function BottomDock() {
       className="fixed bottom-4 left-1/2 z-40 -translate-x-1/2 px-2"
       aria-label="Product hub"
     >
-      <div className="nav-glass flex items-center gap-0.5 rounded-2xl px-1.5 py-1.5 sm:gap-1 sm:px-2 sm:py-2">
+      <div className="dock-glass flex items-center gap-1 rounded-[20px] px-2 py-2">
         {DOCK_LINKS.map(({ href, label, icon: Icon }) => {
           const active = isDockActive(pathname, href);
           return (
             <Link
               key={href}
               href={href}
-              className={`group flex flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 transition-all duration-200 sm:px-4 sm:py-2 ${
+              className={`group flex flex-col items-center gap-0.5 rounded-xl px-3 py-2 transition-all duration-200 hover:scale-110 sm:px-4 ${
                 active
-                  ? "bg-teal-50 text-brand-navy"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-brand-navy"
+                  ? "bg-indigo-500/20 text-indigo-300"
+                  : "text-text-primary/45 hover:bg-white/[0.06] hover:text-text-primary"
               }`}
             >
               <Icon
                 size={18}
-                className={active ? "text-brand-teal" : "group-hover:text-brand-teal"}
+                className={active ? "text-indigo-400" : "group-hover:text-indigo-400"}
               />
               <span className="text-[10px] font-medium">{label}</span>
             </Link>

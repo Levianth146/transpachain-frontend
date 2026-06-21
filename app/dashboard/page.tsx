@@ -39,8 +39,8 @@ export default function DashboardPage() {
   if (!mounted) return null;
 
   if (!isConnected) return (
-    <AnimatedGradientBackground variant="light" className="min-h-screen flex flex-col items-center justify-center gap-4">
-      <p className="text-lg font-medium text-brand-navy">Connect your wallet to view dashboard</p>
+    <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center gap-4">
+      <p className="text-lg font-medium text-text-primary">Connect your wallet to view dashboard</p>
       <ConnectWallet />
     </AnimatedGradientBackground>
   );

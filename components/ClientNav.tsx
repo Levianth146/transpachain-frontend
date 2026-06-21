@@ -15,7 +15,16 @@ const NAV_LINKS = [
   { href: "/about", label: "About" },
 ];
 
+const LANDING_LINKS = [
+  { href: "#campaigns", label: "Campaigns" },
+  { href: "#protocol", label: "Protocol" },
+  { href: "#how", label: "How It Works" },
+  { href: "#donors", label: "Donors" },
+  { href: "/about", label: "About" },
+];
+
 function isNavActive(pathname: string, href: string): boolean {
+  if (href.startsWith("#")) return false;
   if (href === "/campaigns") {
     return (
       pathname === "/campaigns" ||
@@ -32,9 +41,11 @@ const DEFAULT_ADMIN_ROLE =
 
 interface ClientNavProps {
   linksOnly?: boolean;
+  dark?: boolean;
+  landing?: boolean;
 }
 
-export function ClientNav({ linksOnly = false }: ClientNavProps) {
+export function ClientNav({ linksOnly = false, dark = false, landing = false }: ClientNavProps) {
   const mounted = useMounted();
   const pathname = usePathname();
   const { address } = useAccount();
@@ -69,24 +80,32 @@ export function ClientNav({ linksOnly = false }: ClientNavProps) {
 
   if (!mounted) return null;
 
+  const baseLinks = landing ? LANDING_LINKS : NAV_LINKS;
   const links = [
-    ...NAV_LINKS,
-    ...(showAdmin ? [{ href: "/admin", label: "Admin" }] : []),
+    ...baseLinks,
+    ...(showAdmin && !landing ? [{ href: "/admin", label: "Admin" }] : []),
   ];
 
+  const linkClass = (active: boolean) => {
+    if (dark) {
+      return active
+        ? "text-text-primary"
+        : "text-text-primary/48 hover:text-text-primary";
+    }
+    return active
+      ? "bg-holo-gradient-subtle text-brand-navy ring-1 ring-slate-200/80"
+      : "text-slate-500 hover:text-brand-navy";
+  };
+
   const navLinks = (
-    <nav className="flex items-center gap-0.5">
+    <nav className="flex items-center gap-8">
       {links.map(({ href, label }) => {
         const active = isNavActive(pathname, href);
         return (
           <Link
             key={href}
             href={href}
-            className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
-              active
-                ? "bg-holo-gradient-subtle text-brand-navy ring-1 ring-slate-200/80"
-                : "text-slate-500 hover:text-brand-navy"
-            }`}
+            className={`text-sm font-medium transition-colors duration-200 ${linkClass(active)}`}
           >
             {label}
           </Link>
