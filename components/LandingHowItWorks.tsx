@@ -1,75 +1,97 @@
 "use client";
 
+import Link from "next/link";
+import { Lock, FileMagnifyingGlass, Scales, Medal } from "@phosphor-icons/react";
+import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
+import { GradientText } from "@/components/ui/GradientText";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const STEPS = [
   {
-    num: "01",
-    title: "Donate to Escrow",
-    description:
-      "Send ETH or USDC to the campaign vault. Funds are locked — never directly to the org.",
+    step: "01",
+    icon: Lock,
+    title: "Donate to escrow",
+    description: "Funds lock in DonationVault — ETH or USDC — until milestones are approved.",
+    accent: "from-teal-100/60 to-transparent",
+    iconColor: "text-brand-teal",
   },
   {
-    num: "02",
-    title: "Verify Evidence",
-    description:
-      "Orgs submit milestone proof; admin reviews before proposals reach donors.",
+    step: "02",
+    icon: FileMagnifyingGlass,
+    title: "Verify evidence",
+    description: "Orgs submit milestone proof; admin reviews before proposals reach donors.",
+    accent: "from-cyan-100/50 to-transparent",
+    iconColor: "text-accent-shine",
   },
   {
-    num: "03",
-    title: "Donors Vote",
-    description:
-      "Quadratic voting with √donation weight, quorum, and 24h timelock.",
+    step: "03",
+    icon: Scales,
+    title: "Donors vote",
+    description: "Quadratic voting with √donation weight, quorum, and 24h timelock.",
+    accent: "from-pink-100/50 to-transparent",
+    iconColor: "text-accent-pink",
   },
   {
-    num: "04",
-    title: "Earn Impact NFT",
-    description:
-      "Receive Bronze, Silver, or Gold badges minted to your wallet per campaign.",
+    step: "04",
+    icon: Medal,
+    title: "Earn impact NFT",
+    description: "Receive Bronze, Silver, or Gold badges minted to your wallet per campaign.",
+    accent: "from-amber-100/50 to-transparent",
+    iconColor: "text-gold-500",
   },
 ];
 
-function StepCard({ num, title, description, index }: (typeof STEPS)[0] & { index: number }) {
-  return (
-    <ScrollReveal index={index} className="glass-card-dark overflow-hidden transition-colors hover:border-indigo-500/30">
-      <div className="flex items-center justify-between border-b border-white/[0.07] bg-white/[0.04] px-3.5 py-2">
-        <div className="flex gap-1">
-          <span className="browser-dot-indigo" />
-          <span className="browser-dot-purple" />
-          <span className="browser-dot-cyan" />
-        </div>
-      </div>
-      <div className="p-[22px] pt-[26px]">
-        <div className="mb-3.5 font-display text-[50px] font-bold leading-none text-gradient-hero">
-          {num}
-        </div>
-        <h4 className="mb-2.5 font-display text-[17px] font-bold text-text-primary">{title}</h4>
-        <p className="text-[13px] leading-[1.68] text-text-primary/44">{description}</p>
-      </div>
-    </ScrollReveal>
-  );
-}
-
 export function LandingHowItWorks() {
   return (
-    <section id="how" className="relative z-10 border-t border-white/[0.06]">
-      <div className="mx-auto max-w-[1380px] px-4 py-24 sm:px-10">
-        <SectionHeader
-          number="03"
-          label="Process"
-          title={
-            <>
-              Four steps.
-              <br />
-              Infinite trust.
-            </>
-          }
-          className="mb-[52px]"
-        />
-        <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((step, i) => (
-            <StepCard key={step.num} {...step} index={i} />
+    <section className="relative bg-surface-base py-28">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"
+      />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <ScrollReveal className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="section-eyebrow mb-4">How it works</p>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl md:text-5xl">
+              From donation to
+              <GradientText className="ml-2">verified impact.</GradientText>
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-500 sm:text-lg">
+              Every step is on-chain and auditable — escrow, evidence, governance, and collectible
+              proof of giving.
+            </p>
+          </div>
+          <Link href="/about" className="btn-secondary shrink-0 self-start lg:self-auto">
+            Full workflow →
+          </Link>
+        </ScrollReveal>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {STEPS.map(({ step, icon: Icon, title, description, accent, iconColor }, i) => (
+            <BrowserWindowCard
+              key={step}
+              title={`Step ${step}`}
+              delay={i * 0.1}
+              bodyClassName="group relative overflow-hidden p-6"
+              className="premium-card"
+            >
+              <div
+                aria-hidden
+                className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${accent} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
+              />
+              <span className="relative text-[11px] font-semibold tracking-[0.2em] text-slate-300">
+                {step}
+              </span>
+              <div
+                className={`relative mt-4 inline-flex rounded-xl border border-slate-200/80 bg-white/80 p-3 ${iconColor} transition-transform group-hover:scale-110`}
+              >
+                <Icon size={22} weight="duotone" />
+              </div>
+              <h3 className="relative mt-4 font-display text-lg font-semibold text-brand-navy">
+                {title}
+              </h3>
+              <p className="relative mt-2 text-sm leading-relaxed text-slate-500">{description}</p>
+            </BrowserWindowCard>
           ))}
         </div>
       </div>

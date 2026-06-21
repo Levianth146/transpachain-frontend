@@ -9,6 +9,7 @@ import { useSocketEvents } from "@/hooks/useSocket";
 import { useOnChainPlatformStats } from "@/hooks/useOnChainPlatformStats";
 import { SiteHeader } from "@/components/SiteHeader";
 import { HeroIsometricScene } from "@/components/HeroIsometricScene";
+import { HeroVideoBackground } from "@/components/HeroVideoBackground";
 import { StatGradientCard } from "@/components/ui/StatGradientCard";
 
 function AnimatedCounter({
@@ -120,6 +121,7 @@ export function Web3HeroAnimated() {
     <>
       <section className="relative isolate min-h-screen overflow-hidden text-brand-navy">
         <div aria-hidden className="absolute inset-0 mesh-bg-hero" />
+        <HeroVideoBackground variant="light" />
         <div aria-hidden className="absolute inset-0 hero-grid-pattern opacity-60" />
         <motion.div
           aria-hidden
@@ -151,8 +153,16 @@ export function Web3HeroAnimated() {
               animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 24 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="section-eyebrow mb-6">
-                Transparent giving · On-chain accountability
+              <div className="mb-6 flex flex-wrap items-center gap-3">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] py-1.5 pl-2.5 pr-3.5">
+                  <span className="live-blink h-[7px] w-[7px] shrink-0 rounded-full bg-emerald-500" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600">
+                    Live on Ethereum Sepolia
+                  </span>
+                </div>
+                <div className="section-eyebrow !tracking-[0.14em]">
+                  Transparent giving · On-chain accountability
+                </div>
               </div>
 
               <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-brand-navy sm:text-5xl md:text-6xl lg:text-[3.5rem]">

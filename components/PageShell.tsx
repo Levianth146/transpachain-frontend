@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GradientText } from "@/components/ui/GradientText";
 
 interface PageShellProps {
@@ -40,61 +41,74 @@ export function PageShell({
     browserTitle ?? (typeof title === "string" ? title : "TranspaChain");
 
   return (
-    <div className="relative min-h-screen pb-24 pt-[72px]">
-      <main
-        className={`relative mx-auto ${MAX_WIDTH[maxWidth]} px-4 py-12 sm:px-6 lg:px-8 lg:py-14 ${className}`}
-      >
-        <motion.header
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.45 }}
-          className="mb-10"
-        >
-          {eyebrow && <p className="section-eyebrow mb-3">{eyebrow}</p>}
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h1 className="font-display text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">
-                {typeof title === "string" ? (
-                  <GradientText>{title}</GradientText>
-                ) : (
-                  title
-                )}
-              </h1>
-              {description && (
-                <p className="mt-3 max-w-2xl text-base leading-relaxed text-text-primary/48 sm:text-lg">
-                  {description}
-                </p>
-              )}
-            </div>
-            {actions && <div className="shrink-0">{actions}</div>}
-          </div>
-        </motion.header>
+    <AnimatedGradientBackground variant="light" className="min-h-screen pb-24">
+      <div className="relative">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(20,184,166,0.08),transparent_70%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(139,92,246,0.06),transparent_70%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 hero-grid-pattern opacity-40 [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)]"
+        />
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="browser-window-dark overflow-hidden"
+        <main
+          className={`relative mx-auto ${MAX_WIDTH[maxWidth]} px-4 py-12 sm:px-6 lg:px-8 lg:py-14 ${className}`}
         >
-          <div className="browser-chrome-dark">
-            <div className="flex gap-1.5" aria-hidden>
-              <span className="browser-dot-indigo" />
-              <span className="browser-dot-purple" />
-              <span className="browser-dot-cyan" />
+          <motion.header
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.45 }}
+            className="mb-10"
+          >
+            {eyebrow && <p className="section-eyebrow mb-3">{eyebrow}</p>}
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h1 className="font-display text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl lg:text-5xl">
+                  {typeof title === "string" ? (
+                    <GradientText>{title}</GradientText>
+                  ) : (
+                    title
+                  )}
+                </h1>
+                {description && (
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-500 sm:text-lg">
+                    {description}
+                  </p>
+                )}
+              </div>
+              {actions && <div className="shrink-0">{actions}</div>}
             </div>
-            <span className="max-w-[50%] truncate text-center text-[11px] font-medium text-text-primary/35">
-              {resolvedBrowserTitle}
-            </span>
-            <div className="flex gap-1.5 opacity-0" aria-hidden>
-              <span className="h-2 w-2 rounded-full" />
-              <span className="h-2 w-2 rounded-full" />
-              <span className="h-2 w-2 rounded-full" />
+          </motion.header>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="browser-window overflow-hidden"
+          >
+            <div className="browser-chrome">
+              <div className="browser-dots" aria-hidden>
+                <span className="browser-dot browser-dot-red" />
+                <span className="browser-dot browser-dot-yellow" />
+                <span className="browser-dot browser-dot-green" />
+              </div>
+              <span className="browser-title">{resolvedBrowserTitle}</span>
+              <div className="browser-dots browser-dots-ghost" aria-hidden>
+                <span className="browser-dot browser-dot-ghost" />
+                <span className="browser-dot browser-dot-ghost" />
+                <span className="browser-dot browser-dot-ghost" />
+              </div>
             </div>
-          </div>
-          <div className="p-5 sm:p-6 lg:p-8">{children}</div>
-        </motion.div>
-      </main>
-    </div>
+            <div className="p-5 sm:p-6 lg:p-8">{children}</div>
+          </motion.div>
+        </main>
+      </div>
+    </AnimatedGradientBackground>
   );
 }

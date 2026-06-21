@@ -59,7 +59,7 @@ function isUrgentDeadline(timeLeft: string | null): boolean {
 export function CampaignCard({
   campaign,
   onChainRaisedWei,
-  variant = "dark",
+  variant = "light",
 }: {
   campaign: any;
   onChainRaisedWei?: bigint;
