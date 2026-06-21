@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
-import { TEAM_MEMBERS, getInitials, type TeamMember } from "@/lib/teamMembers";
+import { TEAM_MEMBERS, type TeamMember } from "@/lib/teamMembers";
 
 type CoreContributorsCarouselProps = {
   activeSlug?: string;
@@ -113,8 +114,15 @@ export function CoreContributorsCarousel({
                   isActive ? "border-holo-mint/50" : "border-white/10 group-hover:border-holo-mint/30"
                 }`}
               >
+                <Image
+                  src={member.photo}
+                  alt={member.name}
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 640px) 72vw, 260px"
+                />
                 <div
-                  className="absolute inset-0 opacity-20"
+                  className="absolute inset-0 opacity-15"
                   style={{
                     backgroundImage:
                       "repeating-conic-gradient(rgba(255,255,255,0.06) 0% 25%, transparent 0% 50%)",
@@ -122,11 +130,6 @@ export function CoreContributorsCarousel({
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute inset-0 flex items-end justify-center pb-8">
-                  <span className="font-display text-5xl font-bold tracking-tight text-white/90 sm:text-6xl">
-                    {getInitials(member.name)}
-                  </span>
-                </div>
               </div>
 
               <div className="flex items-center gap-2">

@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowDown } from "@phosphor-icons/react";
-import { getInitials, type TeamMember } from "@/lib/teamMembers";
+import { type TeamMember } from "@/lib/teamMembers";
 
 type ContributorProfileProps = {
   member: TeamMember;
@@ -48,11 +49,17 @@ export function ContributorProfile({ member, index, isActive }: ContributorProfi
             />
           </div>
 
-          <div
-            className={`relative min-h-[240px] bg-gradient-to-br ${member.gradient} md:min-h-[280px]`}
-          >
+          <div className={`relative min-h-[240px] bg-gradient-to-br ${member.gradient} md:min-h-[280px]`}>
+            <Image
+              src={member.photo}
+              alt={member.name}
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority={index === 0}
+            />
             <div
-              className="absolute inset-0 opacity-15"
+              className="absolute inset-0 opacity-10"
               style={{
                 backgroundImage:
                   "repeating-conic-gradient(rgba(255,255,255,0.08) 0% 25%, transparent 0% 50%)",
@@ -60,46 +67,26 @@ export function ContributorProfile({ member, index, isActive }: ContributorProfi
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-black/10 to-black/40" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-display text-7xl font-bold tracking-tight text-white/85 sm:text-8xl lg:text-9xl">
-                {getInitials(member.name)}
-              </span>
-            </div>
           </div>
         </div>
 
-        {/* Bio panel: stats left, metadata + paragraphs right */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(240px,320px)_1fr]">
-          <div className="rounded-br-[3rem] bg-ink-900 p-8 sm:p-10 lg:rounded-br-[4rem]">
-            <div className="space-y-8">
-              {member.stats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="font-display text-5xl font-bold leading-none text-white sm:text-6xl">
-                    {stat.value}
-                  </p>
-                  <p className="mt-2 text-sm leading-snug text-white/70">{stat.label}</p>
-                </div>
-              ))}
+        {/* Bio panel: metadata + paragraphs */}
+        <div className="bg-white/[0.94] p-8 text-ink-900 sm:p-10 lg:p-12">
+          <dl className="space-y-3 text-sm sm:text-base">
+            <div className="flex flex-wrap gap-x-2">
+              <dt className="font-semibold">Nationality:</dt>
+              <dd>{member.nationality}</dd>
             </div>
-          </div>
-
-          <div className="bg-white/[0.94] p-8 text-ink-900 sm:p-10 lg:p-12">
-            <dl className="space-y-3 text-sm sm:text-base">
-              <div className="flex flex-wrap gap-x-2">
-                <dt className="font-semibold">Nationality:</dt>
-                <dd>{member.nationality}</dd>
-              </div>
-              <div className="flex flex-wrap gap-x-2">
-                <dt className="font-semibold">Lives:</dt>
-                <dd>{member.lives}</dd>
-              </div>
-            </dl>
-
-            <div className="mt-8 space-y-4 text-sm leading-relaxed text-ink-900/85 sm:text-[15px] sm:leading-7">
-              {member.bio.map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
-              ))}
+            <div className="flex flex-wrap gap-x-2">
+              <dt className="font-semibold">Lives:</dt>
+              <dd>{member.lives}</dd>
             </div>
+          </dl>
+
+          <div className="mt-8 space-y-4 text-sm leading-relaxed text-ink-900/85 sm:text-[15px] sm:leading-7">
+            {member.bio.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
           </div>
         </div>
       </motion.div>
