@@ -32,19 +32,3 @@ export async function gasWithBuffer(
     return fallback;
   }
 }
-
-/** Simulate a write; throws with revert reason if the tx would fail. */
-export async function simulateContractWrite(
-  client: PublicClient | undefined,
-  params: EstimateParams
-): Promise<void> {
-  if (!client || !params.account) return;
-  await client.simulateContract({
-    address: params.address,
-    abi: params.abi,
-    functionName: params.functionName,
-    args: params.args,
-    value: params.value,
-    account: params.account,
-  });
-}

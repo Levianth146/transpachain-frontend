@@ -1,10 +1,10 @@
 // Contract addresses — prefer env, fallback to known Sepolia deploy.
 // This prevents production builds from silently breaking if NEXT_PUBLIC_* vars are missing.
 const FALLBACK_SEPOLIA_ADDRESSES = {
-  charityCore:   "0x8a5e023b16ab13939260492dAe72a0be1E597e1a",
-  donationVault: "0x68Bb9f5E1414b1a62372EbF02fdEe4c09fFc7C32",
-  governanceDAO: "0xCcAEaF248E536850877B9f948cB237Fe7885b513",
-  impactNFT:     "0xD651d3531a44ee7941bFE257c79F41d274E180A6",
+  charityCore:   "0xA13344e56a2421322bb2985ffE37b07DB80B760d",
+  donationVault: "0x72116A0BCe20473FE1BfcC2da9D2337A6D39Ed5c",
+  governanceDAO: "0x290770c85B42c3a32365f6f6350587878dCbe2D5",
+  impactNFT:     "0x17CcdcF683626B5c914640154464bF64Ca66DB18",
 } as const;
 
 export const ADDRESSES = {
@@ -29,7 +29,6 @@ export const CHARITY_CORE_ABI = [
   { name: "getCharityProgress", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "raised", type: "uint256" }, { name: "goal", type: "uint256" }, { name: "progressBps", type: "uint256" }, { name: "deadline", type: "uint256" }, { name: "isExpired", type: "bool" }, { name: "timeLeft", type: "uint256" }] },
   { name: "cancelCampaign", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
   { name: "finalizeCampaign", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
-  { name: "canFinalize", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "eligible", type: "bool" }, { name: "goalReached", type: "bool" }, { name: "expired", type: "bool" }] },
   { name: "extendDeadline", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }, { name: "newDeadline", type: "uint256" }], outputs: [] },
   { name: "MAX_EXTENSION", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "isOrgVerified", type: "function", stateMutability: "view", inputs: [{ name: "org", type: "address" }], outputs: [{ name: "", type: "bool" }] },

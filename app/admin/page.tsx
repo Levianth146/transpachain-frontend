@@ -23,7 +23,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageShell } from "@/components/PageShell";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { StatGradientCard } from "@/components/ui/StatGradientCard";
+import { MotionCard } from "@/components/ui/MotionCard";
 
 const ORG_ROLE      = keccak256(toBytes("ORG_ROLE"));
 const ADMIN_ROLE    = keccak256(toBytes("ADMIN_ROLE"));
@@ -145,6 +145,12 @@ function Section({
     </GlassPanel>
   );
 }
+
+const STAT_GRADIENTS = [
+  "from-holo-silver/15 to-holo-lavender/10",
+  "from-holo-mint/20 to-holo-lavender/10",
+  "from-holo-lavender/20 to-holo-pink/10",
+];
 
 export default function AdminPage() {
   const { address, isConnected } = useAccount();
@@ -355,21 +361,18 @@ export default function AdminPage() {
 
       <div className="grid grid-cols-3 gap-4">
         {stats.map(({ label, value, color, warn }, i) => (
-          <StatGradientCard
-            key={label}
-            label={label}
-            delay={i * 0.08}
-            value={
-              <>
-                <p className={`text-2xl font-bold ${color}`}>{value}</p>
-                {warn && (
-                  <p className="mt-1 text-[10px] text-amber-600">
-                    Indexer behind — restart backend or wait for backfill
-                  </p>
-                )}
-              </>
-            }
-          />
+          <MotionCard key={label} index={i}>
+            <GlassPanel hover={false} holoBorder className={`bg-gradient-to-br ${STAT_GRADIENTS[i]} p-4 text-center`}>
+              <p className={`text-2xl font-bold ${color}`}>{value}</p>
+              <p className="mt-0.5 text-xs text-white/50 flex items-center justify-center gap-1">
+                {warn && <AlertCircle size={12} className="text-amber-400 shrink-0" />}
+                {label}
+              </p>
+              {warn && (
+                <p className="mt-1 text-[10px] text-amber-400/90">Indexer behind — restart backend or wait for backfill</p>
+              )}
+            </GlassPanel>
+          </MotionCard>
         ))}
       </div>
 

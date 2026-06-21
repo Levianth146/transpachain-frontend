@@ -10,15 +10,10 @@ interface MotionCardProps {
 export function MotionCard({ children, className = "", index = 0 }: MotionCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.08,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.06 }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
       className={className}
     >
       {children}

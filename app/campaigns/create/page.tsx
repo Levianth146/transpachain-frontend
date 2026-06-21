@@ -11,7 +11,6 @@ import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBack
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { normalizeImageUrl } from "@/lib/images";
 import { getPaymentTokenLabel } from "@/lib/format";
-import { FileUploadButton } from "@/components/FileUploadButton";
 
 const INPUT_CLASS = "input-glass";
 
@@ -35,10 +34,9 @@ export default function CreateCampaignPage() {
   });
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const handleImageUpload = async (file: File | null) => {
-    setImageFile(file);
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
     setUploadError(null);
     setUploading(true);
@@ -46,7 +44,6 @@ export default function CreateCampaignPage() {
       const { url, cid } = await api.uploadFile(file);
       setForm((prev) => ({ ...prev, imageUrl: url || `ipfs://${cid}` }));
     } catch {
-      setImageFile(null);
       setUploadError("Upload failed — check Pinata keys on backend or paste a URL manually.");
     } finally {
       setUploading(false);
@@ -174,13 +171,10 @@ export default function CreateCampaignPage() {
         <div>
           <label className="mb-1 block text-sm font-medium text-white/80">Campaign Image</label>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <FileUploadButton
-              variant="holo"
-              file={imageFile}
-              onFileChange={handleImageUpload}
-              uploading={uploading}
-              buttonLabel="Upload to IPFS"
-            />
+            <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-holo-mint/30 bg-holo-mint/10 px-4 py-2 text-sm font-medium text-holo-mint transition hover:bg-holo-mint/20">
+              {uploading ? "Uploading…" : "Upload to IPFS"}
+              <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+            </label>
             <span className="text-xs text-white/40">or paste URL below</span>
           </div>
           {uploadError && <p className="mt-1 text-xs text-red-400">{uploadError}</p>}

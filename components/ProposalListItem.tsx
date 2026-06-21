@@ -36,16 +36,11 @@ type ProposalRow = {
 export function ProposalListItem({ proposal, index }: { proposal: ProposalRow; index: number }) {
   const { data: chainRaw } = useProposal(BigInt(proposal.proposalId));
   const chain = chainRaw as Record<string, unknown> | undefined;
-  const chainProposalId = chain?.id != null ? Number(chain.id) : 0;
 
   const forVotes = chain?.forVotes ?? 0;
   const againstVotes = chain?.againstVotes ?? 0;
   const abstainVotes = chain?.abstainVotes ?? 0;
-  const stateNum = chainProposalId === 0
-    ? 5
-    : chain?.state != null
-      ? Number(chain.state)
-      : (proposal.state ?? 0);
+  const stateNum = chain?.state != null ? Number(chain.state) : (proposal.state ?? 0);
 
   const fmt = (v: unknown) => formatQuadraticVoteWeight(
     typeof v === "bigint" ? v : BigInt(String(v ?? 0))

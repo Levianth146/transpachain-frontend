@@ -2,31 +2,16 @@
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { metaMask } from "wagmi/connectors";
 import { useMounted } from "@/hooks/useMounted";
-import { Wallet } from "lucide-react";
 
-interface ConnectWalletProps {
-  variant?: "default" | "hero";
-}
-
-export function ConnectWallet({ variant = "default" }: ConnectWalletProps) {
+export function ConnectWallet() {
   const mounted = useMounted();
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
 
-  const connectClass =
-    variant === "hero"
-      ? "btn-wallet"
-      : "rounded-full border border-brand-purple/30 bg-brand-purple/10 px-4 py-2 text-sm font-semibold text-brand-purple-light transition-all hover:border-brand-purple/50 hover:bg-brand-purple/15";
-
-  const disconnectClass =
-    variant === "hero"
-      ? "rounded-full border border-white/15 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/25 hover:text-white"
-      : "rounded-full border border-white/15 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/25 hover:text-white";
-
   if (!mounted) {
     return (
-      <button className={`${connectClass} opacity-0`}>
+      <button className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white opacity-0">
         Connect Wallet
       </button>
     );
@@ -35,10 +20,13 @@ export function ConnectWallet({ variant = "default" }: ConnectWalletProps) {
   if (isConnected && address) {
     return (
       <div className="flex items-center gap-2">
-        <span className="hidden font-mono text-xs text-white/50 sm:inline">
+        <span className="hidden font-mono text-xs text-white/60 sm:inline">
           {address.slice(0, 6)}…{address.slice(-4)}
         </span>
-        <button onClick={() => disconnect()} className={disconnectClass}>
+        <button
+          onClick={() => disconnect()}
+          className="rounded-full border border-gray-700 px-3 py-1.5 text-xs font-medium text-white/80 transition-colors hover:border-gray-600 hover:text-white"
+        >
           Disconnect
         </button>
       </div>
@@ -48,9 +36,8 @@ export function ConnectWallet({ variant = "default" }: ConnectWalletProps) {
   return (
     <button
       onClick={() => connect({ connector: metaMask() })}
-      className={connectClass}
+      className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
     >
-      {variant === "hero" && <Wallet size={16} />}
       Connect Wallet
     </button>
   );

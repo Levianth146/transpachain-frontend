@@ -85,28 +85,10 @@ export function CampaignCard({
   return (
     <Link href={`/campaigns/${campaign.campaignId}`}>
       <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        whileHover={{ scale: 1.02, y: -4 }}
-        className="browser-window group flex h-full cursor-pointer flex-col overflow-hidden transition-all duration-300 hover:border-brand-purple/25 hover:shadow-2xl hover:shadow-brand-purple/10"
+        whileHover={{ y: -6 }}
+        transition={{ duration: 0.25 }}
+        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md transition-all duration-300 hover:border-holo-mint/30 hover:shadow-2xl hover:shadow-holo-mint/10"
       >
-        <div className="browser-chrome py-2">
-          <div className="browser-dots" aria-hidden>
-            <span className="browser-dot browser-dot-red" />
-            <span className="browser-dot browser-dot-yellow" />
-            <span className="browser-dot browser-dot-green" />
-          </div>
-          <span className="browser-title">
-            {campaign.title ?? `Campaign #${campaign.campaignId}`}
-          </span>
-          <div className="browser-dots browser-dots-ghost" aria-hidden>
-            <span className="browser-dot browser-dot-ghost" />
-            <span className="browser-dot browser-dot-ghost" />
-            <span className="browser-dot browser-dot-ghost" />
-          </div>
-        </div>
         <CampaignImage
           imageUrl={campaign.imageUrl}
           title={campaign.title}

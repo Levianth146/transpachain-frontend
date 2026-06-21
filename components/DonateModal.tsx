@@ -3,13 +3,12 @@ import { useState, useEffect } from "react";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther, parseUnits } from "viem";
 import { useDonate, useDonateUSDC } from "@/hooks/useDonationVault";
-import { useCharityProgress } from "@/hooks/useCharityCore";
 import { addToast } from "@/components/Toast";
 import { ADDRESSES } from "@/lib/contracts";
 import { ERC20_ABI, USDC_ADDRESS, USDC_DECIMALS } from "@/lib/erc20";
 import { HandCoins, Lock, ShieldCheck } from "@phosphor-icons/react";
-import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
-import { TxLink, nftContractExplorerUrl } from "@/components/TxLink";
+import { motion } from "framer-motion";
+import { TxLink } from "@/components/TxLink";
 import { tierFromEthAmount, tierImagePath, tierLabel } from "@/lib/nft";
 import Image from "next/image";
 
@@ -46,13 +45,6 @@ export function DonateModal({
   const { isSuccess: approveSuccess } = useWaitForTransactionReceipt({ hash: approveHash });
 
   const parsedAmount = isUSDC ? parseUnits(amount || "0", USDC_DECIMALS) : parseEther(amount || "0");
-
-  const { data: progressRaw } = useCharityProgress(campaignId);
-  const progress = progressRaw as readonly [bigint, bigint, bigint, bigint, boolean, bigint] | undefined;
-  const goalReached =
-    progress !== undefined &&
-    progress[1] > 0n &&
-    progress[0] >= progress[1];
 
   const { data: allowance, refetch: refetchAllowance } = useReadContract({
     address: USDC_ADDRESS,
@@ -114,8 +106,9 @@ export function DonateModal({
   if (ethSuccess || usdcDonateSuccess) {
     const tier = successTier ?? 0;
     const txHash = ethHash ?? usdcHash;
+    const openseaUrl = `https://testnets.opensea.io/assets/sepolia/${ADDRESSES.impactNFT}`;
     return (
-      <BrowserWindowCard title="Donation successful" animate={false} bodyClassName="space-y-4 p-5 text-center">
+      <div className="glass-card space-y-4 p-5 text-center">
         <Image
           src={tierImagePath(tier)}
           alt={tierLabel(tier)}
@@ -133,20 +126,24 @@ export function DonateModal({
         <div className="flex flex-col gap-2 text-xs">
           <TxLink hash={txHash} label="View transaction" />
           <a
-            href={nftContractExplorerUrl(ADDRESSES.impactNFT)}
+            href={openseaUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-holo-lavender hover:underline"
           >
-            View Impact NFT on Etherscan
+            View on OpenSea Sepolia
           </a>
         </div>
-      </BrowserWindowCard>
+      </div>
     );
   }
 
   return (
-    <BrowserWindowCard title="Make a Donation" animate={false} bodyClassName="p-5">
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-xl border border-holo-mint/20 bg-gradient-to-br from-ink-900/90 to-ink-950/90 p-5 backdrop-blur-sm"
+    >
       <h3 className="font-semibold mb-3 flex items-center gap-2 text-white">
         <HandCoins size={20} weight="duotone" className="text-holo-mint" />
         Make a Donation
@@ -161,11 +158,6 @@ export function DonateModal({
         </span>
       </div>
 
-      {goalReached && (
-        <p className="text-xs text-amber-300/90 mb-2 rounded-lg bg-amber-500/10 px-2 py-1.5">
-          Funding goal reached — donations are closed until the org finalizes.
-        </p>
-      )}
       <p className="text-xs text-white/50 mb-2">
         Token: {isUSDC ? "USDC (Sepolia)" : "ETH"} · 1% platform fee · Net amount enters escrow.
       </p>
@@ -190,7 +182,7 @@ export function DonateModal({
         )}
         <button
           onClick={handleDonate}
-          disabled={!isConnected || busy || (isUSDC && needsApprove) || goalReached}
+          disabled={!isConnected || busy || (isUSDC && needsApprove)}
           className="w-full py-2 bg-holo-mint/90 text-ink-950 rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-holo-mint"
         >
           {busy ? "Confirm in wallet..." : isUSDC && needsApprove ? "2. Donate (after approve)" : "Donate"}
@@ -200,6 +192,6 @@ export function DonateModal({
       {(ethError || usdcDonateError) && (
         <p className="text-xs text-red-400 mt-2">{(ethError || usdcDonateError)?.message}</p>
       )}
-    </BrowserWindowCard>
+    </motion.div>
   );
 }

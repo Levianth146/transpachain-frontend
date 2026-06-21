@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 import { Providers } from "./providers";
 import { ToastContainer } from "@/components/Toast";
 import { ConditionalNav } from "@/components/ConditionalNav";
-import { SiteFooter } from "@/components/SiteFooter";
-import { BottomDock } from "@/components/BottomDock";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({
@@ -33,8 +32,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <ConditionalNav />
           {children}
-          <SiteFooter />
-          <BottomDock />
+          <footer className="border-t border-white/10 bg-black px-6 py-8 text-center text-sm text-white/50">
+            <p className="mb-1 font-display font-medium text-holo">
+              TranspaChain
+            </p>
+            <p className="mb-2">Sepolia testnet demo — transpachain.site — not financial advice.</p>
+            <Link href="/legal" className="text-holo-mint transition-colors hover:text-white">
+              Legal &amp; Disclaimer
+            </Link>
+          </footer>
           <ToastContainer />
         </Providers>
       </body>
