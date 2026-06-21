@@ -18,7 +18,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleSummary: "Project vision and executive leadership",
     photo: "/team/bao-nguyen.png",
     gradient: "from-holo-mint/40 via-teal-500/20 to-holo-lavender/30",
-    nationality: "Vietnam",
+    nationality: "Vietnamese",
     lives: "Ho Chi Minh City",
     bio: [
       "Bao Nguyen sets TranspaChain's strategic direction: a charity Web3 platform where every donation is held in transparent milestone escrow on Ethereum Sepolia until verified organizations deliver proof and donors approve release.",
@@ -33,7 +33,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleSummary: "Blockchain technology and smart contract architecture",
     photo: "/team/cuong-nguyen.png",
     gradient: "from-teal-400/30 via-cyan-500/20 to-holo-mint/25",
-    nationality: "Vietnam",
+    nationality: "Vietnamese",
     lives: "Ho Chi Minh City",
     bio: [
       "Cuong Nguyen architects TranspaChain's on-chain core: DonationVault escrow for ETH and USDC, GovernanceDAO proposals with quadratic vote weighting, and Impact NFT tiers that upgrade as donors contribute further to a campaign.",
@@ -48,7 +48,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleSummary: "Operations management and delivery timelines",
     photo: "/team/huy-luu.png",
     gradient: "from-holo-lavender/30 via-purple-500/15 to-holo-pink/25",
-    nationality: "Vietnam",
+    nationality: "Vietnamese",
     lives: "Ho Chi Minh City",
     bio: [
       "Huy Luu runs day-to-day operations across the full campaign lifecycle — verified organization onboarding, milestone evidence uploads, admin review queues, and donor voting windows on GovernanceDAO proposals.",
@@ -63,7 +63,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleSummary: "Financial management and tokenomics",
     photo: "/team/tran-linh.png",
     gradient: "from-amber-400/25 via-holo-pink/20 to-holo-lavender/30",
-    nationality: "Vietnam",
+    nationality: "Vietnamese",
     lives: "Ho Chi Minh City",
     bio: [
       "Tran Linh oversees financial modeling for dual-token donations held in smart-contract escrow until governance-approved release. She ensures dashboard totals, vault balances, and donor-facing fund status reflect verifiable Sepolia state.",
@@ -78,7 +78,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleSummary: "Marketing and community engagement",
     photo: "/team/mai-phuong-nguyen.png",
     gradient: "from-holo-pink/30 via-rose-400/15 to-holo-mint/25",
-    nationality: "Vietnam",
+    nationality: "Vietnamese",
     lives: "Ho Chi Minh City",
     bio: [
       "Mai Phuong Nguyen leads marketing and community growth for TranspaChain's transparent giving story — translating DonationVault escrow, milestone proof, and GovernanceDAO participation into language donors and partner orgs can trust.",
@@ -93,7 +93,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleSummary: "Product development and donor experience",
     photo: "/team/nguyen-huong.png",
     gradient: "from-cyan-400/25 via-holo-mint/30 to-teal-500/20",
-    nationality: "Vietnam",
+    nationality: "Vietnamese",
     lives: "Ho Chi Minh City",
     bio: [
       "Nguyen Huong owns product strategy and the end-to-end donor experience — campaign discovery, wallet connection, donations in ETH or USDC, evidence inspection, governance voting, and Impact NFT collection.",
@@ -108,7 +108,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleSummary: "Security assurance and platform safety",
     photo: "/team/quynh-huong-pham.png",
     gradient: "from-emerald-400/25 via-holo-mint/20 to-cyan-500/25",
-    nationality: "Vietnam",
+    nationality: "Vietnamese",
     lives: "Ho Chi Minh City",
     bio: [
       "Quynh Huong Pham safeguards TranspaChain's security posture — DonationVault custody integrity, ORG_ROLE verification, admin evidence review standards, and anti-abuse controls across contracts and supporting infrastructure.",
@@ -123,7 +123,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleSummary: "Legal affairs and regulatory compliance",
     photo: "/team/anh-quan-le.png",
     gradient: "from-indigo-400/25 via-holo-lavender/25 to-holo-silver/20",
-    nationality: "Vietnam",
+    nationality: "Vietnamese",
     lives: "Ho Chi Minh City",
     bio: [
       "Anh Quan Le handles legal and compliance frameworks for verified organization campaigns and donor governance on TranspaChain — advising how milestone evidence, DonationVault escrow, and refund paths meet transparency obligations.",
