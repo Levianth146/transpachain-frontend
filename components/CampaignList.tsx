@@ -104,7 +104,7 @@ export function CampaignList() {
   if (allCampaigns.length === 0) return (
     <div className="text-center py-20 px-4 max-w-md mx-auto">
       <p className="text-5xl mb-4">📋</p>
-      <h3 className="mb-2 text-xl font-display font-semibold text-brand-navy">No campaigns yet</h3>
+      <h3 className="mb-2 font-display text-xl font-semibold text-text-primary">No campaigns yet</h3>
       <p className="text-sm leading-relaxed text-slate-500">
         Campaigns appear here after a verified organization creates one on-chain via Sepolia.
         Each campaign locks donations in escrow until donors approve milestone releases.

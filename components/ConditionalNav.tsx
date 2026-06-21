@@ -5,6 +5,6 @@ import { SiteHeader } from "@/components/SiteHeader";
 
 export function ConditionalNav() {
   const pathname = usePathname();
-  if (pathname === "/") return null;
-  return <SiteHeader variant="default" />;
+  const isLanding = pathname === "/";
+  return <SiteHeader variant={isLanding ? "hero" : "default"} />;
 }

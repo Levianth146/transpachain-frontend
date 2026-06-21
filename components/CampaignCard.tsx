@@ -59,10 +59,13 @@ function isUrgentDeadline(timeLeft: string | null): boolean {
 export function CampaignCard({
   campaign,
   onChainRaisedWei,
+  variant = "dark",
 }: {
   campaign: any;
   onChainRaisedWei?: bigint;
+  variant?: "light" | "dark";
 }) {
+  const isDark = variant === "dark";
   const paymentToken = campaign.paymentToken ?? 0;
   const tokenLabel   = getPaymentTokenLabel(paymentToken);
   const fractionDigits = getCampaignFractionDigits(paymentToken);
@@ -90,15 +93,19 @@ export function CampaignCard({
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ scale: 1.02, y: -4 }}
-        className="browser-window group flex h-full cursor-pointer flex-col overflow-hidden transition-all duration-300 hover:border-brand-teal/30 hover:shadow-lg hover:shadow-brand-teal/5"
+        className={`group flex h-full cursor-pointer flex-col overflow-hidden transition-all duration-300 ${
+          isDark
+            ? "glass-card-dark hover:border-indigo-500/30 hover:shadow-glow"
+            : "browser-window hover:border-brand-teal/30 hover:shadow-lg hover:shadow-brand-teal/5"
+        }`}
       >
-        <div className="browser-chrome py-2">
+        <div className={isDark ? "browser-chrome-dark py-2" : "browser-chrome py-2"}>
           <div className="browser-dots" aria-hidden>
             <span className="browser-dot browser-dot-red" />
             <span className="browser-dot browser-dot-yellow" />
             <span className="browser-dot browser-dot-green" />
           </div>
-          <span className="browser-title">
+          <span className={isDark ? "max-w-[50%] truncate text-center text-[11px] font-medium text-text-primary/35" : "browser-title"}>
             {campaign.title ?? `Campaign #${campaign.campaignId}`}
           </span>
           <div className="browser-dots browser-dots-ghost" aria-hidden>
@@ -141,7 +148,7 @@ export function CampaignCard({
             )}
           </div>
 
-          <h3 className="mb-1 line-clamp-2 font-display text-base font-bold leading-snug text-brand-navy">
+          <h3 className={`mb-1 line-clamp-2 font-display text-base font-bold leading-snug ${isDark ? "text-text-primary" : "text-brand-navy"}`}>
             {campaign.title ?? `Campaign #${campaign.campaignId}`}
             {campaign.title && campaign.campaignId != null && (
               <span className="ml-1.5 text-xs font-normal text-slate-400">#{campaign.campaignId}</span>
@@ -149,13 +156,13 @@ export function CampaignCard({
           </h3>
 
           {campaign.orgName && (
-            <p className="mb-2 flex items-center gap-1 text-xs text-slate-500">
+            <p className={`mb-2 flex items-center gap-1 text-xs ${isDark ? "text-text-primary/40" : "text-slate-500"}`}>
               <Users size={10} /> {campaign.orgName}
             </p>
           )}
 
           {campaign.description && (
-            <p className="mb-4 line-clamp-2 flex-1 text-sm text-slate-500">
+            <p className={`mb-4 line-clamp-2 flex-1 text-sm ${isDark ? "text-text-primary/40" : "text-slate-500"}`}>
               {campaign.description}
             </p>
           )}
@@ -171,15 +178,15 @@ export function CampaignCard({
               </span>
             </div>
 
-            <div className="mb-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+            <div className={`mb-3 h-2 w-full overflow-hidden rounded-full ${isDark ? "bg-white/[0.07]" : "bg-slate-100"}`}>
               <div
                 className="h-2 rounded-full bg-holo-gradient transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
 
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span>Goal: <span className="font-medium text-brand-navy">{goal.toFixed(fractionDigits)} {tokenLabel}</span></span>
+            <div className={`flex items-center justify-between text-xs ${isDark ? "text-text-primary/40" : "text-slate-500"}`}>
+              <span>Goal: <span className={`font-medium ${isDark ? "text-text-primary/70" : "text-brand-navy"}`}>{goal.toFixed(fractionDigits)} {tokenLabel}</span></span>
               <span className="flex items-center gap-1">
                 <Users size={10} />
                 {campaign.donorCount ?? 0} donors
