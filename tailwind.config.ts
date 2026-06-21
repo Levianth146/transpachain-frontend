@@ -85,27 +85,6 @@ const config: Config = {
         "glass-lg": "0 16px 48px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255,255,255,0.95)",
         "glass-card": "0 4px 24px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255,255,255,0.8)",
       },
-      animation: {
-        drift1: "drift1 24s ease-in-out infinite alternate",
-        drift2: "drift2 31s ease-in-out infinite alternate",
-        drift3: "drift3 39s ease-in-out infinite alternate",
-        liveblink: "liveblink 2s ease-in-out infinite",
-      },
-      keyframes: {
-        drift1: {
-          to: { transform: "translate(8%, 10%) scale(1.1)" },
-        },
-        drift2: {
-          to: { transform: "translate(-10%, 6%) scale(0.95)" },
-        },
-        drift3: {
-          to: { transform: "translate(6%, -9%) scale(1.06)" },
-        },
-        liveblink: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.35" },
-        },
-      },
     },
   },
   plugins: [],

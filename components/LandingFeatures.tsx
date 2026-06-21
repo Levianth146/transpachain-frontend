@@ -1,6 +1,8 @@
 "use client";
 
-import { Lock, ShieldCheck, Medal } from "@phosphor-icons/react";
+import Link from "next/link";
+import { Lock, ShieldCheck, Medal, ChartLineUp } from "@phosphor-icons/react";
+import { ArrowRight } from "lucide-react";
 import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
 import { GradientText } from "@/components/ui/GradientText";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -13,7 +15,6 @@ const FEATURES = [
       "Donations stay locked on-chain until milestones pass donor governance — no silent fund releases.",
     accent: "text-brand-teal",
     glow: "group-hover:shadow-[0_0_30px_rgba(20,184,166,0.08)]",
-    showFlow: true,
   },
   {
     icon: ShieldCheck,
@@ -31,44 +32,19 @@ const FEATURES = [
     accent: "text-accent-pink",
     glow: "group-hover:shadow-[0_0_30px_rgba(236,72,153,0.08)]",
   },
+  {
+    icon: ChartLineUp,
+    title: "Live on-chain stats",
+    description:
+      "Raised amounts read directly from Sepolia contracts. Indexed metadata keeps the experience fast.",
+    accent: "text-accent-shine",
+    glow: "group-hover:shadow-[0_0_30px_rgba(6,182,212,0.08)]",
+  },
 ];
-
-function EscrowFlow() {
-  return (
-    <div className="mt-6 flex flex-1 flex-col gap-0">
-      {[
-        { emoji: "💳", title: "Donor Wallet", sub: "ETH or USDC" },
-        { emoji: "🔒", title: "Escrow Vault", sub: "Locked until vote passes", highlight: true },
-        { emoji: "🏢", title: "Organization", sub: "After donor approval" },
-      ].map((step, i, arr) => (
-        <div key={step.title}>
-          <div
-            className={`flex items-center gap-3 rounded-xl border p-3.5 ${
-              step.highlight
-                ? "border-brand-teal/25 bg-teal-50/80"
-                : "border-slate-200/80 bg-white/70"
-            }`}
-          >
-            <span className="text-xl">{step.emoji}</span>
-            <div>
-              <p className="text-xs font-bold text-brand-navy">{step.title}</p>
-              <p className="text-[11px] text-slate-500">{step.sub}</p>
-            </div>
-          </div>
-          {i < arr.length - 1 && (
-            <div className="flex h-5 items-center justify-center">
-              <div className="h-full w-px bg-gradient-to-b from-brand-teal/40 to-brand-teal/10" />
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export function LandingFeatures() {
   return (
-    <section id="protocol" className="relative bg-white/40 py-28 backdrop-blur-sm">
+    <section className="relative bg-white/40 py-28 backdrop-blur-sm">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-teal/25 to-transparent"
@@ -86,13 +62,13 @@ export function LandingFeatures() {
           </p>
         </ScrollReveal>
 
-        <div className="grid gap-5 md:grid-cols-3">
-          {FEATURES.map(({ icon: Icon, title, description, accent, glow, showFlow }, i) => (
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {FEATURES.map(({ icon: Icon, title, description, accent, glow }, i) => (
             <BrowserWindowCard
               key={title}
               title={title}
               delay={i * 0.08}
-              bodyClassName={`p-7 ${showFlow ? "flex flex-col" : ""}`}
+              bodyClassName="p-7"
               className={`premium-card group ${glow}`}
             >
               <div
@@ -102,10 +78,41 @@ export function LandingFeatures() {
               </div>
               <h3 className="font-display text-lg font-semibold text-brand-navy">{title}</h3>
               <p className="mt-2.5 text-sm leading-relaxed text-slate-500">{description}</p>
-              {showFlow && <EscrowFlow />}
             </BrowserWindowCard>
           ))}
         </div>
+
+        <BrowserWindowCard
+          title="Ready to make an impact?"
+          delay={0.2}
+          bodyClassName="p-8 sm:p-12"
+          className="cta-banner mt-20 border-0 bg-transparent shadow-none"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-teal-200/30 blur-[80px]"
+          />
+          <div className="relative flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
+            <div>
+              <p className="font-display text-2xl font-bold text-brand-navy sm:text-3xl">
+                Ready to make an impact?
+              </p>
+              <p className="mt-2 max-w-md text-sm leading-relaxed text-slate-500 sm:text-base">
+                Browse active campaigns or launch your own in minutes — every donation is escrowed
+                and every release is voted on.
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-3">
+              <Link href="/campaigns" className="btn-primary group">
+                Explore campaigns
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <Link href="/campaigns/create" className="btn-secondary">
+                Create campaign
+              </Link>
+            </div>
+          </div>
+        </BrowserWindowCard>
       </div>
     </section>
   );

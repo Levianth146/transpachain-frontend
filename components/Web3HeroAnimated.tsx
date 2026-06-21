@@ -9,7 +9,6 @@ import { useSocketEvents } from "@/hooks/useSocket";
 import { useOnChainPlatformStats } from "@/hooks/useOnChainPlatformStats";
 import { SiteHeader } from "@/components/SiteHeader";
 import { HeroIsometricScene } from "@/components/HeroIsometricScene";
-import { HeroVideoBackground } from "@/components/HeroVideoBackground";
 import { StatGradientCard } from "@/components/ui/StatGradientCard";
 
 function AnimatedCounter({
@@ -121,7 +120,6 @@ export function Web3HeroAnimated() {
     <>
       <section className="relative isolate min-h-screen overflow-hidden text-brand-navy">
         <div aria-hidden className="absolute inset-0 mesh-bg-hero" />
-        <HeroVideoBackground variant="light" />
         <div aria-hidden className="absolute inset-0 hero-grid-pattern opacity-60" />
         <motion.div
           aria-hidden
@@ -153,9 +151,9 @@ export function Web3HeroAnimated() {
               animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 24 }}
               transition={{ duration: 0.6 }}
             >
-              <p className="section-eyebrow mb-6 !tracking-[0.14em]">
+              <div className="section-eyebrow mb-6">
                 Transparent giving · On-chain accountability
-              </p>
+              </div>
 
               <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-brand-navy sm:text-5xl md:text-6xl lg:text-[3.5rem]">
                 Give with{" "}
@@ -178,7 +176,7 @@ export function Web3HeroAnimated() {
                 <Link href="/campaigns/create" className="btn-secondary">
                   Create Campaign
                 </Link>
-                <Link href="#how-it-works" className="btn-ghost group">
+                <Link href="/about" className="btn-ghost group">
                   How it works
                   <ArrowRight
                     size={14}

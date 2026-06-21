@@ -43,7 +43,7 @@ const STEPS = [
 
 export function LandingHowItWorks() {
   return (
-    <section id="how-it-works" className="relative scroll-mt-24 bg-surface-base py-28">
+    <section className="relative bg-surface-base py-28">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"

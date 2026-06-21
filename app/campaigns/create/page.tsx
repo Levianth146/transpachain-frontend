@@ -109,7 +109,7 @@ export default function CreateCampaignPage() {
   );
 
   if (!isConnected) return (
-    <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center px-4">
+    <AnimatedGradientBackground variant="light" className="min-h-screen flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-md space-y-4 text-center">
         <h1 className="font-display text-3xl font-bold text-brand-navy">Create Campaign</h1>
         <p className="text-slate-500">Connect your verified org wallet to launch an on-chain escrow campaign.</p>
