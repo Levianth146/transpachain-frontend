@@ -1,0 +1,45 @@
+name: Build & Push Frontend to GHCR
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: levianth146/transpachain-frontend
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3.4.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6.16.0
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}-${{ github.run_number }}
+          build-args: |
+            NEXT_PUBLIC_ALCHEMY_KEY=${{ secrets.NEXT_PUBLIC_ALCHEMY_KEY }}
+            NEXT_PUBLIC_CHARITY_CORE_ADDRESS=${{ secrets.NEXT_PUBLIC_CHARITY_CORE_ADDRESS }}
+            NEXT_PUBLIC_DONATION_VAULT_ADDRESS=${{ secrets.NEXT_PUBLIC_DONATION_VAULT_ADDRESS }}
+            NEXT_PUBLIC_GOVERNANCE_DAO_ADDRESS=${{ secrets.NEXT_PUBLIC_GOVERNANCE_DAO_ADDRESS }}
+            NEXT_PUBLIC_IMPACT_NFT_ADDRESS=${{ secrets.NEXT_PUBLIC_IMPACT_NFT_ADDRESS }}
+            NEXT_PUBLIC_USDC_ADDRESS=${{ secrets.NEXT_PUBLIC_USDC_ADDRESS }}
