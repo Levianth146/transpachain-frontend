@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { Lock, ShieldCheck, Medal, ChartLineUp } from "@phosphor-icons/react";
-import { ArrowRight } from "lucide-react";
+import { Lock, ShieldCheck, Medal } from "@phosphor-icons/react";
 import { BrowserWindowCard } from "@/components/ui/BrowserWindowCard";
 import { GradientText } from "@/components/ui/GradientText";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -15,7 +13,6 @@ const FEATURES = [
       "Donations stay locked on-chain until milestones pass donor governance — no silent fund releases.",
     accent: "text-brand-teal",
     glow: "group-hover:shadow-[0_0_30px_rgba(20,184,166,0.08)]",
-    bento: "md:row-span-2",
     showFlow: true,
   },
   {
@@ -25,7 +22,6 @@ const FEATURES = [
       "Charities are verified on-chain before launching campaigns. Admin review plus transparent records.",
     accent: "text-accent-purple",
     glow: "group-hover:shadow-[0_0_30px_rgba(139,92,246,0.1)]",
-    bento: "md:col-span-2",
   },
   {
     icon: Medal,
@@ -34,16 +30,6 @@ const FEATURES = [
       "Earn retro synthwave donor badges — Bronze, Silver, and Gold tiers minted to your wallet per campaign.",
     accent: "text-accent-pink",
     glow: "group-hover:shadow-[0_0_30px_rgba(236,72,153,0.08)]",
-    bento: "",
-  },
-  {
-    icon: ChartLineUp,
-    title: "Live on-chain stats",
-    description:
-      "Raised amounts read directly from Sepolia contracts. Indexed metadata keeps the experience fast.",
-    accent: "text-accent-shine",
-    glow: "group-hover:shadow-[0_0_30px_rgba(6,182,212,0.08)]",
-    bento: "",
   },
 ];
 
@@ -100,14 +86,14 @@ export function LandingFeatures() {
           </p>
         </ScrollReveal>
 
-        <div className="grid gap-5 md:grid-cols-3 md:grid-rows-2">
-          {FEATURES.map(({ icon: Icon, title, description, accent, glow, bento, showFlow }, i) => (
+        <div className="grid gap-5 md:grid-cols-3">
+          {FEATURES.map(({ icon: Icon, title, description, accent, glow, showFlow }, i) => (
             <BrowserWindowCard
               key={title}
               title={title}
               delay={i * 0.08}
               bodyClassName={`p-7 ${showFlow ? "flex flex-col" : ""}`}
-              className={`premium-card group ${glow} ${bento ?? ""}`}
+              className={`premium-card group ${glow}`}
             >
               <div
                 className={`mb-5 inline-flex rounded-xl border border-slate-200/80 bg-white/80 p-3.5 ${accent} transition-transform group-hover:scale-110`}
@@ -120,38 +106,6 @@ export function LandingFeatures() {
             </BrowserWindowCard>
           ))}
         </div>
-
-        <BrowserWindowCard
-          title="Ready to make an impact?"
-          delay={0.2}
-          bodyClassName="p-8 sm:p-12"
-          className="cta-banner mt-20 border-0 bg-transparent shadow-none"
-        >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-teal-200/30 blur-[80px]"
-          />
-          <div className="relative flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
-            <div>
-              <p className="font-display text-2xl font-bold text-brand-navy sm:text-3xl">
-                Ready to make an impact?
-              </p>
-              <p className="mt-2 max-w-md text-sm leading-relaxed text-slate-500 sm:text-base">
-                Browse active campaigns or launch your own in minutes — every donation is escrowed
-                and every release is voted on.
-              </p>
-            </div>
-            <div className="flex shrink-0 flex-wrap gap-3">
-              <Link href="/campaigns" className="btn-primary group">
-                Explore campaigns
-                <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
-              </Link>
-              <Link href="/campaigns/create" className="btn-secondary">
-                Create campaign
-              </Link>
-            </div>
-          </div>
-        </BrowserWindowCard>
       </div>
     </section>
   );

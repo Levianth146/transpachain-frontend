@@ -153,17 +153,9 @@ export function Web3HeroAnimated() {
               animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 24 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="mb-6 flex flex-wrap items-center gap-3">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] py-1.5 pl-2.5 pr-3.5">
-                  <span className="live-blink h-[7px] w-[7px] shrink-0 rounded-full bg-emerald-500" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600">
-                    Live on Ethereum Sepolia
-                  </span>
-                </div>
-                <div className="section-eyebrow !tracking-[0.14em]">
-                  Transparent giving · On-chain accountability
-                </div>
-              </div>
+              <p className="section-eyebrow mb-6 !tracking-[0.14em]">
+                Transparent giving · On-chain accountability
+              </p>
 
               <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-brand-navy sm:text-5xl md:text-6xl lg:text-[3.5rem]">
                 Give with{" "}
@@ -186,7 +178,7 @@ export function Web3HeroAnimated() {
                 <Link href="/campaigns/create" className="btn-secondary">
                   Create Campaign
                 </Link>
-                <Link href="/about" className="btn-ghost group">
+                <Link href="#how-it-works" className="btn-ghost group">
                   How it works
                   <ArrowRight
                     size={14}
