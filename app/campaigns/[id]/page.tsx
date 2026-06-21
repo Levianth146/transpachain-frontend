@@ -83,7 +83,7 @@ export default function CampaignDetailPage({ params }: Props) {
 
   if (loading) return <CampaignDetailSkeleton />;
   if (!campaign || campaign.error) return (
-    <AnimatedGradientBackground className="min-h-screen">
+    <AnimatedGradientBackground variant="dark" className="min-h-screen">
       <div className="p-8 text-center text-white/70">Campaign not found</div>
     </AnimatedGradientBackground>
   );

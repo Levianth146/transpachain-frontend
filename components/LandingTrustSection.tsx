@@ -48,17 +48,17 @@ const TRUST_ITEMS = [
 
 export function LandingTrustSection() {
   return (
-    <section className="relative bg-white/50 py-28 backdrop-blur-sm">
+    <section className="relative bg-black py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
           <div>
             <ScrollReveal>
               <p className="section-eyebrow mb-4">Trust &amp; security</p>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
+              <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Accountability
                 <GradientText className="ml-2">built into the protocol.</GradientText>
               </h2>
-              <p className="mt-4 max-w-lg text-base leading-relaxed text-slate-500">
+              <p className="mt-4 max-w-lg text-base leading-relaxed text-white/55">
                 TranspaChain replaces blind trust with verifiable on-chain safeguards — designed for
                 donors who want proof, not promises.
               </p>
@@ -70,13 +70,13 @@ export function LandingTrustSection() {
                   key={label}
                   title={label}
                   delay={i * 0.06}
-                  bodyClassName="flex items-start gap-3 p-4 transition-colors hover:border-brand-teal/25"
-                  className="border-slate-200/80 bg-white/60"
+                  bodyClassName="flex items-start gap-3 p-4 transition-colors hover:border-brand-purple/25"
+                  className="border-white/[0.08] bg-white/[0.02]"
                 >
-                  <Icon size={20} className="mt-0.5 shrink-0 text-brand-teal" weight="duotone" />
+                  <Icon size={20} className="mt-0.5 shrink-0 text-holo-mint" weight="duotone" />
                   <div>
-                    <p className="text-sm font-semibold text-brand-navy">{label}</p>
-                    <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{detail}</p>
+                    <p className="text-sm font-semibold text-white">{label}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-white/45">{detail}</p>
                   </div>
                 </BrowserWindowCard>
               ))}

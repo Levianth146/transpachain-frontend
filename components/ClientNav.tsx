@@ -15,16 +15,7 @@ const NAV_LINKS = [
   { href: "/about", label: "About" },
 ];
 
-const LANDING_LINKS = [
-  { href: "#campaigns", label: "Campaigns" },
-  { href: "#protocol", label: "Protocol" },
-  { href: "#how", label: "How It Works" },
-  { href: "#donors", label: "Donors" },
-  { href: "/about", label: "About" },
-];
-
 function isNavActive(pathname: string, href: string): boolean {
-  if (href.startsWith("#")) return false;
   if (href === "/campaigns") {
     return (
       pathname === "/campaigns" ||
@@ -39,13 +30,7 @@ const VERIFIER_ROLE = keccak256(toBytes("VERIFIER_ROLE"));
 const DEFAULT_ADMIN_ROLE =
   "0x0000000000000000000000000000000000000000000000000000000000000000" as const;
 
-interface ClientNavProps {
-  linksOnly?: boolean;
-  dark?: boolean;
-  landing?: boolean;
-}
-
-export function ClientNav({ linksOnly = false, dark = false, landing = false }: ClientNavProps) {
+export function ClientNav() {
   const mounted = useMounted();
   const pathname = usePathname();
   const { address } = useAccount();
@@ -80,45 +65,31 @@ export function ClientNav({ linksOnly = false, dark = false, landing = false }: 
 
   if (!mounted) return null;
 
-  const baseLinks = landing ? LANDING_LINKS : NAV_LINKS;
   const links = [
-    ...baseLinks,
-    ...(showAdmin && !landing ? [{ href: "/admin", label: "Admin" }] : []),
+    ...NAV_LINKS,
+    ...(showAdmin ? [{ href: "/admin", label: "Admin" }] : []),
   ];
-
-  const linkClass = (active: boolean) => {
-    if (dark) {
-      return active
-        ? "text-text-primary"
-        : "text-text-primary/48 hover:text-text-primary";
-    }
-    return active
-      ? "bg-holo-gradient-subtle text-brand-navy ring-1 ring-slate-200/80"
-      : "text-slate-500 hover:text-brand-navy";
-  };
-
-  const navLinks = (
-    <nav className="flex items-center gap-8">
-      {links.map(({ href, label }) => {
-        const active = isNavActive(pathname, href);
-        return (
-          <Link
-            key={href}
-            href={href}
-            className={`text-sm font-medium transition-colors duration-200 ${linkClass(active)}`}
-          >
-            {label}
-          </Link>
-        );
-      })}
-    </nav>
-  );
-
-  if (linksOnly) return navLinks;
 
   return (
     <div className="flex items-center gap-4">
-      {navLinks}
+      <nav className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.03] p-1.5 shadow-[inset_0_0_0_1px_rgba(140,103,255,0.1)] backdrop-blur-sm">
+        {links.map(({ href, label }) => {
+          const active = isNavActive(pathname, href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
+                active
+                  ? "bg-holo-gradient-subtle text-white ring-1 ring-white/10"
+                  : "text-white/80 hover:text-white"
+              }`}
+            >
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
       <ConnectWallet />
     </div>
   );

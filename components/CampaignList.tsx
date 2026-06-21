@@ -104,16 +104,16 @@ export function CampaignList() {
   if (allCampaigns.length === 0) return (
     <div className="text-center py-20 px-4 max-w-md mx-auto">
       <p className="text-5xl mb-4">📋</p>
-      <h3 className="mb-2 font-display text-xl font-semibold text-text-primary">No campaigns yet</h3>
-      <p className="text-sm leading-relaxed text-slate-500">
+      <h3 className="mb-2 text-xl font-display font-semibold text-white">No campaigns yet</h3>
+      <p className="text-sm leading-relaxed text-white/60">
         Campaigns appear here after a verified organization creates one on-chain via Sepolia.
         Each campaign locks donations in escrow until donors approve milestone releases.
       </p>
-      <p className="mt-4 text-sm text-slate-500">
+      <p className="mt-4 text-sm text-white/50">
         Verified org?{" "}
         <Link
           href="/campaigns/create"
-          className="inline-flex items-center gap-1 text-brand-teal transition-colors hover:text-brand-navy"
+          className="inline-flex items-center gap-1 text-holo-mint transition-colors hover:text-white"
         >
           Go to create
           <ArrowRight size={14} weight="bold" aria-hidden />
@@ -126,7 +126,7 @@ export function CampaignList() {
     <div>
       <CampaignFilter onFilter={handleFilter} total={filtered.length} />
       {filtered.length === 0 ? (
-        <div className="py-20 text-center text-slate-500">No campaigns match your filters.</div>
+        <div className="py-20 text-center text-white/50">No campaigns match your filters.</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((campaign) => (

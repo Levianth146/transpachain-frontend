@@ -1,21 +1,15 @@
-import { HeroSection } from "@/components/HeroSection";
-import { TickerMarquee } from "@/components/TickerMarquee";
-import { LiveCampaignsSection } from "@/components/LiveCampaignsSection";
-import { ProtocolBento } from "@/components/ProtocolBento";
+import { Web3HeroAnimated } from "@/components/Web3HeroAnimated";
+import { LandingFeatures } from "@/components/LandingFeatures";
 import { LandingHowItWorks } from "@/components/LandingHowItWorks";
-import { DonorWall } from "@/components/DonorWall";
-import { CtaCloser } from "@/components/CtaCloser";
+import { LandingTrustSection } from "@/components/LandingTrustSection";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
-      <HeroSection />
-      <TickerMarquee />
-      <LiveCampaignsSection />
-      <ProtocolBento />
+    <main className="min-h-screen bg-black">
+      <Web3HeroAnimated />
+      <LandingFeatures />
       <LandingHowItWorks />
-      <DonorWall />
-      <CtaCloser />
+      <LandingTrustSection />
     </main>
   );
 }

@@ -24,33 +24,23 @@ function isNavActive(pathname: string, href: string): boolean {
   return pathname === href;
 }
 
-export function MobileNav({ dark = false }: { dark?: boolean }) {
+export function MobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
   return (
-    <div className="relative lg:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={
-          dark
-            ? "rounded-full border border-white/[0.12] bg-white/[0.05] p-2 text-text-primary/70 transition-colors hover:border-white/[0.25] hover:text-text-primary"
-            : "rounded-full border border-slate-200 bg-white/80 p-2 text-slate-600 transition-colors hover:border-slate-300 hover:text-brand-navy"
-        }
+        className="rounded-full border border-white/15 bg-white/[0.04] p-2 text-white/80 transition-colors hover:border-white/25 hover:text-white"
         aria-label="Menu"
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
       {open && (
-        <div
-          className={
-            dark
-              ? "absolute right-0 top-full z-50 mt-2 min-w-[200px] rounded-2xl border border-white/[0.1] bg-bg-base/95 p-3 shadow-glass backdrop-blur-2xl"
-              : "absolute left-0 right-0 top-full z-50 border-b border-slate-200/80 bg-white/95 p-4 shadow-lg backdrop-blur-[20px]"
-          }
-        >
-          <div className="flex flex-col gap-0.5">
+        <div className="absolute left-0 right-0 top-full z-50 border-b border-white/10 bg-black/90 p-4 shadow-2xl backdrop-blur-[20px]">
+          <div className="mx-auto flex max-w-7xl flex-col gap-1">
             {LINKS.map(({ href, label }) => (
               <Link
                 key={href}
@@ -58,17 +48,16 @@ export function MobileNav({ dark = false }: { dark?: boolean }) {
                 onClick={() => setOpen(false)}
                 className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   isNavActive(pathname, href)
-                    ? dark
-                      ? "bg-white/[0.08] text-text-primary"
-                      : "bg-teal-50 text-brand-navy"
-                    : dark
-                      ? "text-text-primary/60 hover:bg-white/[0.05] hover:text-text-primary"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-brand-navy"
+                    ? "bg-white/10 text-white"
+                    : "text-white/80 hover:bg-white/5 hover:text-white"
                 }`}
               >
                 {label}
               </Link>
             ))}
+            <div className="mt-3 border-t border-white/10 pt-3">
+              <ConnectWallet />
+            </div>
           </div>
         </div>
       )}

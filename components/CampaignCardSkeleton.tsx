@@ -37,10 +37,10 @@ export function CampaignCardSkeleton() {
   );
 }
 
-export function CampaignListSkeleton({ count = 3 }: { count?: number }) {
+export function CampaignListSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: count }).map((_, i) => (
+      {Array.from({ length: 3 }).map((_, i) => (
         <CampaignCardSkeleton key={i} />
       ))}
     </div>
