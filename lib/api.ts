@@ -1,5 +1,22 @@
 const BACKEND_URL = typeof window !== "undefined" && window.location.hostname !== "localhost" ? "/api" : (process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001");
 
+async function parseJsonResponse(res: Response): Promise<Record<string, unknown>> {
+  try {
+    return (await res.json()) as Record<string, unknown>;
+  } catch {
+    return {};
+  }
+}
+
+async function assertOk(res: Response, fallback: string): Promise<Record<string, unknown>> {
+  const data = await parseJsonResponse(res);
+  if (!res.ok) {
+    const message = typeof data.error === "string" ? data.error : `${fallback} (${res.status})`;
+    throw new Error(message);
+  }
+  return data;
+}
+
 export const api = {
   // Campaigns
   getCampaigns: async (page = 1, limit = 50, filters?: { category?: string; status?: number }) => {
@@ -58,7 +75,10 @@ export const api = {
       method: "POST",
       body:   formData,
     });
-    return res.json();
+    const data = await assertOk(res, "Image upload failed");
+    const cid = (data.cid ?? data.IpfsHash) as string | undefined;
+    if (!cid) throw new Error("Upload succeeded but no IPFS CID was returned");
+    return { ...data, cid, url: data.url as string | undefined };
   },
 
   getIPFSMetadata: async (cid: string) => {
@@ -114,7 +134,7 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    return res.json();
+    return assertOk(res, "Evidence submission failed");
   },
 
   getPendingProposals: async () => {

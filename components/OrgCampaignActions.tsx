@@ -13,6 +13,7 @@ import { CalendarPlus, XCircle, CheckCircle, FileArrowUp, Warning } from "@phosp
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { api } from "@/lib/api";
 import { TxLink } from "@/components/TxLink";
+import { FileUploadButton } from "@/components/FileUploadButton";
 
 const FE_MAX_EXTENSIONS = 2;
 const SECONDS_PER_DAY = 24 * 3600;
@@ -182,7 +183,13 @@ export function OrgCampaignActions({
           placeholder="Detailed description"
           className="w-full border rounded-lg px-3 py-1.5 text-sm min-h-[60px]"
         />
-        <input type="file" accept="image/*" onChange={(e) => setEvidenceFile(e.target.files?.[0] ?? null)} className="text-xs" />
+        <FileUploadButton
+          variant="compact"
+          label="Choose image"
+          uploading={evidenceSubmitting}
+          selectedFileName={evidenceFile?.name ?? null}
+          onChange={setEvidenceFile}
+        />
         <button
           type="button"
           disabled={evidenceSubmitting || !evidenceTitle.trim()}
@@ -194,8 +201,8 @@ export function OrgCampaignActions({
               let ipfsCID = "";
               if (evidenceFile) {
                 const up = await api.uploadFile(evidenceFile);
-                imageUrl = up.url ?? "";
-                ipfsCID = up.cid ?? up.IpfsHash ?? "";
+                imageUrl = up.url ?? `https://gateway.pinata.cloud/ipfs/${up.cid}`;
+                ipfsCID = up.cid;
               }
               await api.submitEvidence({
                 campaignId: Number(campaignId),
@@ -210,8 +217,9 @@ export function OrgCampaignActions({
               setEvidenceTitle("");
               setEvidenceDesc("");
               setEvidenceFile(null);
-            } catch {
-              addToast({ type: "error", title: "Upload failed" });
+            } catch (err) {
+              const message = err instanceof Error ? err.message : "Please try again";
+              addToast({ type: "error", title: "Upload failed", message });
             } finally {
               setEvidenceSubmitting(false);
             }
