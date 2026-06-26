@@ -5,13 +5,16 @@ import { useCanRefund, useClaimRefund } from "@/hooks/useDonationVault";
 import { addToast } from "@/components/Toast";
 import { useEffect } from "react";
 import { ArrowsCounterClockwise } from "@phosphor-icons/react";
+import { CampaignStatus } from "@/types";
 
 export function RefundPanel({
   campaignId,
   paymentToken = 0,
+  campaignStatus = CampaignStatus.Active,
 }: {
   campaignId: bigint;
   paymentToken?: number;
+  campaignStatus?: number;
 }) {
   const { address, isConnected } = useAccount();
   const { data: refundInfo, refetch } = useCanRefund(campaignId, address);
@@ -34,6 +37,9 @@ export function RefundPanel({
       ? `${formatUnits(amount, 6)} USDC`
       : `${formatEther(amount)} ETH`;
 
+  const isRefundableStatus =
+    campaignStatus === CampaignStatus.Failed || campaignStatus === CampaignStatus.Cancelled;
+
   return (
     <div className="bg-amber-50/80 border border-amber-200/80 rounded-xl p-5">
       <h3 className="font-semibold text-amber-900 flex items-center gap-2 mb-2">
@@ -43,7 +49,8 @@ export function RefundPanel({
       {eligible && amount > 0n ? (
         <>
           <p className="text-sm text-amber-800 mb-3">
-            You can reclaim <span className="font-mono font-medium">{formatted}</span> from escrow.
+            Proportional refund available:{" "}
+            <span className="font-mono font-medium">{formatted}</span> from remaining escrow.
           </p>
           <button
             onClick={() => {
@@ -56,8 +63,13 @@ export function RefundPanel({
             {isPending || isConfirming ? "Processing..." : "Claim refund"}
           </button>
         </>
+      ) : isRefundableStatus ? (
+        <p className="text-sm text-amber-700/80">No refundable balance for your wallet.</p>
       ) : (
-        <p className="text-sm text-amber-700/80">Not eligible yet (campaign active and before deadline).</p>
+        <p className="text-sm text-amber-700/80">
+          Refunds are not available while the campaign is active or during milestone disbursement.
+          Failed or cancelled campaigns allow proportional refunds from remaining escrow.
+        </p>
       )}
       {error && <p className="text-xs text-red-600 mt-2">{error.message}</p>}
     </div>

@@ -29,6 +29,7 @@ export const CHARITY_CORE_ABI = [
   { name: "getCharityProgress", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "raised", type: "uint256" }, { name: "goal", type: "uint256" }, { name: "progressBps", type: "uint256" }, { name: "deadline", type: "uint256" }, { name: "isExpired", type: "bool" }, { name: "timeLeft", type: "uint256" }] },
   { name: "cancelCampaign", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
   { name: "finalizeCampaign", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
+  { name: "canFinalize", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "eligible", type: "bool" }, { name: "goalReached", type: "bool" }, { name: "expired", type: "bool" }] },
   { name: "extendDeadline", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }, { name: "newDeadline", type: "uint256" }], outputs: [] },
   { name: "MAX_EXTENSION", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "isOrgVerified", type: "function", stateMutability: "view", inputs: [{ name: "org", type: "address" }], outputs: [{ name: "", type: "bool" }] },
@@ -52,12 +53,16 @@ export const DONATION_VAULT_ABI = [
   { name: "submitMilestoneProof", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }, { name: "milestoneIndex", type: "uint8" }, { name: "proofCID", type: "string" }], outputs: [] },
   { name: "claimRefund", type: "function", stateMutability: "nonpayable", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [] },
   { name: "canRefund", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }, { name: "donor", type: "address" }], outputs: [{ name: "eligible", type: "bool" }, { name: "amount", type: "uint256" }, { name: "refundDeadline", type: "uint256" }] },
+  { name: "getRefundableAmount", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }, { name: "donor", type: "address" }], outputs: [{ name: "", type: "uint256" }] },
+  { name: "getTotalDeposited", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
+  { name: "getRefundRatioBps", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
+  { name: "hasActiveOrQueuedProposal", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "bool" }] },
   { name: "getDonorInfo", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }, { name: "donor", type: "address" }], outputs: [{ name: "", type: "tuple", components: [{ name: "totalDonated", type: "uint256" }, { name: "donationCount", type: "uint256" }, { name: "lastDonatedAt", type: "uint256" }] }] },
   { name: "getDonorAmount", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }, { name: "donor", type: "address" }], outputs: [{ name: "", type: "uint256" }] },
   { name: "getCharityDonors", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "address[]" }] },
   { name: "getCampaignEscrowBalance", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
   { name: "getMilestone", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }, { name: "milestoneIndex", type: "uint8" }], outputs: [{ name: "", type: "tuple", components: [{ name: "proofCID", type: "string" }, { name: "releaseAmount", type: "uint256" }, { name: "released", type: "bool" }, { name: "proposalId", type: "uint256" }] }] },
-  { name: "DonationReceived", type: "event", inputs: [{ name: "campaignId", type: "uint256", indexed: true }, { name: "donor", type: "address", indexed: true }, { name: "amount", type: "uint256", indexed: false }, { name: "tokenType", type: "uint8", indexed: false }] },
+  { name: "DonationReceived", type: "event", inputs: [{ name: "campaignId", type: "uint256", indexed: true }, { name: "donor", type: "address", indexed: true }, { name: "grossAmount", type: "uint256", indexed: false }, { name: "netAmount", type: "uint256", indexed: false }, { name: "fee", type: "uint256", indexed: false }, { name: "tokenType", type: "uint8", indexed: false }] },
 ] as const;
  
 export const GOVERNANCE_DAO_ABI = [
@@ -75,6 +80,7 @@ export const GOVERNANCE_DAO_ABI = [
   { name: "getActiveProposal", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
   { name: "hasVoted", type: "function", stateMutability: "view", inputs: [{ name: "proposalId", type: "uint256" }, { name: "voter", type: "address" }], outputs: [{ name: "", type: "bool" }] },
   { name: "getVotingPower", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }, { name: "voter", type: "address" }], outputs: [{ name: "", type: "uint256" }] },
+  { name: "hasActiveOrQueuedProposal", type: "function", stateMutability: "view", inputs: [{ name: "campaignId", type: "uint256" }], outputs: [{ name: "", type: "bool" }] },
   { name: "QUORUM_BPS", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "VOTING_PERIOD", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "TIMELOCK_DELAY", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },

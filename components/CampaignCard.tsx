@@ -12,12 +12,7 @@ import { CampaignStatus } from "@/types";
 import { BookOpen, Heart, AlertTriangle, Leaf, Users, Lightbulb, Clock, TrendingUp } from "lucide-react";
 import { CampaignImage } from "@/components/CampaignImage";
 
-const STATUS_BADGE: Record<CampaignStatus, { label: string; color: string }> = {
-  [CampaignStatus.Active]:     { label: "Active",    color: "bg-holo-mint/20 text-holo-mint ring-1 ring-holo-mint/30" },
-  [CampaignStatus.Successful]: { label: "Completed", color: "bg-holo-lavender/20 text-holo-lavender ring-1 ring-holo-lavender/30" },
-  [CampaignStatus.Failed]:     { label: "Failed",    color: "bg-red-500/20 text-red-300 ring-1 ring-red-500/30" },
-  [CampaignStatus.Cancelled]:  { label: "Cancelled", color: "bg-white/10 text-white/50 ring-1 ring-white/20" },
-};
+import { deriveCampaignDisplayStatus } from "@/lib/campaignStatus";
 
 const CATEGORY_COLORS: Record<string, string> = {
   education:   "bg-holo-lavender/15 text-holo-lavender",
@@ -76,7 +71,13 @@ export function CampaignCard({
       : "…";
   const goal = Number(formatCampaignAmount(campaign.goalAmount ?? "0", paymentToken));
   const progress = raised !== null && goal > 0 ? Math.min((raised / goal) * 100, 100) : 0;
-  const badge       = STATUS_BADGE[campaign.status as CampaignStatus];
+  const badge = deriveCampaignDisplayStatus({
+    status: campaign.status ?? CampaignStatus.Active,
+    raisedAmount: onChainRaisedWei,
+    goalAmount: BigInt(campaign.goalAmount ?? "0"),
+    completedMilestones: Number(campaign.completedMilestones ?? 0),
+    totalMilestones: Number(campaign.totalMilestones ?? 0),
+  });
   const CategoryIcon = CATEGORY_ICONS[campaign.category] || Lightbulb;
   const categoryColor = CATEGORY_COLORS[campaign.category] || CATEGORY_COLORS.general;
   const timeLeft    = campaign.deadline ? getTimeLeft(campaign.deadline) : null;

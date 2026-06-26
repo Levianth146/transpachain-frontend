@@ -55,6 +55,15 @@ export function useCharityProgress(campaignId: bigint) {
   });
 }
 
+export function useCanFinalize(campaignId: bigint) {
+  return useReadContract({
+    address: ADDRESSES.charityCore,
+    abi: CHARITY_CORE_ABI,
+    functionName: "canFinalize",
+    args: [campaignId],
+  });
+}
+
 /** Batch-read paymentToken from getCampaign for platform stats aggregation. */
 export function useCampaignPaymentTokens(campaignIds: number[]) {
   const contracts = campaignIds.map((id) => ({

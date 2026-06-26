@@ -5,15 +5,17 @@ import {
   useCancelCampaign,
   useExtendDeadline,
   useFinalizeCampaign,
+  useCanFinalize,
 } from "@/hooks/useCharityCore";
-import { useSubmitMilestoneProof } from "@/hooks/useDonationVault";
-import { addToast } from "@/components/Toast";
+import { useSubmitMilestoneProof, useHasActiveOrQueuedProposal } from "@/hooks/useDonationVault";
 import { motion } from "framer-motion";
 import { CalendarPlus, XCircle, CheckCircle, FileArrowUp, Warning } from "@phosphor-icons/react";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { api } from "@/lib/api";
 import { TxLink } from "@/components/TxLink";
 import { FileUploadButton } from "@/components/FileUploadButton";
+import { canShowFinalizeButton } from "@/lib/campaignStatus";
+import { addToast } from "@/components/Toast";
 
 const FE_MAX_EXTENSIONS = 2;
 const SECONDS_PER_DAY = 24 * 3600;
@@ -60,6 +62,8 @@ export function OrgCampaignActions({
   const { cancelCampaign, isPending: cancelling } = useCancelCampaign();
   const { extendDeadline, isPending: extending, isSuccess: extended } = useExtendDeadline();
   const { finalizeCampaign, isPending: finalizing } = useFinalizeCampaign();
+  const { data: canFinalizeData } = useCanFinalize(campaignId);
+  const { data: hasActiveProposal } = useHasActiveOrQueuedProposal(campaignId);
   const {
     submitMilestoneProof,
     hash: proofTxHash,
@@ -72,7 +76,7 @@ export function OrgCampaignActions({
   const [evidenceDesc, setEvidenceDesc] = useState("");
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
   const [evidenceSubmitting, setEvidenceSubmitting] = useState(false);
-  const [milestoneIdx, setMilestoneIdx] = useState(0);
+  const [milestoneIdx, setMilestoneIdx] = useState(completedMilestones);
   const [extendDays, setExtendDays] = useState(7);
   const [extensionsUsed, setExtensionsUsed] = useState(0);
   const [showExtendConfirm, setShowExtendConfirm] = useState(false);
@@ -90,7 +94,19 @@ export function OrgCampaignActions({
     }
   }, [extended, campaignId]);
 
+  useEffect(() => {
+    setMilestoneIdx(completedMilestones);
+  }, [completedMilestones]);
+
   if (!isOrg) return null;
+
+  const finalizeTuple = canFinalizeData as readonly [boolean, boolean, boolean] | undefined;
+  const finalizeEligible = finalizeTuple?.[0] ?? false;
+  const goalReached = finalizeTuple?.[1] ?? false;
+  const expired = finalizeTuple?.[2] ?? false;
+  const allMilestonesDone = totalMilestones > 0 && completedMilestones >= totalMilestones;
+  const finalizeUi = canShowFinalizeButton(finalizeEligible, goalReached, expired, allMilestonesDone);
+  const canSubmitProof = !hasActiveProposal && completedMilestones < totalMilestones;
 
   const extensionsRemaining = Math.max(0, FE_MAX_EXTENSIONS - extensionsUsed);
   const atExtensionLimit = extensionsUsed >= FE_MAX_EXTENSIONS;
@@ -134,11 +150,12 @@ export function OrgCampaignActions({
             value={milestoneIdx}
             onChange={(e) => setMilestoneIdx(Number(e.target.value))}
             className="border rounded-lg px-2 py-1.5 text-sm"
+            disabled={!canSubmitProof}
           >
             {Array.from({ length: totalMilestones }, (_, i) => (
-              <option key={i} value={i} disabled={i < completedMilestones}>
+              <option key={i} value={i} disabled={i !== completedMilestones}>
                 Milestone {i + 1}
-                {i < completedMilestones ? " (done)" : ""}
+                {i < completedMilestones ? " (released)" : i === completedMilestones ? " (next)" : " (locked)"}
               </option>
             ))}
           </select>
@@ -150,17 +167,24 @@ export function OrgCampaignActions({
           />
           <button
             type="button"
-            disabled={submitting || !proofCID.trim()}
+            disabled={submitting || !proofCID.trim() || !canSubmitProof || milestoneIdx !== completedMilestones}
             onClick={() => {
-              submitMilestoneProof(campaignId, milestoneIdx, proofCID.trim());
+              submitMilestoneProof(campaignId, completedMilestones, proofCID.trim());
               addToast({ type: "info", title: "Submitting milestone proof…" });
             }}
             className="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-sm disabled:opacity-50"
           >
             <FileArrowUp size={16} />
-            {submitting ? "…" : "Submit"}
+            {submitting ? "…" : "Submit proof"}
           </button>
         </div>
+        {!canSubmitProof && completedMilestones < totalMilestones && (
+          <p className="text-xs text-amber-700">
+            {hasActiveProposal
+              ? "Wait until the current milestone vote finishes before submitting the next proof."
+              : "Release the current milestone before submitting the next proof."}
+          </p>
+        )}
         {submitted && (
           <p className="text-xs text-emerald-600">
             Proof submitted — awaiting admin approval before public vote.
@@ -297,18 +321,20 @@ export function OrgCampaignActions({
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          disabled={finalizing}
-          onClick={() => {
-            finalizeCampaign(campaignId);
-            addToast({ type: "info", title: "Finalizing campaign…" });
-          }}
-          className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm disabled:opacity-50"
-        >
-          <CheckCircle size={16} />
-          Finalize
-        </button>
+        {finalizeUi.show && (
+          <button
+            type="button"
+            disabled={finalizing}
+            onClick={() => {
+              finalizeCampaign(campaignId);
+              addToast({ type: "info", title: finalizeUi.label });
+            }}
+            className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm disabled:opacity-50"
+          >
+            <CheckCircle size={16} />
+            {finalizing ? "…" : finalizeUi.label}
+          </button>
+        )}
         <button
           type="button"
           disabled={cancelling}

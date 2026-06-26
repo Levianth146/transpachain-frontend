@@ -28,13 +28,8 @@ import { ContractExplorer } from "@/components/ContractExplorer";
 import { EvidencePanel } from "@/components/EvidencePanel";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { CampaignStatus } from "@/types";
-
-const STATUS_BADGE: Record<number, { label: string; color: string }> = {
-  0: { label: "Active",     color: "bg-holo-mint/20 text-holo-mint ring-1 ring-holo-mint/30" },
-  1: { label: "Completed",  color: "bg-holo-lavender/20 text-holo-lavender ring-1 ring-holo-lavender/30" },
-  2: { label: "Failed",     color: "bg-red-500/20 text-red-300 ring-1 ring-red-500/30" },
-  3: { label: "Cancelled",  color: "bg-gray-500/20 text-gray-300 ring-1 ring-gray-500/30" },
-};
+import { deriveCampaignDisplayStatus } from "@/lib/campaignStatus";
+import { useHasActiveOrQueuedProposal } from "@/hooks/useDonationVault";
 
 interface Props { params: Promise<{ id: string }> }
 
@@ -80,6 +75,7 @@ export default function CampaignDetailPage({ params }: Props) {
 
   const paymentToken = campaign?.paymentToken ?? 0;
   const { data: onChainProgress } = useCharityProgress(campaignId);
+  const { data: hasActiveProposal } = useHasActiveOrQueuedProposal(campaignId);
 
   if (loading) return <CampaignDetailSkeleton />;
   if (!campaign || campaign.error) return (
@@ -118,14 +114,21 @@ export default function CampaignDetailPage({ params }: Props) {
   const raised = onChainRaisedWei !== undefined ? onChainRaised : indexedRaised;
   const progress  = goal > 0 && Number.isFinite(raised) ? Math.min((raised / goal) * 100, 100) : 0;
 
-  const badge     = STATUS_BADGE[campaign.status] ?? STATUS_BADGE[0];
-
   if (campaignId === 0n) {
     return <div className="p-8 text-center">Campaign data is invalid</div>;
   }
 
   const totalMilestones = Math.max(0, Number(campaign.totalMilestones) || 0);
   const completedMilestones = Math.max(0, Number(campaign.completedMilestones) || 0);
+
+  const badge = deriveCampaignDisplayStatus({
+    status: campaign.status ?? CampaignStatus.Active,
+    raisedAmount: onChainRaisedWei ?? toWei(campaign.raisedAmount),
+    goalAmount: onChainGoalWei ?? toWei(campaign.goalAmount),
+    completedMilestones,
+    totalMilestones,
+    hasActiveOrQueuedProposal: Boolean(hasActiveProposal),
+  });
 
   return (
     <PageShell
@@ -201,8 +204,12 @@ export default function CampaignDetailPage({ params }: Props) {
             paymentToken={paymentToken}
           />
           <DonateModal campaignId={campaignId} paymentToken={paymentToken} />
-          <RefundPanel campaignId={campaignId} paymentToken={paymentToken} />
-          <VotingPanel campaignId={campaignId} />
+          <RefundPanel
+            campaignId={campaignId}
+            paymentToken={paymentToken}
+            campaignStatus={campaign.status ?? CampaignStatus.Active}
+          />
+          <VotingPanel campaignId={campaignId} onRefresh={load} />
         </div>
       </div>
 

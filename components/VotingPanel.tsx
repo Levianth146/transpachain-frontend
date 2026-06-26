@@ -13,12 +13,12 @@ const STATE_LABEL: Record<number, string> = {
   3: "Queued",  4: "Executed", 5: "Cancelled"
 };
 
-export function VotingPanel({ campaignId }: { campaignId: bigint }) {
+export function VotingPanel({ campaignId, onRefresh }: { campaignId: bigint; onRefresh?: () => void }) {
   const { address } = useAccount();
   const [proposal, setProposal] = useState<any>(null);
   const { castVote, isPending: isVoting, isSuccess: voted } = useCastVote();
   const { queue, isPending: isQueuing } = useQueueProposal();
-  const { execute, isPending: isExecuting } = useExecuteProposal();
+  const { execute, isPending: isExecuting, isSuccess: executed } = useExecuteProposal();
 
   const proposalId =
     proposal?.proposalId != null ? BigInt(proposal.proposalId) : 0n;
@@ -34,6 +34,18 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
       })
       .catch(() => setProposal(null));
   }, [campaignId, voted]);
+
+  useEffect(() => {
+    if (executed) {
+      api.getCampaignProposals(Number(campaignId))
+        .then((proposals: any[]) => {
+          const active = proposals.find((p: any) => p.state === 1 && !p.closedByAdmin);
+          setProposal(active ?? null);
+        })
+        .catch(() => setProposal(null));
+      onRefresh?.();
+    }
+  }, [executed, campaignId, onRefresh]);
 
   if (!proposal) return (
     <GlassPanel className="p-5">
@@ -56,11 +68,12 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
   const againstVotes = chain?.againstVotes ?? 0n;
   const abstainVotes = chain?.abstainVotes ?? 0n;
   const totalPower = chain?.totalVotingPower ?? 0n;
-  const totalVotes = forVotes + againstVotes + abstainVotes;
-  const forPct = totalVotes > 0n ? Number((forVotes * 100n) / totalVotes) : 0;
+  const totalCast = forVotes + againstVotes + abstainVotes;
+  const forPct = totalCast > 0n ? Number((forVotes * 100n) / totalCast) : 0;
   const quorumPct =
-    totalPower > 0n ? Number((forVotes * 10000n) / totalPower) / 100 : 0;
-  const quorumMet = totalPower > 0n && forVotes * 10000n >= totalPower * 5100n;
+    totalPower > 0n ? Number((totalCast * 10000n) / totalPower) / 100 : 0;
+  const quorumMet = totalPower > 0n && totalCast * 10000n >= totalPower * 5100n;
+  const majorityFor = forVotes > againstVotes;
   const stateNum = chain?.state ?? proposal.state;
 
   return (
@@ -83,8 +96,8 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
             style={{ width: `${forPct}%` }} />
         </div>
         <p className="text-xs text-gray-400 mt-1">
-          Quadratic votes · Quorum: {quorumPct.toFixed(1)}% For of total power (need 51%)
-          {quorumMet ? " ✓" : ""}
+          Quadratic votes · Quorum: {quorumPct.toFixed(1)}% participation of total power (need 51%)
+          {quorumMet && majorityFor ? " ✓" : ""}
         </p>
       </div>
       <Link href="/governance" className="text-xs text-blue-600 hover:underline block mb-2">
@@ -113,7 +126,7 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
           disabled={isQueuing}
           className="w-full mt-2 py-2 border rounded-lg text-sm
                      disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-white/5">
-          {isQueuing ? "Queuing..." : "Queue Proposal"}
+          {isQueuing ? "Queuing..." : "Queue for timelock"}
         </button>
       )}
 
@@ -122,7 +135,7 @@ export function VotingPanel({ campaignId }: { campaignId: bigint }) {
           disabled={isExecuting}
           className="w-full mt-2 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium
                      disabled:opacity-50 hover:bg-blue-700">
-          {isExecuting ? "Executing..." : "Execute & Release Funds"}
+          {isExecuting ? "Executing..." : "Execute release"}
         </button>
       )}
 

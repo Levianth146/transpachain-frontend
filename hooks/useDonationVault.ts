@@ -64,6 +64,25 @@ export function useCanRefund(campaignId: bigint, donor: `0x${string}` | undefine
   });
 }
 
+export function useRefundableAmount(campaignId: bigint, donor: `0x${string}` | undefined) {
+  return useReadContract({
+    address: ADDRESSES.donationVault,
+    abi:     DONATION_VAULT_ABI,
+    functionName: "getRefundableAmount",
+    args:    donor ? [campaignId, donor] : undefined,
+    query:   { enabled: !!donor },
+  });
+}
+
+export function useHasActiveOrQueuedProposal(campaignId: bigint) {
+  return useReadContract({
+    address: ADDRESSES.donationVault,
+    abi:     DONATION_VAULT_ABI,
+    functionName: "hasActiveOrQueuedProposal",
+    args:    [campaignId],
+  });
+}
+
 // ─── Write hooks ───────────────────────────────────────────────
 
 export function useDonate() {
