@@ -62,8 +62,8 @@ export default function AboutPage() {
     >
       <div className="space-y-8">
         <GlassPanel holoBorder className="p-6">
-          <h2 className="mb-3 text-xl font-semibold text-holo-mint">Our mission</h2>
-          <p className="leading-relaxed text-white/70">
+          <h2 className="mb-3 text-xl font-semibold text-teal-700 dark:text-holo-mint">Our mission</h2>
+          <p className="leading-relaxed text-slate-600 dark:text-white/70">
             We bridge the trust gap between donors and charitable organizations. Instead of sending funds
             directly to an org wallet, donations lock in a smart-contract escrow vault — in ETH or USDC.
             Organizations earn trust by submitting milestone proof reviewed by admin; donors retain control
@@ -73,21 +73,21 @@ export default function AboutPage() {
         </GlassPanel>
 
         <GlassPanel holoBorder className="p-6">
-          <h2 className="mb-4 text-xl font-semibold text-white">How it works</h2>
+          <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-white">How it works</h2>
           <HowItWorksBlock columns={6} />
         </GlassPanel>
 
         <GlassPanel holoBorder className="p-6">
-          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-white">
-            <ShieldCheck size={22} className="text-holo-mint" weight="duotone" />
+          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-slate-900 dark:text-white">
+            <ShieldCheck size={22} className="text-teal-600 dark:text-holo-mint" weight="duotone" />
             Security &amp; trust
           </h2>
           <TrustSecurityStrip />
         </GlassPanel>
 
         <GlassPanel holoBorder className="p-6">
-          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-white">
-            <Scales size={22} className="text-holo-lavender" weight="duotone" />
+          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-slate-900 dark:text-white">
+            <Scales size={22} className="text-violet-600 dark:text-holo-lavender" weight="duotone" />
             Anti-abuse safeguards
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -97,10 +97,10 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-holo-lavender/20"
+                className="rounded-xl border border-slate-200/80 bg-white/60 p-4 transition-colors hover:border-violet-300/50 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-holo-lavender/20"
               >
-                <p className="text-sm font-semibold text-white">{item.title}</p>
-                <p className="mt-1 text-xs leading-relaxed text-white/60">{item.desc}</p>
+                <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-white/60">{item.desc}</p>
               </motion.div>
             ))}
           </div>

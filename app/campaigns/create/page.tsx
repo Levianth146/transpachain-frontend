@@ -106,10 +106,10 @@ export default function CreateCampaignPage() {
   );
 
   if (!isConnected) return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen flex flex-col items-center justify-center px-4">
+    <AnimatedGradientBackground variant="dark" className="min-h-screen flex flex-col items-center justify-center px-4" backgroundImage="/backgrounds/create.png">
       <div className="w-full max-w-md space-y-4 text-center">
-        <h1 className="font-display text-3xl font-bold text-white">Create Campaign</h1>
-        <p className="text-white/60">Connect your verified org wallet to launch an on-chain escrow campaign.</p>
+        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Create Campaign</h1>
+        <p className="text-slate-600 dark:text-white/60">Connect your verified org wallet to launch an on-chain escrow campaign.</p>
         <ConnectWallet />
       </div>
     </AnimatedGradientBackground>
@@ -127,21 +127,21 @@ export default function CreateCampaignPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-white/80">Campaign Title *</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Campaign Title *</label>
           <input name="title" value={form.title} onChange={handleChange} required
             className={INPUT_CLASS}
             placeholder="Build Schools in Rural Kenya" />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-white/80">Organisation Name *</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Organisation Name *</label>
           <input name="orgName" value={form.orgName} onChange={handleChange} required
             className={INPUT_CLASS}
             placeholder="Education For All Foundation" />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-white/80">Description *</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Description *</label>
           <textarea name="description" value={form.description} onChange={handleChange} required
             rows={3} className={INPUT_CLASS}
             placeholder="Describe your campaign..." />
@@ -149,7 +149,7 @@ export default function CreateCampaignPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-white/80">Category</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Category</label>
             <select name="category" value={form.category} onChange={handleChange}
               className={INPUT_CLASS}>
               <option value="education">Education</option>
@@ -160,7 +160,7 @@ export default function CreateCampaignPage() {
             </select>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-white/80">Payment Token</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Payment Token</label>
             <select name="paymentToken" value={form.paymentToken} onChange={handleChange}
               className={INPUT_CLASS}>
               <option value="0">ETH</option>
@@ -170,13 +170,13 @@ export default function CreateCampaignPage() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-white/80">Campaign Image</label>
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Campaign Image</label>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-holo-mint/30 bg-holo-mint/10 px-4 py-2 text-sm font-medium text-holo-mint transition hover:bg-holo-mint/20">
               {uploading ? "Uploading…" : "Upload to IPFS"}
               <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
             </label>
-            <span className="text-xs text-white/40">or paste URL below</span>
+            <span className="text-xs text-slate-500 dark:text-white/40">or paste URL below</span>
           </div>
           {uploadError && <p className="mt-1 text-xs text-red-400">{uploadError}</p>}
           <input name="imageUrl" value={form.imageUrl} onChange={handleChange}
@@ -189,14 +189,14 @@ export default function CreateCampaignPage() {
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-white/80">Goal ({tokenLabel}) *</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Goal ({tokenLabel}) *</label>
             <input name="goalAmount" value={form.goalAmount} onChange={handleChange} required
               type="number" step={goalStep} min={goalMin}
               className={INPUT_CLASS}
               placeholder={goalPlaceholder} />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-white/80">Milestones</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Milestones</label>
             <select name="milestones" value={form.milestones} onChange={handleChange}
               className={INPUT_CLASS}>
               <option value="1">1</option>
@@ -206,7 +206,7 @@ export default function CreateCampaignPage() {
             </select>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-white/80">Duration (days)</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-white/80">Duration (days)</label>
             <input name="daysUntilDeadline" value={form.daysUntilDeadline} onChange={handleChange}
               type="number" min="1" max="90"
               className={INPUT_CLASS} />

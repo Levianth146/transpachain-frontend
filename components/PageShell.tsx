@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
-import { PageBackground } from "@/components/ui/PageBackground";
 
 interface PageShellProps {
   children: React.ReactNode;
@@ -41,22 +40,21 @@ export function PageShell({
     <AnimatedGradientBackground
       variant="dark"
       className="min-h-screen"
-      hasBackgroundImage={Boolean(backgroundImage)}
+      backgroundImage={backgroundImage}
     >
-      {backgroundImage && <PageBackground image={backgroundImage} />}
       <div className="relative z-10">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(94,234,212,0.1),transparent_70%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(13,148,136,0.08),transparent_70%)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(94,234,212,0.1),transparent_70%)]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(168,85,247,0.08),transparent_70%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(124,58,237,0.06),transparent_70%)] dark:bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(168,85,247,0.08),transparent_70%)]"
         />
 
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]"
         />
 
         <main

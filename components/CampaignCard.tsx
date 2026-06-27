@@ -15,12 +15,12 @@ import { CampaignImage } from "@/components/CampaignImage";
 import { deriveCampaignDisplayStatus } from "@/lib/campaignStatus";
 
 const CATEGORY_COLORS: Record<string, string> = {
-  education:   "bg-holo-lavender/15 text-holo-lavender",
-  healthcare:  "bg-holo-pink/15 text-holo-pink",
-  disaster:    "bg-orange-500/15 text-orange-300",
-  environment: "bg-holo-mint/15 text-holo-mint",
-  community:   "bg-holo-lavender/15 text-holo-lavender",
-  general:     "bg-white/10 text-white/60",
+  education:   "bg-violet-100 text-violet-700 dark:bg-holo-lavender/15 dark:text-holo-lavender",
+  healthcare:  "bg-pink-100 text-pink-700 dark:bg-holo-pink/15 dark:text-holo-pink",
+  disaster:    "bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300",
+  environment: "bg-teal-100 text-teal-700 dark:bg-holo-mint/15 dark:text-holo-mint",
+  community:   "bg-violet-100 text-violet-700 dark:bg-holo-lavender/15 dark:text-holo-lavender",
+  general:     "bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-white/60",
 };
 
 const CATEGORY_ICONS: Record<string, any> = {
@@ -88,7 +88,7 @@ export function CampaignCard({
       <motion.div
         whileHover={{ y: -6 }}
         transition={{ duration: 0.25 }}
-        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md transition-all duration-300 hover:border-holo-mint/30 hover:shadow-2xl hover:shadow-holo-mint/10"
+        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-md transition-all duration-300 hover:border-teal-400/40 hover:shadow-2xl hover:shadow-teal-500/10 dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-holo-mint/30 dark:hover:shadow-holo-mint/10"
       >
         <CampaignImage
           imageUrl={campaign.imageUrl}
@@ -118,27 +118,27 @@ export function CampaignCard({
               {campaign.category || "general"}
             </span>
             {timeLeft && !isUrgent && (
-              <span className="flex items-center gap-1 text-xs text-white/40">
+              <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-white/40">
                 <Clock size={10} /> {timeLeft}
               </span>
             )}
           </div>
 
-          <h3 className="mb-1 line-clamp-2 font-display text-base font-bold leading-snug text-white">
+          <h3 className="mb-1 line-clamp-2 font-display text-base font-bold leading-snug text-slate-900 dark:text-white">
             {campaign.title ?? `Campaign #${campaign.campaignId}`}
             {campaign.title && campaign.campaignId != null && (
-              <span className="ml-1.5 text-xs font-normal text-white/40">#{campaign.campaignId}</span>
+              <span className="ml-1.5 text-xs font-normal text-slate-400 dark:text-white/40">#{campaign.campaignId}</span>
             )}
           </h3>
 
           {campaign.orgName && (
-            <p className="mb-2 flex items-center gap-1 text-xs text-white/50">
+            <p className="mb-2 flex items-center gap-1 text-xs text-slate-500 dark:text-white/50">
               <Users size={10} /> {campaign.orgName}
             </p>
           )}
 
           {campaign.description && (
-            <p className="mb-4 line-clamp-2 flex-1 text-sm text-white/60">
+            <p className="mb-4 line-clamp-2 flex-1 text-sm text-slate-600 dark:text-white/60">
               {campaign.description}
             </p>
           )}
@@ -154,15 +154,15 @@ export function CampaignCard({
               </span>
             </div>
 
-            <div className="mb-3 h-2 w-full rounded-full bg-white/10 overflow-hidden">
+            <div className="mb-3 h-2 w-full rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
               <div
                 className="h-2 rounded-full bg-holo-gradient transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
 
-            <div className="flex items-center justify-between text-xs text-white/50">
-              <span>Goal: <span className="font-medium text-white/70">{goal.toFixed(fractionDigits)} {tokenLabel}</span></span>
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-white/50">
+              <span>Goal: <span className="font-medium text-slate-700 dark:text-white/70">{goal.toFixed(fractionDigits)} {tokenLabel}</span></span>
               <span className="flex items-center gap-1">
                 <Users size={10} />
                 {campaign.donorCount ?? 0} donors

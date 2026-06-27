@@ -68,13 +68,13 @@ function OrgRow({
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center justify-between py-3 px-4 rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:border-holo-mint/30 transition-colors group"
+      className="flex items-center justify-between py-3 px-4 rounded-xl border border-slate-200/80 bg-white/70 backdrop-blur-sm hover:border-teal-400/40 transition-colors group dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-holo-mint/30"
     >
       <div className="flex items-center gap-3 min-w-0">
         <BadgeCheck size={16} className="text-holo-mint shrink-0" />
         <div className="min-w-0">
-          <p className="font-mono text-sm text-white/90 truncate">{address}</p>
-          <p className="text-xs text-white/50 mt-0.5">{campaignCount} campaign{campaignCount !== 1 ? "s" : ""}</p>
+          <p className="font-mono text-sm text-slate-800 dark:text-white/90 truncate">{address}</p>
+          <p className="text-xs text-slate-500 dark:text-white/50 mt-0.5">{campaignCount} campaign{campaignCount !== 1 ? "s" : ""}</p>
         </div>
       </div>
       <div className="flex items-center gap-2 shrink-0 ml-3">
@@ -304,18 +304,18 @@ export default function AdminPage() {
 
   if (!isConnected) return (
     <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center">
-      <Shield size={48} className="text-gray-300 mb-4" />
-      <h1 className="text-3xl font-display mb-2">Admin Panel</h1>
-      <p className="text-gray-500">Connect wallet to access admin panel.</p>
+      <Shield size={48} className="text-slate-400 dark:text-gray-300 mb-4" />
+      <h1 className="text-3xl font-display mb-2 text-slate-900 dark:text-white">Admin Panel</h1>
+      <p className="text-slate-600 dark:text-gray-500">Connect wallet to access admin panel.</p>
     </AnimatedGradientBackground>
   );
 
   if (!isAdmin && !isVerifier) return (
     <AnimatedGradientBackground className="min-h-screen flex flex-col items-center justify-center">
-      <AlertCircle size={48} className="text-red-300 mb-4" />
-      <h1 className="text-3xl font-display mb-2">Access Denied</h1>
-      <p className="text-gray-500">You don&apos;t have admin or verifier role.</p>
-      <p className="text-xs text-gray-400 mt-2 font-mono">{address}</p>
+      <AlertCircle size={48} className="text-red-400 dark:text-red-300 mb-4" />
+      <h1 className="text-3xl font-display mb-2 text-slate-900 dark:text-white">Access Denied</h1>
+      <p className="text-slate-600 dark:text-gray-500">You don&apos;t have admin or verifier role.</p>
+      <p className="text-xs text-slate-400 dark:text-gray-400 mt-2 font-mono">{address}</p>
     </AnimatedGradientBackground>
   );
 
@@ -335,7 +335,7 @@ export default function AdminPage() {
         : String(onChainCampaigns);
 
   const stats = [
-    { label: "Total Campaigns", value: campaignStatValue, color: campaignsMismatch ? "text-amber-300" : "text-white", warn: campaignsMismatch },
+    { label: "Total Campaigns", value: campaignStatValue, color: campaignsMismatch ? "text-amber-600 dark:text-amber-300" : "text-slate-900 dark:text-white", warn: campaignsMismatch },
     { label: "Verified Orgs", value: verifiedOrgs.length.toString(), color: "text-holo-mint", warn: false },
     { label: "Your Role", value: isAdmin ? "Admin" : "Verifier", color: "text-holo-lavender", warn: false },
   ];
@@ -345,7 +345,7 @@ export default function AdminPage() {
       eyebrow="Administration"
       title="Admin Panel"
       description={
-        <span className="font-mono text-sm text-white/50">{address ? truncate(address) : ""}</span>
+        <span className="font-mono text-sm text-slate-500 dark:text-white/50">{address ? truncate(address) : ""}</span>
       }
       maxWidth="3xl"
       actions={
@@ -364,7 +364,7 @@ export default function AdminPage() {
           <MotionCard key={label} index={i}>
             <GlassPanel hover={false} holoBorder className={`bg-gradient-to-br ${STAT_GRADIENTS[i]} p-4 text-center`}>
               <p className={`text-2xl font-bold ${color}`}>{value}</p>
-              <p className="mt-0.5 text-xs text-white/50 flex items-center justify-center gap-1">
+              <p className="mt-0.5 text-xs text-slate-500 dark:text-white/50 flex items-center justify-center gap-1">
                 {warn && <AlertCircle size={12} className="text-amber-400 shrink-0" />}
                 {label}
               </p>
@@ -377,14 +377,14 @@ export default function AdminPage() {
       </div>
 
       <Section icon={UserCheck} title="Verifier workflow — verify organization" delay={0.1}>
-        <ol className="text-xs text-white/50 mb-4 space-y-1 list-decimal list-inside">
+        <ol className="text-xs text-slate-500 dark:text-white/50 mb-4 space-y-1 list-decimal list-inside">
           <li>Review off-chain application below</li>
           <li>Paste org wallet address and check verification status</li>
           <li>Click Verify Org to grant ORG_ROLE on-chain</li>
         </ol>
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-1">Organization wallet address</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-white/80 mb-1">Organization wallet address</label>
             <input
               type="text"
               value={orgAddress}

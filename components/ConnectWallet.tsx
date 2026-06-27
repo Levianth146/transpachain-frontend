@@ -20,12 +20,12 @@ export function ConnectWallet() {
   if (isConnected && address) {
     return (
       <div className="flex items-center gap-2">
-        <span className="hidden font-mono text-xs text-white/60 sm:inline">
+        <span className="hidden font-mono text-xs text-slate-500 dark:text-white/60 sm:inline">
           {address.slice(0, 6)}…{address.slice(-4)}
         </span>
         <button
           onClick={() => disconnect()}
-          className="rounded-full border border-gray-700 px-3 py-1.5 text-xs font-medium text-white/80 transition-colors hover:border-gray-600 hover:text-white"
+          className="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900 dark:border-gray-700 dark:text-white/80 dark:hover:border-gray-600 dark:hover:text-white"
         >
           Disconnect
         </button>

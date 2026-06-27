@@ -6,7 +6,7 @@ export function LearnMoreLink({ className = "" }: { className?: string }) {
   return (
     <Link
       href="/about"
-      className={`inline-flex items-center gap-1.5 text-sm text-accent-shine transition-colors hover:text-white ${className}`}
+      className={`inline-flex items-center gap-1.5 text-sm text-teal-600 transition-colors hover:text-slate-900 dark:text-accent-shine dark:hover:text-white ${className}`}
     >
       Learn how TranspaChain works
       <ArrowRight size={14} weight="bold" />
