@@ -77,7 +77,7 @@ export function PageShell({
                   {title}
                 </h1>
                 {description && (
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-white/70 sm:text-lg">
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg">
                     {description}
                   </p>
                 )}

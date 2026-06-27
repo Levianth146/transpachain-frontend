@@ -41,8 +41,8 @@
     --mesh-2: rgba(168, 85, 247, 0.12);
     --mesh-3: rgba(100, 206, 251, 0.1);
     --page-fg: #ffffff;
-    --page-fg-muted: rgba(255, 255, 255, 0.6);
-    --page-fg-subtle: rgba(255, 255, 255, 0.4);
+    --page-fg-muted: rgba(255, 255, 255, 0.75);
+    --page-fg-subtle: rgba(255, 255, 255, 0.55);
   }
 
   body {
@@ -88,7 +88,7 @@
   }
 
   .dark .card-holo {
-    @apply border-white/10 bg-white/[0.05] text-white;
+    @apply border-white/10 bg-slate-900/95 text-slate-100;
     box-shadow:
       inset 0 1px 0 0 rgba(94, 234, 212, 0.12),
       0 8px 32px rgba(0, 0, 0, 0.35);
@@ -116,7 +116,7 @@
   }
 
   .dark .glass-card {
-    @apply border-white/10 bg-white/[0.04] text-white;
+    @apply border-white/10 bg-slate-900/95 text-slate-100;
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
       0 24px 48px rgba(0, 0, 0, 0.4);
@@ -127,7 +127,7 @@
   }
 
   .dark .glass-card:hover {
-    @apply border-white/15 bg-white/[0.06];
+    @apply border-white/15 bg-slate-900;
   }
 
   .stat-pill {
@@ -136,7 +136,7 @@
   }
 
   .dark .stat-pill {
-    @apply border-white/10 bg-white/[0.06] text-white;
+    @apply border-white/10 bg-slate-900/95 text-slate-100;
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
   }
 
@@ -209,7 +209,7 @@
   }
 
   .dark .input-glass {
-    @apply border-white/10 bg-white/[0.04] text-white placeholder:text-white/40;
+    @apply border-white/10 bg-slate-900/90 text-slate-100 placeholder:text-slate-500;
   }
 
   .dark .input-glass:focus {

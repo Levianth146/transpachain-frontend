@@ -94,7 +94,7 @@ export default function DashboardPage() {
         </span>
       }
       description={
-        <span className="truncate font-mono text-sm text-slate-500 dark:text-white/50">{address}</span>
+        <span className="truncate font-mono text-sm text-slate-500 dark:text-slate-400">{address}</span>
       }
       maxWidth="5xl"
     >
@@ -109,9 +109,9 @@ export default function DashboardPage() {
               <GlassPanel key={stat.label} delay={i * 0.08} holoBorder className={`bg-gradient-to-br ${STAT_GRADIENTS[i % STAT_GRADIENTS.length]} p-5 text-center`}>
                 <Icon size={24} className={`mx-auto mb-2 ${STAT_COLORS[i % STAT_COLORS.length]}`} weight="duotone" />
                 <p className={`text-2xl font-bold ${STAT_COLORS[i % STAT_COLORS.length]}`}>{stat.value}</p>
-                <p className="mt-1 text-sm text-slate-600 dark:text-white/60">{stat.label}</p>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{stat.label}</p>
                 {"sub" in stat && stat.sub && (
-                  <p className="mt-1 text-[10px] text-slate-400 dark:text-white/40">{stat.sub}</p>
+                  <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">{stat.sub}</p>
                 )}
               </GlassPanel>
             );
@@ -126,10 +126,10 @@ export default function DashboardPage() {
           <h3 className="mb-4 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
             <Coins size={18} className="text-holo-mint" weight="duotone" />
             Donation History
-            <span className="ml-auto text-[10px] font-normal text-slate-400 dark:text-white/40 uppercase">Indexed</span>
+            <span className="ml-auto text-[10px] font-normal text-slate-500 dark:text-slate-400 uppercase">Indexed</span>
           </h3>
           {donations.length === 0 ? (
-            <p className="text-sm text-slate-500 dark:text-white/50">No donations yet. Browse campaigns to make your first impact!</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300">No donations yet. Browse campaigns to make your first impact!</p>
           ) : (
             <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
               {donations.map((d: any, i: number) => {
@@ -141,7 +141,7 @@ export default function DashboardPage() {
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.04 }}
-                  className="flex items-center justify-between rounded-lg border border-slate-200/80 bg-white/60 px-3 py-2.5 dark:border-white/10 dark:bg-white/[0.03]"
+                  className="flex items-center justify-between rounded-lg border border-slate-200/80 bg-slate-50 px-3 py-2.5 dark:border-white/10 dark:bg-slate-800/60"
                 >
                   <div>
                     <p className="text-sm font-medium text-slate-900 dark:text-white">Campaign #{d.campaignId}</p>

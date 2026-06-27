@@ -37,9 +37,9 @@ export default function GovernanceHubPage() {
     >
       <LearnMoreLink className="mb-6" />
 
-      <GlassPanel holoBorder className="mb-8 p-4 text-sm text-slate-600 dark:text-white/70">
-        <p className="mb-1 font-medium text-slate-900 dark:text-white">Quadratic voting & identity</p>
-        <p className="text-xs leading-relaxed">
+      <GlassPanel holoBorder className="mb-8 p-4 text-sm text-slate-600 dark:text-slate-300">
+        <p className="mb-1 font-medium text-slate-900 dark:text-slate-100">Quadratic voting & identity</p>
+        <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
           Vote weight = √(ETH donated) — splitting donations across wallets does not increase total influence.
           Only wallets with an on-chain donation to the campaign can vote (Sybil resistance via escrowed stake).
           Connect your donor wallet to cast votes on active proposals.
@@ -47,15 +47,15 @@ export default function GovernanceHubPage() {
         {!isConnected && (
           <div className="mt-3 flex items-center gap-3">
             <ConnectWallet />
-            <span className="text-xs text-slate-500 dark:text-white/50">Wallet required to vote</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">Wallet required to vote</span>
           </div>
         )}
       </GlassPanel>
 
       {loading ? (
-        <p className="text-slate-500 dark:text-white/50">Loading proposals…</p>
+        <p className="text-slate-600 dark:text-slate-300">Loading proposals…</p>
       ) : proposals.length === 0 ? (
-        <p className="text-slate-600 dark:text-white/60">No proposals indexed yet. Submit a milestone proof on an active campaign.</p>
+        <p className="text-slate-600 dark:text-slate-300">No proposals indexed yet. Submit a milestone proof on an active campaign.</p>
       ) : (
         <ul className="space-y-4">
           {proposals.map((p, i) => (

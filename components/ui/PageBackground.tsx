@@ -15,8 +15,8 @@ export function PageBackground({
     overlay === "hero"
       ? "bg-gradient-to-b from-white/30 via-white/20 to-slate-100/50 dark:from-black/55 dark:via-black/50 dark:to-black/65"
       : overlay === "light"
-        ? "bg-white/40 dark:bg-black/50"
-        : "bg-white/40 dark:bg-black/50";
+        ? "bg-white/35 dark:bg-black/65"
+        : "bg-white/40 dark:bg-black/60";
 
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 z-0 ${className}`}>

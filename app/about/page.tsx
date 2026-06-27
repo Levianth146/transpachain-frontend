@@ -63,7 +63,7 @@ export default function AboutPage() {
       <div className="space-y-8">
         <GlassPanel holoBorder className="p-6">
           <h2 className="mb-3 text-xl font-semibold text-teal-700 dark:text-holo-mint">Our mission</h2>
-          <p className="leading-relaxed text-slate-600 dark:text-white/70">
+          <p className="leading-relaxed text-slate-600 dark:text-slate-300">
             We bridge the trust gap between donors and charitable organizations. Instead of sending funds
             directly to an org wallet, donations lock in a smart-contract escrow vault — in ETH or USDC.
             Organizations earn trust by submitting milestone proof reviewed by admin; donors retain control
@@ -97,10 +97,10 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-slate-200 bg-white/90 p-4 transition-colors hover:border-violet-300/50 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-holo-lavender/20"
+                className="rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-violet-300/50 dark:border-white/10 dark:bg-slate-900/90 dark:hover:border-holo-lavender/20"
               >
-                <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.title}</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-white/60">{item.desc}</p>
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{item.title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">{item.desc}</p>
               </motion.div>
             ))}
           </div>
