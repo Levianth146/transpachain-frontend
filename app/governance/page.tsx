@@ -33,6 +33,7 @@ export default function GovernanceHubPage() {
       }
       description="Milestone releases are decided by donor votes using quadratic weighting (√donation). Admin approves proposals off-chain before they appear here. 51% quorum and a 24-hour timelock protect escrowed funds."
       maxWidth="4xl"
+      backgroundImage="/backgrounds/governance.png"
     >
       <LearnMoreLink className="mb-6" />
 

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+import { PageBackground } from "@/components/ui/PageBackground";
 
 interface PageShellProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface PageShellProps {
   actions?: React.ReactNode;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "7xl";
   className?: string;
+  backgroundImage?: string;
 }
 
 const MAX_WIDTH: Record<NonNullable<PageShellProps["maxWidth"]>, string> = {
@@ -33,9 +35,11 @@ export function PageShell({
   actions,
   maxWidth = "7xl",
   className = "",
+  backgroundImage,
 }: PageShellProps) {
   return (
     <AnimatedGradientBackground variant="dark" className="min-h-screen">
+      {backgroundImage && <PageBackground image={backgroundImage} />}
       <div className="relative">
         <div
           aria-hidden

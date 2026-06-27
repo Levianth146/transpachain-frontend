@@ -72,6 +72,8 @@ export function OrgCampaignActions({
   } = useSubmitMilestoneProof();
 
   const [proofCID, setProofCID] = useState("");
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [proofUploading, setProofUploading] = useState(false);
   const [evidenceTitle, setEvidenceTitle] = useState("");
   const [evidenceDesc, setEvidenceDesc] = useState("");
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
@@ -165,9 +167,37 @@ export function OrgCampaignActions({
             placeholder="Qm..."
             className="flex-1 min-w-[120px] border rounded-lg px-3 py-1.5 text-sm"
           />
+          <FileUploadButton
+            variant="compact"
+            label="Upload to IPFS"
+            uploadingLabel="Pinning…"
+            uploading={proofUploading}
+            selectedFileName={proofFile?.name ?? null}
+            accept="image/*,application/pdf"
+            disabled={!canSubmitProof}
+            onChange={async (file) => {
+              setProofFile(file);
+              if (!file) {
+                setProofCID("");
+                return;
+              }
+              setProofUploading(true);
+              try {
+                const up = await api.uploadFile(file);
+                setProofCID(up.cid);
+                addToast({ type: "success", title: "Uploaded to IPFS", message: up.cid });
+              } catch (err) {
+                const message = err instanceof Error ? err.message : "Upload failed";
+                addToast({ type: "error", title: "IPFS upload failed", message });
+                setProofFile(null);
+              } finally {
+                setProofUploading(false);
+              }
+            }}
+          />
           <button
             type="button"
-            disabled={submitting || !proofCID.trim() || !canSubmitProof || milestoneIdx !== completedMilestones}
+            disabled={submitting || proofUploading || !proofCID.trim() || !canSubmitProof || milestoneIdx !== completedMilestones}
             onClick={() => {
               submitMilestoneProof(campaignId, completedMilestones, proofCID.trim());
               addToast({ type: "info", title: "Submitting milestone proof…" });

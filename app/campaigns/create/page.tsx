@@ -121,6 +121,7 @@ export default function CreateCampaignPage() {
       title="Create Campaign"
       description="Funds are escrowed on-chain — released only after donor DAO votes approve milestones."
       maxWidth="2xl"
+      backgroundImage="/backgrounds/create.png"
     >
       <LearnMoreLink className="mb-6" />
       <form onSubmit={handleSubmit} className="space-y-4">

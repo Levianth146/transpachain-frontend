@@ -183,7 +183,7 @@ export function DonateModal({
         <button
           onClick={handleDonate}
           disabled={!isConnected || busy || (isUSDC && needsApprove)}
-          className="w-full py-2 bg-holo-mint/90 text-ink-950 rounded-lg text-sm font-medium disabled:opacity-50 hover:bg-holo-mint"
+          className="w-full py-2.5 rounded-lg bg-holo-gradient text-sm font-semibold text-ink-950 shadow-[0_8px_32px_rgba(94,234,212,0.35)] transition-all hover:scale-[1.01] hover:shadow-[0_10px_40px_rgba(94,234,212,0.45)] disabled:opacity-50 disabled:hover:scale-100"
         >
           {busy ? "Confirm in wallet..." : isUSDC && needsApprove ? "2. Donate (after approve)" : "Donate"}
         </button>

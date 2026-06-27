@@ -4,7 +4,7 @@ import { useReadContract } from "wagmi";
 import { motion } from "framer-motion";
 import { ADDRESSES, IMPACT_NFT_ABI } from "@/lib/contracts";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { Medal, GameController, ArrowSquareOut } from "@phosphor-icons/react";
+import { Medal, GameController } from "@phosphor-icons/react";
 import Image from "next/image";
 import { tierImagePath, tierLabel } from "@/lib/nft";
 import { tokenExplorerUrl } from "@/components/TxLink";
@@ -38,8 +38,6 @@ const TIER_STYLE: Record<number, {
     scanline: "rgba(255,255,0,0.06)",
   },
 };
-
-const OPENSEA_BASE = "https://testnets.opensea.io/assets/sepolia";
 
 function NFTCard({ tokenId, index }: { tokenId: bigint; index: number }) {
   const { data: meta } = useReadContract({
@@ -148,19 +146,9 @@ export function NFTGallery({ address }: { address: string }) {
       </div>
 
       <p className="mb-4 text-xs leading-relaxed text-white/45">
-        One badge per campaign. View in MetaMask or on OpenSea — if art doesn&apos;t appear, open the
-        NFT menu and tap <strong className="text-white/60">Refresh metadata</strong>.
+        One badge per campaign. View in MetaMask — if art doesn&apos;t appear, open the NFT menu
+        and tap <strong className="text-white/60">Refresh metadata</strong>.
       </p>
-
-      <a
-        href={`${OPENSEA_BASE}/${ADDRESSES.impactNFT}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mb-5 inline-flex items-center gap-1.5 text-xs text-holo-mint hover:underline"
-      >
-        <ArrowSquareOut size={13} />
-        View collection on OpenSea
-      </a>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-2">
         {tokenIds.map((tokenId, i) => (

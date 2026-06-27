@@ -8,6 +8,7 @@ import { api } from "@/lib/api";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { useOnChainPlatformStats } from "@/hooks/useOnChainPlatformStats";
 import { SiteHeader } from "@/components/SiteHeader";
+import { PageBackground } from "@/components/ui/PageBackground";
 
 function AnimatedCounter({
   value,
@@ -119,8 +120,11 @@ export function Web3HeroAnimated() {
 
   return (
     <section className="relative isolate min-h-screen overflow-hidden bg-black text-white">
+      <PageBackground image="/backgrounds/landing.png" />
+      {/* Aurora accents */}
+      <div aria-hidden className="aurora-bg absolute inset-0 opacity-60" />
       {/* Gradient mesh background */}
-      <div aria-hidden className="absolute inset-0 mesh-bg" />
+      <div aria-hidden className="absolute inset-0 mesh-bg opacity-40" />
       <div
         aria-hidden
         className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,black,transparent)]"

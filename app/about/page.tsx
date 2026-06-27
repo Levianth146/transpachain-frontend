@@ -58,6 +58,7 @@ export default function AboutPage() {
       }
       description="TranspaChain is a transparent giving platform on Ethereum where every donation is escrowed in ETH or USDC, every release is voted on by donors using quadratic weighting, and every transaction is verifiable on-chain."
       maxWidth="4xl"
+      backgroundImage="/backgrounds/about.png"
     >
       <div className="space-y-8">
         <GlassPanel holoBorder className="p-6">

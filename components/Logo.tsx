@@ -17,11 +17,11 @@ export function Logo({ className = "", variant = "default" }: LogoProps) {
       <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full p-[2px] bg-holo-gradient shadow-[0_0_12px_rgba(94,234,212,0.25)]">
         <span className="flex h-full w-full items-center justify-center rounded-full bg-ink-950">
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt=""
             width={28}
             height={28}
-            className="h-7 w-7 shrink-0"
+            className="h-7 w-7 shrink-0 object-contain"
           />
         </span>
       </span>
