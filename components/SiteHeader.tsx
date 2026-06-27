@@ -28,7 +28,7 @@ export function SiteHeader({ variant = "default" }: SiteHeaderProps) {
       className={
         isHero
           ? `sticky top-0 z-50 w-full pt-4 transition-all duration-300 sm:pt-6 ${scrolled ? "pt-2 sm:pt-3" : ""}`
-          : "sticky top-0 z-50 w-full border-b border-white/[0.08] bg-black/80 backdrop-blur-2xl"
+          : "sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/85 backdrop-blur-2xl dark:border-white/[0.08] dark:bg-black/80"
       }
     >
       <div

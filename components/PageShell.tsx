@@ -38,9 +38,13 @@ export function PageShell({
   backgroundImage,
 }: PageShellProps) {
   return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen">
+    <AnimatedGradientBackground
+      variant="dark"
+      className="min-h-screen"
+      hasBackgroundImage={Boolean(backgroundImage)}
+    >
       {backgroundImage && <PageBackground image={backgroundImage} />}
-      <div className="relative">
+      <div className="relative z-10">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(94,234,212,0.1),transparent_70%)]"
@@ -67,11 +71,11 @@ export function PageShell({
             {eyebrow && <p className="section-eyebrow mb-3">{eyebrow}</p>}
             <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h1 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+                <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
                   {title}
                 </h1>
                 {description && (
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-white/60 sm:text-lg">
                     {description}
                   </p>
                 )}

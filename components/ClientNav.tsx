@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAccount, useReadContract } from "wagmi";
 import { ConnectWallet } from "./ConnectWallet";
+import { ThemeToggle } from "./ThemeToggle";
 import { useMounted } from "@/hooks/useMounted";
 import { ADDRESSES, CHARITY_CORE_ABI } from "@/lib/contracts";
 import { keccak256, toBytes } from "viem";
@@ -72,7 +73,7 @@ export function ClientNav() {
 
   return (
     <div className="flex items-center gap-4">
-      <nav className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1.5 shadow-[inset_0_0_0_1px_rgba(94,234,212,0.08)] backdrop-blur-sm">
+      <nav className="flex items-center gap-1 rounded-full border border-slate-200/80 bg-white/60 p-1.5 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[inset_0_0_0_1px_rgba(94,234,212,0.08)]">
         {links.map(({ href, label }) => {
           const active = isNavActive(pathname, href);
           return (
@@ -81,8 +82,8 @@ export function ClientNav() {
               href={href}
               className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
                 active
-                  ? "bg-holo-gradient-subtle text-white ring-1 ring-white/10"
-                  : "text-white/80 hover:text-white"
+                  ? "bg-holo-gradient-subtle text-slate-900 ring-1 ring-slate-200 dark:text-white dark:ring-white/10"
+                  : "text-slate-600 hover:text-slate-900 dark:text-white/80 dark:hover:text-white"
               }`}
             >
               {label}
@@ -90,6 +91,7 @@ export function ClientNav() {
           );
         })}
       </nav>
+      <ThemeToggle />
       <ConnectWallet />
     </div>
   );

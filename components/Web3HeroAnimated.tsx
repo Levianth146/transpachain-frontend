@@ -119,27 +119,29 @@ export function Web3HeroAnimated() {
   ];
 
   return (
-    <section className="relative isolate min-h-screen overflow-hidden bg-black text-white">
-      <PageBackground image="/backgrounds/landing.png" />
-      {/* Aurora accents */}
-      <div aria-hidden className="aurora-bg absolute inset-0 opacity-60" />
-      {/* Gradient mesh background */}
-      <div aria-hidden className="absolute inset-0 mesh-bg opacity-40" />
+    <section className="relative isolate min-h-screen overflow-hidden text-white">
+      <PageBackground image="/backgrounds/landing.png" overlay="hero" />
+      {/* Unified mesh + vault accent overlays (CSS only, no second image layer) */}
+      <div aria-hidden className="absolute inset-0 z-[1] mesh-bg opacity-35" />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,black,transparent)]"
+        className="absolute inset-0 z-[1] bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,black,transparent)]"
       />
       <div
         aria-hidden
-        className="absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-holo-mint/10 blur-[120px]"
+        className="absolute -left-32 top-1/4 z-[1] h-96 w-96 rounded-full bg-holo-mint/12 blur-[120px]"
       />
       <div
         aria-hidden
-        className="absolute -right-24 top-1/3 h-80 w-80 rounded-full bg-accent-purple/15 blur-[100px]"
+        className="absolute -right-24 top-1/3 z-[1] h-80 w-80 rounded-full bg-accent-purple/18 blur-[100px]"
       />
       <div
         aria-hidden
-        className="absolute bottom-0 left-1/2 h-64 w-[800px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(100,206,251,0.12),transparent_70%)]"
+        className="absolute bottom-0 left-1/2 z-[1] h-64 w-[800px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(100,206,251,0.14),transparent_70%)]"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_70%_50%_at_75%_45%,rgba(168,85,247,0.12),transparent_60%)]"
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-4 sm:px-6 lg:px-8">

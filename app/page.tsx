@@ -4,7 +4,7 @@ import { FaqAccordion } from "@/components/FaqAccordion";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen bg-slate-50 dark:bg-black">
       <Web3HeroAnimated />
       <LandingFeatures />
       <FaqAccordion />

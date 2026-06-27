@@ -32,12 +32,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <ConditionalNav />
           {children}
-          <footer className="border-t border-white/10 bg-black px-6 py-8 text-center text-sm text-white/50">
+          <footer className="border-t border-slate-200 bg-white px-6 py-8 text-center text-sm text-slate-500 dark:border-white/10 dark:bg-black dark:text-white/50">
             <p className="mb-1 font-display font-medium text-holo">
               TranspaChain
             </p>
             <p className="mb-2">Sepolia testnet demo — transpachain.site — not financial advice.</p>
-            <Link href="/legal" className="text-holo-mint transition-colors hover:text-white">
+            <Link href="/legal" className="text-holo-mint transition-colors hover:text-slate-900 dark:hover:text-white">
               Legal &amp; Disclaimer
             </Link>
           </footer>
