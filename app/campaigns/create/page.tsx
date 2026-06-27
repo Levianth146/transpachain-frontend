@@ -7,7 +7,6 @@ import { useCreateCampaign, useIsOrgVerified } from "@/hooks/useCharityCore";
 import { api } from "@/lib/api";
 import { ConnectWallet } from "@/components/ConnectWallet";
 import { PageShell } from "@/components/PageShell";
-import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { normalizeImageUrl } from "@/lib/images";
 import { getPaymentTokenLabel } from "@/lib/format";
@@ -106,13 +105,16 @@ export default function CreateCampaignPage() {
   );
 
   if (!isConnected) return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen flex flex-col items-center justify-center px-4" backgroundImage="/backgrounds/create.png">
-      <div className="w-full max-w-md space-y-4 text-center">
-        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Create Campaign</h1>
-        <p className="text-slate-600 dark:text-white/60">Connect your verified org wallet to launch an on-chain escrow campaign.</p>
-        <ConnectWallet />
-      </div>
-    </AnimatedGradientBackground>
+    <PageShell
+      eyebrow="Launch"
+      title="Create Campaign"
+      description="Connect your verified org wallet to launch an on-chain escrow campaign."
+      maxWidth="md"
+      backgroundImage="/backgrounds/create.png"
+      className="flex min-h-[calc(100vh-14rem)] flex-col items-center justify-center pb-20 text-center"
+    >
+      <ConnectWallet />
+    </PageShell>
   );
 
   return (

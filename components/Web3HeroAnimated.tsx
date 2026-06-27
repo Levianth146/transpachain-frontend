@@ -88,7 +88,7 @@ export function Web3HeroAnimated() {
       value: totalCampaigns,
       label: "Campaigns",
       icon: Target,
-      color: "text-white",
+      color: "text-slate-900 dark:text-white",
       decimals: 0,
       suffix: "",
     },
@@ -96,7 +96,7 @@ export function Web3HeroAnimated() {
       value: onChain.ready ? ethDonated : 0,
       label: "Raised (net)",
       icon: Coins,
-      color: "text-accent-shine",
+      color: "text-teal-700 dark:text-accent-shine",
       decimals: 2,
       suffix: " ETH",
     },
@@ -104,7 +104,7 @@ export function Web3HeroAnimated() {
       value: onChain.ready ? usdcDonated : 0,
       label: "USDC (net)",
       icon: Coins,
-      color: "text-holo-lavender",
+      color: "text-violet-700 dark:text-holo-lavender",
       decimals: 0,
       suffix: " USDC",
     },
@@ -112,20 +112,20 @@ export function Web3HeroAnimated() {
       value: donors,
       label: formatDonorLabel(donors),
       icon: Users,
-      color: "text-holo-mint",
+      color: "text-emerald-700 dark:text-holo-mint",
       decimals: 0,
       suffix: "",
     },
   ];
 
   return (
-    <section className="relative isolate min-h-screen overflow-hidden text-white">
+    <section className="relative isolate min-h-screen overflow-hidden text-slate-900 dark:text-white">
       <PageBackground image="/backgrounds/landing.png" overlay="hero" />
       {/* Unified mesh + vault accent overlays (CSS only, no second image layer) */}
       <div aria-hidden className="absolute inset-0 z-[1] mesh-bg opacity-35" />
       <div
         aria-hidden
-        className="absolute inset-0 z-[1] bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,black,transparent)]"
+        className="absolute inset-0 z-[1] bg-[linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,black,transparent)] dark:bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)]"
       />
       <div
         aria-hidden
@@ -166,7 +166,7 @@ export function Web3HeroAnimated() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.25rem]"
               >
-                <span className="block text-white">Give with</span>
+                <span className="block text-slate-900 dark:text-white">Give with</span>
                 <span className="block text-display-gradient">confidence.</span>
               </motion.h1>
 
@@ -174,7 +174,7 @@ export function Web3HeroAnimated() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: isMounted ? 1 : 0, y: isMounted ? 0 : 16 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="mt-6 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg"
+                className="mt-6 max-w-xl text-base leading-relaxed text-slate-600 dark:text-white/65 sm:text-lg"
               >
                 TranspaChain locks every donation in on-chain escrow. Milestone proof is verified,
                 releases are governed by donors, and your impact earns retro NFT badges.
@@ -205,7 +205,7 @@ export function Web3HeroAnimated() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: isMounted ? 1 : 0 }}
                 transition={{ delay: 0.45 }}
-                className="mt-10 flex flex-wrap gap-6 text-sm text-white/50"
+                className="mt-10 flex flex-wrap gap-6 text-sm text-slate-500 dark:text-white/50"
               >
                 <span className="flex items-center gap-2">
                   <Lock size={14} className="text-holo-mint" /> Escrow-protected
@@ -232,13 +232,13 @@ export function Web3HeroAnimated() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35 + i * 0.08 }}
-                  className="stat-pill group transition-colors hover:border-holo-mint/30 hover:bg-white/[0.08]"
+                  className="stat-pill group transition-colors hover:border-teal-300/50 hover:bg-slate-100/80 dark:hover:border-holo-mint/30 dark:hover:bg-white/[0.08]"
                 >
                   <div className={`font-display text-2xl font-bold sm:text-3xl ${color}`}>
                     <AnimatedCounter value={value} suffix={suffix} decimals={decimals} />
                   </div>
-                  <div className="mt-2 flex items-center gap-1.5 text-xs uppercase tracking-wider text-white/45">
-                    <Icon size={13} className="text-white/35" />
+                  <div className="mt-2 flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-500 dark:text-white/45">
+                    <Icon size={13} className="text-slate-400 dark:text-white/35" />
                     {label}
                   </div>
                 </motion.div>

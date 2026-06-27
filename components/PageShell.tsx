@@ -38,9 +38,10 @@ export function PageShell({
 }: PageShellProps) {
   return (
     <AnimatedGradientBackground
-      variant="dark"
+      variant="subtle"
       className="min-h-screen"
       backgroundImage={backgroundImage}
+      backgroundOverlay="light"
     >
       <div className="relative z-10">
         <div
@@ -54,7 +55,11 @@ export function PageShell({
 
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]"
+          className={`pointer-events-none absolute inset-0 bg-[size:48px_48px] ${
+            backgroundImage
+              ? "bg-[linear-gradient(rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.03)_1px,transparent_1px)] opacity-60 dark:opacity-0"
+              : "bg-[linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]"
+          }`}
         />
 
         <main
@@ -73,7 +78,7 @@ export function PageShell({
                   {title}
                 </h1>
                 {description && (
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-white/60 sm:text-lg">
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-white/70 sm:text-lg">
                     {description}
                   </p>
                 )}

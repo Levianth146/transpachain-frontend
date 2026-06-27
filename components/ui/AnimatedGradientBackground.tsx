@@ -7,13 +7,15 @@ interface Props {
   className?: string;
   variant?: "subtle" | "vivid" | "dark";
   backgroundImage?: string;
+  backgroundOverlay?: "dark" | "light" | "hero";
 }
 
 export function AnimatedGradientBackground({
   children,
   className = "",
-  variant = "dark",
+  variant = "subtle",
   backgroundImage,
+  backgroundOverlay = "dark",
 }: Props) {
   const vivid = variant === "vivid";
   const hasBackgroundImage = Boolean(backgroundImage);
@@ -23,7 +25,9 @@ export function AnimatedGradientBackground({
       className={`relative min-h-screen overflow-hidden text-slate-900 dark:text-white ${className}`}
     >
       <div className="absolute inset-0 z-0">
-        {backgroundImage && <PageBackground image={backgroundImage} />}
+        {backgroundImage && (
+          <PageBackground image={backgroundImage} overlay={backgroundOverlay} />
+        )}
 
         <motion.div
           className={`absolute -inset-[40%] rounded-full blur-3xl ${
@@ -72,7 +76,8 @@ export function AnimatedGradientBackground({
 
         {!hasBackgroundImage && (
           <>
-            <div className="absolute inset-0 bg-slate-100/90 dark:bg-black/92 backdrop-blur-[1px]" />
+            <div className="absolute inset-0 mesh-bg opacity-90 dark:opacity-100" />
+            <div className="absolute inset-0 bg-slate-50/80 dark:bg-black/92 backdrop-blur-[1px]" />
             <div className="absolute inset-0 bg-panel-glow opacity-40 dark:opacity-60" />
           </>
         )}

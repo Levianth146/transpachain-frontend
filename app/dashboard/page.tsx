@@ -12,7 +12,6 @@ import { PageShell } from "@/components/PageShell";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { DonorNotifications } from "@/components/DonorNotifications";
-import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
 import { TxLink } from "@/components/TxLink";
 
 const STAT_ICONS = [Coins, Heart, CheckCircle];
@@ -44,10 +43,20 @@ export default function DashboardPage() {
   if (!mounted) return null;
 
   if (!isConnected) return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen flex flex-col items-center justify-center gap-4">
-      <p className="text-lg font-medium text-slate-900 dark:text-white">Connect your wallet to view dashboard</p>
+    <PageShell
+      eyebrow="Your impact"
+      title={
+        <span className="inline-flex items-center gap-2">
+          <TrendUp size={28} className="text-holo-mint" weight="duotone" />
+          Dashboard
+        </span>
+      }
+      description="Connect your wallet to view your donation history, impact NFTs, and org profile."
+      maxWidth="md"
+      className="flex min-h-[calc(100vh-14rem)] flex-col items-center justify-center pb-20 text-center"
+    >
       <ConnectWallet />
-    </AnimatedGradientBackground>
+    </PageShell>
   );
 
   const totals = sumDonationsByToken(donations);

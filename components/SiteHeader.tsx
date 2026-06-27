@@ -21,7 +21,7 @@ export function SiteHeader({ variant = "default" }: SiteHeaderProps) {
   }, []);
 
   const glassBar =
-    "rounded-2xl border border-white/10 bg-white/[0.04] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-2xl";
+    "rounded-2xl border border-slate-200/80 bg-white/70 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/[0.04] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]";
 
   return (
     <header
@@ -35,7 +35,7 @@ export function SiteHeader({ variant = "default" }: SiteHeaderProps) {
         className={
           isHero
             ? `relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 transition-all duration-300 sm:px-6 ${
-                scrolled ? `${glassBar} bg-black/60` : glassBar
+                scrolled ? `${glassBar} dark:bg-black/60` : glassBar
               }`
             : "relative mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8"
         }
