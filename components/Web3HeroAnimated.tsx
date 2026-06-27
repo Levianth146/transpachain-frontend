@@ -53,9 +53,44 @@ function formatDonorLabel(count: number): string {
   return count === 1 ? "Donor" : "Donors";
 }
 
+function truncateAddress(addr: string): string {
+  return addr.length > 10 ? `${addr.slice(0, 6)}…${addr.slice(-4)}` : addr;
+}
+
+type TickerItem = {
+  id: string;
+  message: string;
+};
+
+function ActivityTicker({ items }: { items: TickerItem[] }) {
+  if (items.length === 0) return null;
+
+  const doubled = [...items, ...items];
+
+  return (
+    <div className="relative mt-8 overflow-hidden rounded-full border border-slate-200/80 bg-white/80 py-2 dark:border-white/10 dark:bg-white/[0.06]">
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white/90 to-transparent dark:from-black/40" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white/90 to-transparent dark:from-black/40" />
+      <motion.div
+        className="flex w-max gap-8 px-4 text-xs text-slate-600 dark:text-white/60"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: Math.max(items.length * 6, 18), repeat: Infinity, ease: "linear" }}
+      >
+        {doubled.map((item, i) => (
+          <span key={`${item.id}-${i}`} className="whitespace-nowrap">
+            <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-teal-500 dark:bg-holo-mint" />
+            {item.message}
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
 export function Web3HeroAnimated() {
   const [isMounted, setIsMounted] = useState(false);
   const [donorCount, setDonorCount] = useState<number | null>(null);
+  const [tickerItems, setTickerItems] = useState<TickerItem[]>([]);
 
   const loadDonorCount = () => {
     api
@@ -73,7 +108,21 @@ export function Web3HeroAnimated() {
   }, []);
 
   useSocketEvents({
-    donationReceived: () => loadDonorCount(),
+    donationReceived: (data) => {
+      loadDonorCount();
+      if (data?.campaignId != null && data?.donor) {
+        const token = data.tokenType === 1 ? "USDC" : "ETH";
+        const amount =
+          data.tokenType === 1
+            ? (Number(data.netAmount ?? data.amount ?? 0) / 1e6).toFixed(0)
+            : (Number(data.netAmount ?? data.amount ?? 0) / 1e18).toFixed(3);
+        const item: TickerItem = {
+          id: `${data.campaignId}-${data.donor}-${Date.now()}`,
+          message: `${truncateAddress(String(data.donor))} donated ${amount} ${token} to Campaign #${data.campaignId}`,
+        };
+        setTickerItems((prev) => [item, ...prev].slice(0, 8));
+      }
+    },
     campaignCreated: () => loadDonorCount(),
   });
 
@@ -176,8 +225,9 @@ export function Web3HeroAnimated() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="mt-6 max-w-xl text-base leading-relaxed text-slate-600 dark:text-white/65 sm:text-lg"
               >
-                TranspaChain locks every donation in on-chain escrow. Milestone proof is verified,
-                releases are governed by donors, and your impact earns retro NFT badges.
+                When donations vanish into opaque wallets, trust breaks. TranspaChain locks every gift
+                in on-chain escrow — milestone proof is verified, releases are governed by donors, and
+                your impact earns retro NFT badges.
               </motion.p>
 
               <motion.div
@@ -208,15 +258,17 @@ export function Web3HeroAnimated() {
                 className="mt-10 flex flex-wrap gap-6 text-sm text-slate-500 dark:text-white/50"
               >
                 <span className="flex items-center gap-2">
-                  <Lock size={14} className="text-holo-mint" /> Escrow-protected
+                  <Lock size={14} className="text-teal-600 dark:text-holo-mint" /> Escrow-protected
                 </span>
                 <span className="flex items-center gap-2">
-                  <Shield size={14} className="text-holo-lavender" /> Donor governance
+                  <Shield size={14} className="text-violet-600 dark:text-holo-lavender" /> Donor governance
                 </span>
                 <span className="flex items-center gap-2">
-                  <Users size={14} className="text-accent-shine" /> Verified orgs
+                  <Users size={14} className="text-teal-700 dark:text-accent-shine" /> Verified orgs
                 </span>
               </motion.div>
+
+              <ActivityTicker items={tickerItems} />
             </div>
 
             {/* Right: stat pills grid */}

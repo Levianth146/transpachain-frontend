@@ -197,9 +197,9 @@ function FlowNodeCard({ node, index }: { node: FlowNode; index: number }) {
       >
         <IconComp size={22} className={style.text} weight="duotone" aria-hidden />
       </motion.div>
-      <p className="text-center text-xs font-semibold text-white sm:text-sm">{node.label}</p>
+      <p className="text-center text-xs font-semibold text-slate-700 sm:text-sm dark:text-white/80">{node.label}</p>
       {node.sublabel && (
-        <p className="mt-0.5 text-center text-[10px] text-white/50 sm:text-xs">{node.sublabel}</p>
+        <p className="mt-0.5 text-center text-[10px] text-slate-500 sm:text-xs dark:text-white/50">{node.sublabel}</p>
       )}
     </motion.div>
   );
@@ -224,12 +224,12 @@ export function HowItWorksWorkflow({ stepId, stepMeta }: HowItWorksWorkflowProps
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.3 }}
-        className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm sm:p-6"
+        className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white/90 p-4 sm:p-6 dark:border-white/10 dark:bg-white/[0.03]"
       >
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
-            <h3 className="text-base font-semibold text-white sm:text-lg">{stepMeta.title}</h3>
-            <p className="mt-1 text-xs leading-relaxed text-white/60 sm:text-sm">{stepMeta.summary}</p>
+            <h3 className="text-base font-semibold text-slate-900 sm:text-lg dark:text-white">{stepMeta.title}</h3>
+            <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:text-sm dark:text-white/60">{stepMeta.summary}</p>
           </div>
           <span className="hidden rounded-full border border-holo-mint/30 bg-holo-mint/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-holo-mint sm:inline">
             Live flow
@@ -256,7 +256,7 @@ export function HowItWorksWorkflow({ stepId, stepMeta }: HowItWorksWorkflowProps
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="mt-5 space-y-2 border-t border-white/10 pt-4"
+          className="mt-5 space-y-2 border-t border-slate-200 pt-4 dark:border-white/10"
         >
           {flow.detail.map((line, i) => (
             <motion.li
@@ -264,7 +264,7 @@ export function HowItWorksWorkflow({ stepId, stepMeta }: HowItWorksWorkflowProps
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.45 + i * 0.08 }}
-              className="flex gap-2 text-xs leading-relaxed text-white/70 sm:text-sm"
+              className="flex gap-2 text-xs leading-relaxed text-slate-700 sm:text-sm dark:text-white/80"
             >
               <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-holo-lavender/20 text-[10px] font-bold text-holo-lavender">
                 {i + 1}

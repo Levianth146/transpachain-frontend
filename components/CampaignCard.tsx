@@ -54,9 +54,11 @@ function isUrgentDeadline(timeLeft: string | null): boolean {
 export function CampaignCard({
   campaign,
   onChainRaisedWei,
+  governanceStatus,
 }: {
   campaign: any;
   onChainRaisedWei?: bigint;
+  governanceStatus?: "vote" | "timelock" | null;
 }) {
   const paymentToken = campaign.paymentToken ?? 0;
   const tokenLabel   = getPaymentTokenLabel(paymentToken);
@@ -117,11 +119,23 @@ export function CampaignCard({
               <CategoryIcon size={10} />
               {campaign.category || "general"}
             </span>
-            {timeLeft && !isUrgent && (
-              <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-white/40">
-                <Clock size={10} /> {timeLeft}
-              </span>
-            )}
+            <div className="flex items-center gap-2">
+              {governanceStatus === "vote" && (
+                <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-violet-700 dark:bg-holo-lavender/15 dark:text-holo-lavender">
+                  Vote open
+                </span>
+              )}
+              {governanceStatus === "timelock" && (
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700 dark:bg-amber-400/15 dark:text-amber-300">
+                  Timelock
+                </span>
+              )}
+              {timeLeft && !isUrgent && (
+                <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-white/40">
+                  <Clock size={10} /> {timeLeft}
+                </span>
+              )}
+            </div>
           </div>
 
           <h3 className="mb-1 line-clamp-2 font-display text-base font-bold leading-snug text-slate-900 dark:text-white">

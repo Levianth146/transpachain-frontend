@@ -17,7 +17,13 @@ function getSocket() {
 }
 
 type SocketHandlers = Partial<{
-  donationReceived: (data: { campaignId?: number }) => void;
+  donationReceived: (data: {
+    campaignId?: number;
+    donor?: string;
+    amount?: string;
+    netAmount?: string;
+    tokenType?: number;
+  }) => void;
   campaignCreated: (data: unknown) => void;
   campaignUpdated: (data: { campaignId?: number }) => void;
   deadlineExtended: (data: { campaignId?: number; deadline?: number }) => void;

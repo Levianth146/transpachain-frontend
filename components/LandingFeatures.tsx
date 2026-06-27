@@ -37,19 +37,19 @@ const FEATURES = [
 
 export function LandingFeatures() {
   return (
-    <section className="relative border-t border-white/10 bg-black py-24">
+    <section className="relative border-t border-slate-200/80 bg-slate-50 py-24 dark:border-white/10 dark:bg-black">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-holo-mint/40 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-teal-400/40 to-transparent dark:via-holo-mint/40"
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-14 max-w-2xl">
           <p className="section-eyebrow mb-3">Why TranspaChain</p>
-          <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl dark:text-white">
             Charity infrastructure
             <span className="text-display-gradient"> built for trust.</span>
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-white/60 sm:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg dark:text-white/60">
             A premium giving experience — milestone escrow, quadratic voting, and collectible impact
             badges — all verifiable on Ethereum Sepolia.
           </p>
@@ -63,15 +63,15 @@ export function LandingFeatures() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.08, duration: 0.45 }}
-              className="glass-card group p-6 transition-all hover:-translate-y-1"
+              className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/5 dark:shadow-none dark:hover:border-white/15"
             >
               <div
-                className={`mb-4 inline-flex rounded-xl border border-white/10 bg-white/[0.04] p-3 ${accent}`}
+                className={`mb-4 inline-flex rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-white/[0.04] ${accent}`}
               >
                 <Icon size={24} weight="duotone" />
               </div>
-              <h3 className="font-display text-lg font-semibold text-white">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/55">{description}</p>
+              <h3 className="font-display text-lg font-semibold text-slate-800 dark:text-white">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-white/55">{description}</p>
             </motion.div>
           ))}
         </div>
@@ -80,13 +80,13 @@ export function LandingFeatures() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 flex flex-col items-center justify-between gap-6 rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.06] to-transparent p-8 sm:flex-row sm:p-10"
+          className="mt-16 flex flex-col items-center justify-between gap-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:flex-row sm:p-10 dark:border-white/10 dark:bg-gradient-to-br dark:from-white/[0.06] dark:to-transparent dark:shadow-none"
         >
           <div>
-            <p className="font-display text-xl font-semibold text-white sm:text-2xl">
+            <p className="font-display text-xl font-semibold text-slate-900 sm:text-2xl dark:text-white">
               Ready to make an impact?
             </p>
-            <p className="mt-1 text-sm text-white/55">
+            <p className="mt-1 text-sm text-slate-600 dark:text-white/55">
               Browse active campaigns or launch your own in minutes.
             </p>
           </div>

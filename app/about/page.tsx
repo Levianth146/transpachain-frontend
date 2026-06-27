@@ -97,7 +97,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-slate-200/80 bg-white/60 p-4 transition-colors hover:border-violet-300/50 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-holo-lavender/20"
+                className="rounded-xl border border-slate-200 bg-white/90 p-4 transition-colors hover:border-violet-300/50 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-holo-lavender/20"
               >
                 <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.title}</p>
                 <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-white/60">{item.desc}</p>

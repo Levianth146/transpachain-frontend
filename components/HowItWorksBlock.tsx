@@ -142,17 +142,17 @@ export function HowItWorksBlock({ columns = 5 }: { columns?: 3 | 5 | 6 }) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.07 }}
-              className={`rounded-xl border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-holo-mint/60 ${
+              className={`rounded-xl border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/60 dark:focus-visible:ring-holo-mint/60 ${
                 isSelected
-                  ? "border-holo-mint/40 bg-holo-gradient-subtle shadow-lg shadow-holo-mint/10"
-                  : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]"
+                  ? "border-teal-400/50 bg-teal-50 shadow-lg shadow-teal-500/10 dark:border-holo-mint/40 dark:bg-holo-gradient-subtle dark:shadow-holo-mint/10"
+                  : "border-slate-200 bg-white/90 hover:border-slate-300 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20 dark:hover:bg-white/[0.05]"
               }`}
             >
               <div className={`inline-flex rounded-lg p-2 ${step.bg} mb-2`}>
                 <IconComp size={20} className={step.color} weight="duotone" aria-hidden />
               </div>
-              <p className="text-sm font-semibold text-white">{step.title}</p>
-              <p className="mt-1 text-xs leading-relaxed text-white/50">{step.desc}</p>
+              <p className="text-sm font-semibold text-slate-800 dark:text-white">{step.title}</p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-white/50">{step.desc}</p>
               {isSelected && (
                 <motion.p
                   initial={{ opacity: 0 }}

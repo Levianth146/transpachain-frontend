@@ -13,10 +13,10 @@ export function PageBackground({
 }: PageBackgroundProps) {
   const overlayClass =
     overlay === "hero"
-      ? "bg-gradient-to-b from-white/55 via-white/45 to-slate-100/75 dark:from-black/35 dark:via-black/35 dark:to-black/50"
+      ? "bg-gradient-to-b from-white/30 via-white/20 to-slate-100/50 dark:from-black/55 dark:via-black/50 dark:to-black/65"
       : overlay === "light"
-        ? "bg-white/50 dark:bg-black/35"
-        : "bg-white/50 dark:bg-black/35";
+        ? "bg-white/40 dark:bg-black/50"
+        : "bg-white/40 dark:bg-black/50";
 
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 z-0 ${className}`}>

@@ -41,6 +41,23 @@ export function CampaignList() {
   const [filtered, setFiltered]         = useState<any[]>([]);
   const [loading, setLoading]     = useState(true);
   const [mounted, setMounted]     = useState(false);
+  const [governanceByCampaign, setGovernanceByCampaign] = useState<Map<number, "vote" | "timelock">>(new Map());
+
+  const loadGovernance = () => {
+    Promise.all([api.getProposals(1), api.getProposals(3)])
+      .then(([active, queued]) => {
+        const map = new Map<number, "vote" | "timelock">();
+        for (const p of active.proposals ?? []) {
+          map.set(Number(p.campaignId), "vote");
+        }
+        for (const p of queued.proposals ?? []) {
+          const id = Number(p.campaignId);
+          if (!map.has(id)) map.set(id, "timelock");
+        }
+        setGovernanceByCampaign(map);
+      })
+      .catch(() => setGovernanceByCampaign(new Map()));
+  };
 
   const load = () => {
     fetchAllCampaigns()
@@ -50,6 +67,7 @@ export function CampaignList() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+    loadGovernance();
   };
 
   useEffect(() => {
@@ -60,6 +78,10 @@ export function CampaignList() {
   useSocketEvents({
     donationReceived: () => load(),
     campaignCreated: () => load(),
+    proposalCreated: () => loadGovernance(),
+    proposalQueued: () => loadGovernance(),
+    proposalExecuted: () => loadGovernance(),
+    proposalDefeated: () => loadGovernance(),
   });
 
   const campaignIds = useMemo(
@@ -140,6 +162,7 @@ export function CampaignList() {
               <CampaignCard
                 campaign={campaign}
                 onChainRaisedWei={onChainRaisedById.get(Number(campaign.campaignId))}
+                governanceStatus={governanceByCampaign.get(Number(campaign.campaignId)) ?? null}
               />
             </motion.div>
           ))}

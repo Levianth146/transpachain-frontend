@@ -39,28 +39,27 @@ export function PageShell({
   return (
     <AnimatedGradientBackground
       variant="subtle"
-      className="min-h-screen"
+      className="min-h-screen bg-slate-50 dark:bg-black"
       backgroundImage={backgroundImage}
       backgroundOverlay="light"
     >
       <div className="relative z-10">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(13,148,136,0.08),transparent_70%)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(94,234,212,0.1),transparent_70%)]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(124,58,237,0.06),transparent_70%)] dark:bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(168,85,247,0.08),transparent_70%)]"
-        />
-
-        <div
-          aria-hidden
-          className={`pointer-events-none absolute inset-0 bg-[size:48px_48px] ${
-            backgroundImage
-              ? "bg-[linear-gradient(rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.03)_1px,transparent_1px)] opacity-60 dark:opacity-0"
-              : "bg-[linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]"
-          }`}
-        />
+        {!backgroundImage && (
+          <>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(13,148,136,0.08),transparent_70%)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(94,234,212,0.1),transparent_70%)]"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(124,58,237,0.06),transparent_70%)] dark:bg-[radial-gradient(ellipse_60%_40%_at_80%_0%,rgba(168,85,247,0.08),transparent_70%)]"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-[size:48px_48px] bg-[linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] [mask-image:linear-gradient(to_bottom,black_0%,transparent_55%)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]"
+            />
+          </>
+        )}
 
         <main
           className={`relative mx-auto ${MAX_WIDTH[maxWidth]} px-4 py-12 sm:px-6 lg:px-8 lg:py-14 ${className}`}
