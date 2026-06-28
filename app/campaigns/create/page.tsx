@@ -7,6 +7,7 @@ import { useCreateCampaign, useIsOrgVerified } from "@/hooks/useCharityCore";
 import { api } from "@/lib/api";
 import { ConnectWallet } from "@/components/ConnectWallet";
 import { PageShell } from "@/components/PageShell";
+import { GlassPanel } from "@/components/ui/GlassPanel";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { normalizeImageUrl } from "@/lib/images";
 import { getPaymentTokenLabel } from "@/lib/format";
@@ -126,6 +127,7 @@ export default function CreateCampaignPage() {
       backgroundImage="/backgrounds/create.png"
     >
       <LearnMoreLink className="mb-6" />
+      <GlassPanel holoBorder className="p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
 
         <div>
@@ -216,11 +218,11 @@ export default function CreateCampaignPage() {
         </div>
 
         {!isVerified && address && (
-          <div className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-200">
+          <div className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-50 p-3 text-sm text-amber-900 dark:bg-amber-500/10 dark:text-amber-200">
             <span>⚠️</span>
             <div>
               <p className="font-medium">Your wallet is not verified as an organization.</p>
-              <p className="mt-0.5 text-xs text-amber-300/80">Contact admin to get verified before creating campaigns.</p>
+              <p className="mt-0.5 text-xs text-amber-800 dark:text-amber-300/80">Contact admin to get verified before creating campaigns.</p>
             </div>
           </div>
         )}
@@ -231,6 +233,7 @@ export default function CreateCampaignPage() {
           {isPending ? "Confirm in wallet..." : isConfirming ? "Creating..." : "Create Campaign"}
         </button>
       </form>
+      </GlassPanel>
     </PageShell>
   );
 }

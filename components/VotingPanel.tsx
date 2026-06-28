@@ -50,7 +50,7 @@ export function VotingPanel({ campaignId, onRefresh }: { campaignId: bigint; onR
   if (!proposal) return (
     <GlassPanel className="p-5">
       <h3 className="font-display font-semibold mb-3">Governance Voting</h3>
-      <p className="text-sm text-gray-400">
+      <p className="text-sm text-slate-600 dark:text-slate-400">
         No active proposals for this campaign.
       </p>
     </GlassPanel>
@@ -79,7 +79,7 @@ export function VotingPanel({ campaignId, onRefresh }: { campaignId: bigint; onR
   return (
     <GlassPanel className="p-5">
       <h3 className="font-display font-semibold mb-1">Governance Voting</h3>
-      <p className="text-xs text-gray-400 mb-4">
+      <p className="text-xs text-slate-600 dark:text-slate-400 mb-4">
         Proposal #{proposal.proposalId} — Milestone {proposal.milestoneIndex + 1}
         <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">
           {STATE_LABEL[stateNum] ?? "Active"}
@@ -87,7 +87,7 @@ export function VotingPanel({ campaignId, onRefresh }: { campaignId: bigint; onR
       </p>
 
       <div className="mb-4">
-        <div className="flex justify-between text-xs text-gray-500 mb-1">
+        <div className="flex justify-between text-xs text-slate-700 dark:text-slate-300 mb-1">
           <span>For: {formatQuadraticVoteWeight(forVotes)} QV</span>
           <span>Against: {formatQuadraticVoteWeight(againstVotes)} QV</span>
         </div>
@@ -95,7 +95,7 @@ export function VotingPanel({ campaignId, onRefresh }: { campaignId: bigint; onR
           <div className="bg-emerald-500 h-2 rounded-full"
             style={{ width: `${forPct}%` }} />
         </div>
-        <p className="text-xs text-gray-400 mt-1">
+        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
           Quadratic votes · Quorum: {quorumPct.toFixed(1)}% participation of total power (need 51%)
           {quorumMet && majorityFor ? " ✓" : ""}
         </p>
@@ -124,8 +124,8 @@ export function VotingPanel({ campaignId, onRefresh }: { campaignId: bigint; onR
       {stateNum === 1 && (
         <button onClick={() => queue(proposalId)}
           disabled={isQueuing}
-          className="w-full mt-2 py-2 border rounded-lg text-sm
-                     disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-white/5">
+          className="w-full mt-2 py-2 border border-slate-200 rounded-lg text-sm text-slate-700
+                     disabled:opacity-50 hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5">
           {isQueuing ? "Queuing..." : "Queue for timelock"}
         </button>
       )}

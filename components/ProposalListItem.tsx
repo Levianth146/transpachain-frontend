@@ -55,13 +55,13 @@ export function ProposalListItem({ proposal, index }: { proposal: ProposalRow; i
       <GlassPanel hover className="p-4">
         <div className="flex justify-between items-start gap-4">
           <div>
-            <p className="font-semibold text-gray-900 dark:text-cream-100">
+            <p className="font-semibold text-slate-900 dark:text-white">
               {proposal.campaignTitle}
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
               Proposal #{proposal.proposalId} · Milestone {(proposal.milestoneIndex ?? 0) + 1}
             </p>
-            <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
+            <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-600 dark:text-slate-400">
               <span>For: {fmt(forVotes)} QV</span>
               <span>Against: {fmt(againstVotes)} QV</span>
               <span>Abstain: {fmt(abstainVotes)} QV</span>

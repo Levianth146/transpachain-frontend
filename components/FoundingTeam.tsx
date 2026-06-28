@@ -35,7 +35,7 @@ export function FoundingTeam({ compact = false }: { compact?: boolean }) {
       <GlassPanel holoBorder className="p-6">
         <div className="mb-6 text-center">
           <p className="section-eyebrow mb-2">Core contributors</p>
-          <h2 className="font-display text-2xl font-bold text-white">Founding Team</h2>
+          <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white">Founding Team</h2>
         </div>
         <CoreContributorsCarousel activeSlug={activeSlug} onSelect={handleSelect} />
       </GlassPanel>
@@ -47,10 +47,10 @@ export function FoundingTeam({ compact = false }: { compact?: boolean }) {
       <GlassPanel holoBorder hover={false} className="overflow-hidden p-6 sm:p-8">
         <div className="mb-8">
           <p className="section-eyebrow mb-2">Core contributors</p>
-          <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
+          <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">
             Founding Team
           </h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/60 sm:text-base">
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-white/60 sm:text-base">
             Built on Ethereum Sepolia — combining escrow mechanics, quadratic governance, and
             retro Impact NFTs. Select a team member to explore their role.
           </p>

@@ -133,7 +133,7 @@ export function CoreContributorsCarousel({
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="font-display text-xl font-bold text-white sm:text-2xl">
+                <span className="font-display text-xl font-bold text-slate-800 dark:text-white sm:text-2xl">
                   {member.name}
                 </span>
                 <ArrowRight
@@ -142,7 +142,7 @@ export function CoreContributorsCarousel({
                   className="text-holo-mint transition-transform group-hover:translate-x-1"
                 />
               </div>
-              <p className="mt-1 text-sm text-white/60">{member.role}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-white/60">{member.role}</p>
             </button>
           );
         })}
@@ -175,7 +175,7 @@ export function CoreContributorsCarousel({
               className={`h-2.5 rounded-full transition-all ${
                 index === Math.min(activeIndex, pageCount - 1)
                   ? "w-8 bg-holo-mint"
-                  : "w-2.5 bg-white/20 hover:bg-white/35"
+                  : "w-2.5 bg-slate-300 hover:bg-slate-400 dark:bg-white/20 dark:hover:bg-white/35"
               }`}
             />
           ))}

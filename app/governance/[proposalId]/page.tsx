@@ -1,13 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Scales, ArrowLeft, FileMagnifyingGlass, Clock, CheckCircle } from "@phosphor-icons/react";
 import { useProposal, useProposalState } from "@/hooks/useGovernance";
 import { useCastVote, useQueueProposal, useExecuteProposal } from "@/hooks/useGovernance";
 import { useAccount } from "wagmi";
 import { VoteChoice } from "@/types";
-import { AnimatedGradientBackground } from "@/components/ui/AnimatedGradientBackground";
+import { PageShell } from "@/components/PageShell";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { formatQuadraticVoteWeight } from "@/lib/format";
 import { useVotingPower, useHasVoted } from "@/hooks/useGovernance";
@@ -29,16 +28,14 @@ function VoteBar({ label, value, total, color }: { label: string; value: bigint;
   const pct = total > 0n ? Number((value * 10000n) / total) / 100 : 0;
   return (
     <div>
-      <div className="flex justify-between text-xs mb-1">
+      <div className="flex justify-between text-xs text-slate-700 dark:text-slate-300 mb-1">
         <span>{label}</span>
         <span>{formatQuadraticVoteWeight(value)} QV ({pct.toFixed(1)}%)</span>
       </div>
-      <div className="h-2 bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${Math.min(pct, 100)}%` }}
-          transition={{ duration: 0.6 }}
-          className={`h-full rounded-full ${color}`}
+      <div className="h-2 bg-slate-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all duration-500 ${color}`}
+          style={{ width: `${Math.min(pct, 100)}%` }}
         />
       </div>
     </div>
@@ -99,68 +96,70 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
   const isDemoProof = hasProofCid && (isPlaceholderProofCid(proofCID) || !isValidIpfsCid(proofCID));
 
   return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen">
-    <main className="max-w-3xl mx-auto px-4 py-10">
-      <Link href="/governance" className="mb-6 inline-flex items-center gap-1 text-sm text-white/50 transition-colors hover:text-accent-shine">
+    <PageShell
+      eyebrow="DAO"
+      maxWidth="3xl"
+      backgroundImage="/backgrounds/proposal.png"
+      title={
+        <span className="inline-flex items-center gap-2">
+          <Scales size={28} className="text-holo-lavender" weight="duotone" />
+          Proposal #{resolvedParams.proposalId}
+        </span>
+      }
+      description={
+        <span>
+          {campaignTitle}
+          <span className="mt-1 block text-sm text-slate-600 dark:text-slate-300">
+            Milestone {milestoneIndex + 1}
+            {proofUrl ? (
+              <> ·{" "}
+                <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline inline-flex items-center gap-1">
+                  <FileMagnifyingGlass size={14} /> View proof
+                </a>
+              </>
+            ) : isDemoProof ? (
+              <> ·{" "}
+                <span className="text-amber-700 dark:text-amber-400 text-xs">
+                  Demo proof — submit real milestone proof via{" "}
+                  <Link href={`/campaigns/${campaignId}`} className="underline hover:text-amber-800 dark:hover:text-amber-300">
+                    org dashboard
+                  </Link>
+                </span>
+              </>
+            ) : null}
+          </span>
+        </span>
+      }
+      actions={
+        <span className={`text-sm px-3 py-1 rounded-full font-medium shrink-0 ${badge.color}`}>
+          {badge.label}
+        </span>
+      }
+    >
+      <Link href="/governance" className="mb-6 inline-flex items-center gap-1 text-sm text-slate-600 transition-colors hover:text-teal-700 dark:text-slate-400 dark:hover:text-holo-mint">
         <ArrowLeft size={14} /> Back to governance
       </Link>
 
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-start justify-between gap-4 mb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Scales size={28} className="text-gold-500" weight="duotone" />
-              <h1 className="text-3xl font-bold text-white">
-                Proposal #{resolvedParams.proposalId}
-              </h1>
-            </div>
-            <p className="text-white/70">{campaignTitle}</p>
-            <p className="mt-1 text-sm text-white/50">
-              Milestone {milestoneIndex + 1}
-              {proofUrl ? (
-                <> ·{" "}
-                  <a href={proofUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline inline-flex items-center gap-1">
-                    <FileMagnifyingGlass size={14} /> View proof
-                  </a>
-                </>
-              ) : isDemoProof ? (
-                <> ·{" "}
-                  <span className="text-amber-600 dark:text-amber-400 text-xs">
-                    Demo proof — submit real milestone proof via{" "}
-                    <Link href={`/campaigns/${campaignId}`} className="underline hover:text-amber-700">
-                      org dashboard
-                    </Link>
-                  </span>
-                </>
-              ) : null}
-            </p>
-          </div>
-          <span className={`text-sm px-3 py-1 rounded-full font-medium shrink-0 ${badge.color}`}>
-            {badge.label}
-          </span>
-        </div>
-      </motion.div>
-
       <GlassPanel className="p-5 mb-6">
-        <h3 className="font-semibold mb-4">Vote progress</h3>
+        <h3 className="font-semibold text-slate-900 dark:text-white mb-4">Vote progress</h3>
         <div className="space-y-3 mb-4">
           <VoteBar label="For" value={forVotes} total={totalVotingPower || totalCast || 1n} color="bg-emerald-500" />
           <VoteBar label="Against" value={againstVotes} total={totalVotingPower || totalCast || 1n} color="bg-red-500" />
           <VoteBar label="Abstain" value={abstainVotes} total={totalVotingPower || totalCast || 1n} color="bg-gray-400" />
         </div>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="rounded-lg bg-white/50 dark:bg-white/5 p-3">
-            <p className="text-xs text-gray-500">Quorum (51% required)</p>
+          <div className="rounded-lg bg-slate-100 dark:bg-white/5 p-3">
+            <p className="text-xs text-slate-600 dark:text-slate-400">Quorum (51% required)</p>
             <p className={`font-bold ${quorumMet ? "text-emerald-600" : "text-amber-600"}`}>
               {quorumPct.toFixed(1)}%
               {quorumMet ? " ✓ Met" : " — Not met"}
             </p>
-            <p className="text-[10px] text-gray-400 mt-0.5">
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
               {formatQuadraticVoteWeight(totalCast)} / {formatQuadraticVoteWeight(totalVotingPower)} QV cast
             </p>
           </div>
-          <div className="rounded-lg bg-white/50 dark:bg-white/5 p-3">
-            <p className="text-xs text-gray-500">Timelock (24h)</p>
+          <div className="rounded-lg bg-slate-100 dark:bg-white/5 p-3">
+            <p className="text-xs text-slate-600 dark:text-slate-400">Timelock (24h)</p>
             {stateNum === 3 ? (
               <p className={`font-bold ${timelockReady ? "text-emerald-600" : "text-amber-600"}`}>
                 {timelockReady ? "Ready to execute" : `${Math.ceil(timelockRemaining / 3600)}h remaining`}
@@ -168,36 +167,36 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
             ) : stateNum === 4 ? (
               <p className="font-bold text-emerald-600">Executed</p>
             ) : (
-              <p className="font-bold text-gray-500">Pending queue</p>
+              <p className="font-bold text-slate-500 dark:text-slate-400">Pending queue</p>
             )}
           </div>
         </div>
       </GlassPanel>
 
       <GlassPanel className="p-5 mb-6">
-        <h3 className="font-semibold mb-3 flex items-center gap-2">
+        <h3 className="font-semibold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
           <Clock size={18} className="text-blue-500" />
           Timeline
         </h3>
-        <ol className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+        <ol className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
           <li className="flex items-center gap-2">
             <CheckCircle size={14} className="text-emerald-500" /> Proof submitted → proposal created
           </li>
           <li className="flex items-center gap-2">
-            <span className={`w-3.5 h-3.5 rounded-full ${stateNum >= 1 ? "bg-blue-500" : "bg-gray-300"}`} />
+            <span className={`w-3.5 h-3.5 rounded-full ${stateNum >= 1 ? "bg-blue-500" : "bg-slate-300 dark:bg-gray-300"}`} />
             Voting period (ends block {endBlock.toLocaleString()})
           </li>
           <li className="flex items-center gap-2">
-            <span className={`w-3.5 h-3.5 rounded-full ${stateNum >= 3 ? "bg-yellow-500" : "bg-gray-300"}`} />
+            <span className={`w-3.5 h-3.5 rounded-full ${stateNum >= 3 ? "bg-yellow-500" : "bg-slate-300 dark:bg-gray-300"}`} />
             Queued with 24h timelock
             {executeAfter > 0 && (
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-slate-500 dark:text-slate-400">
                 (after {new Date(executeAfter * 1000).toLocaleString()})
               </span>
             )}
           </li>
           <li className="flex items-center gap-2">
-            <span className={`w-3.5 h-3.5 rounded-full ${stateNum === 4 ? "bg-emerald-500" : "bg-gray-300"}`} />
+            <span className={`w-3.5 h-3.5 rounded-full ${stateNum === 4 ? "bg-emerald-500" : "bg-slate-300 dark:bg-gray-300"}`} />
             Funds released to organization
           </li>
         </ol>
@@ -208,9 +207,9 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
 
       {stateNum === 1 && (
         <GlassPanel className="p-5 mb-4">
-          <h3 className="font-semibold mb-3">Cast your vote</h3>
+          <h3 className="font-semibold text-slate-900 dark:text-white mb-3">Cast your vote</h3>
           {address && myPower != null && (
-            <p className="text-xs text-gray-500 mb-3">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
               Your quadratic vote power: {formatQuadraticVoteWeight(myPower as bigint)} QV
               {Number(myPower) === 0 && " — donate to this campaign to vote"}
             </p>
@@ -231,13 +230,13 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
             </button>
             <button onClick={() => castVote(proposalId, VoteChoice.Abstain)}
               disabled={!address || isVoting}
-              className="flex-1 py-2 border rounded-lg text-sm disabled:opacity-50">
+              className="flex-1 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 disabled:opacity-50 dark:border-white/10 dark:text-slate-200">
               Abstain
             </button>
           </div>
           <button onClick={() => queue(proposalId)}
             disabled={isQueuing}
-            className="w-full mt-2 py-2 border rounded-lg text-sm disabled:opacity-50">
+            className="w-full mt-2 py-2 border border-slate-200 rounded-lg text-sm text-slate-700 disabled:opacity-50 dark:border-white/10 dark:text-slate-200">
             {isQueuing ? "Queuing…" : "Queue proposal"}
           </button>
           {!address && <p className="text-xs text-amber-600 mt-2">Connect wallet to vote</p>}
@@ -246,8 +245,8 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
 
       {stateNum === 3 && (
         <GlassPanel className="p-5">
-          <h3 className="font-semibold mb-3">Execute proposal</h3>
-          <p className="text-sm text-gray-500 mb-3">
+          <h3 className="font-semibold text-slate-900 dark:text-white mb-3">Execute proposal</h3>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
             {timelockReady
               ? "Timelock period has passed. Execute to release milestone funds."
               : `Timelock active — ${Math.ceil(timelockRemaining / 3600)} hours remaining.`}
@@ -265,7 +264,6 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
           <p className="text-emerald-700 font-medium">Vote recorded on-chain!</p>
         </div>
       )}
-    </main>
-    </AnimatedGradientBackground>
+    </PageShell>
   );
 }
