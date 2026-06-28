@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import { CampaignCard } from "./CampaignCard";
 import { CampaignListSkeleton } from "./CampaignCardSkeleton";
 import { CampaignFilter, FilterState } from "./CampaignFilter";
+import { GlassPanel } from "@/components/ui/GlassPanel";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { useCampaignProgressBatch } from "@/hooks/useCharityCore";
 import { motion } from "framer-motion";
@@ -147,7 +148,9 @@ export function CampaignList() {
 
   return (
     <div>
-      <CampaignFilter onFilter={handleFilter} total={filtered.length} />
+      <GlassPanel hover={false} className="mb-6 p-4">
+        <CampaignFilter onFilter={handleFilter} total={filtered.length} />
+      </GlassPanel>
       {filtered.length === 0 ? (
         <div className="py-20 text-center text-slate-500 dark:text-white/50">No campaigns match your filters.</div>
       ) : (

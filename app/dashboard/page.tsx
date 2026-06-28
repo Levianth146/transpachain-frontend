@@ -17,12 +17,16 @@ import { TxLink } from "@/components/TxLink";
 const STAT_ICONS = [Coins, Heart, CheckCircle];
 
 const STAT_GRADIENTS = [
-  "from-holo-mint/20 to-holo-lavender/10",
-  "from-holo-lavender/20 to-holo-pink/10",
-  "from-holo-pink/20 to-holo-silver/10",
+  "from-teal-50 to-violet-50 dark:from-holo-mint/20 dark:to-holo-lavender/10",
+  "from-violet-50 to-pink-50 dark:from-holo-lavender/20 dark:to-holo-pink/10",
+  "from-pink-50 to-slate-50 dark:from-holo-pink/20 dark:to-holo-silver/10",
 ];
 
-const STAT_COLORS = ["text-holo-mint", "text-holo-lavender", "text-holo-pink"];
+const STAT_COLORS = [
+  "text-teal-700 dark:text-holo-mint",
+  "text-violet-700 dark:text-holo-lavender",
+  "text-pink-700 dark:text-holo-pink",
+];
 
 export default function DashboardPage() {
   const { address, isConnected } = useAccount();
@@ -47,7 +51,7 @@ export default function DashboardPage() {
       eyebrow="Your impact"
       title={
         <span className="inline-flex items-center gap-2">
-          <TrendUp size={28} className="text-holo-mint" weight="duotone" />
+          <TrendUp size={28} className="text-teal-600 dark:text-holo-mint" weight="duotone" />
           Dashboard
         </span>
       }
@@ -90,7 +94,7 @@ export default function DashboardPage() {
       eyebrow="Your impact"
       title={
         <span className="inline-flex items-center gap-2">
-          <TrendUp size={28} className="text-holo-mint" weight="duotone" />
+          <TrendUp size={28} className="text-teal-600 dark:text-holo-mint" weight="duotone" />
           Dashboard
         </span>
       }

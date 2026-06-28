@@ -63,7 +63,7 @@ export default function AboutPage() {
     >
       <div className="space-y-8">
         <GlassPanel holoBorder className="p-6">
-          <h2 className="mb-3 text-xl font-semibold text-teal-700 dark:text-holo-mint">Our mission</h2>
+          <h2 className="mb-3 text-xl font-semibold text-teal-800 dark:text-holo-mint">Our mission</h2>
           <p className="leading-relaxed text-slate-600 dark:text-slate-300">
             We bridge the trust gap between donors and charitable organizations. Instead of sending funds
             directly to an org wallet, donations lock in a smart-contract escrow vault — in ETH or USDC.

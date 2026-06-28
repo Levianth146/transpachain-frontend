@@ -90,7 +90,7 @@ export function CampaignCard({
       <motion.div
         whileHover={{ y: -6 }}
         transition={{ duration: 0.25 }}
-        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-md transition-all duration-300 hover:border-teal-400/40 hover:shadow-2xl hover:shadow-teal-500/10 dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-holo-mint/30 dark:hover:shadow-holo-mint/10"
+        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:border-teal-400/40 hover:shadow-lg hover:shadow-teal-500/10 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none dark:hover:border-holo-mint/30 dark:hover:shadow-holo-mint/10"
       >
         <CampaignImage
           imageUrl={campaign.imageUrl}

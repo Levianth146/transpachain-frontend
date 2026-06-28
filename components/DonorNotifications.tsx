@@ -7,6 +7,7 @@ import { useSocketEvents } from "@/hooks/useSocket";
 import { addToast } from "@/components/Toast";
 import { api } from "@/lib/api";
 import Link from "next/link";
+import { GlassPanel } from "@/components/ui/GlassPanel";
 
 type Notification = {
   id: string;
@@ -84,10 +85,10 @@ export function DonorNotifications() {
   if (visible.length === 0) return null;
 
   return (
-    <GlassPanelWrap>
+    <GlassPanel className="mb-8 p-5">
       <div className="flex items-center gap-2 mb-3">
         <Bell size={18} className="text-blue-500" weight="duotone" />
-        <h3 className="font-semibold text-sm">Governance updates</h3>
+        <h3 className="font-semibold text-sm text-slate-900 dark:text-white">Governance updates</h3>
       </div>
       <ul className="space-y-2">
         <AnimatePresence>
@@ -131,18 +132,6 @@ export function DonorNotifications() {
           ))}
         </AnimatePresence>
       </ul>
-    </GlassPanelWrap>
-  );
-}
-
-function GlassPanelWrap({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="rounded-2xl border border-white/60 dark:border-white/10 bg-white/70 dark:bg-ink-900/60 backdrop-blur-md shadow-lg p-5 mb-8"
-    >
-      {children}
-    </motion.div>
+    </GlassPanel>
   );
 }

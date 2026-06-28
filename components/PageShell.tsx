@@ -70,14 +70,18 @@ export function PageShell({
             transition={{ duration: 0.4 }}
             className="mb-10"
           >
-            {eyebrow && <p className="section-eyebrow mb-3">{eyebrow}</p>}
+            {eyebrow && (
+              <p className="mb-3 text-[10px] font-display font-semibold uppercase tracking-[0.25em] text-teal-700 sm:text-xs dark:text-holo-mint">
+                {eyebrow}
+              </p>
+            )}
             <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
                   {title}
                 </h1>
                 {description && (
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg">
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-700 dark:text-slate-300 sm:text-lg">
                     {description}
                   </p>
                 )}

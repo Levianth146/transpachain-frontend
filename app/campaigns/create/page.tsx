@@ -176,7 +176,7 @@ export default function CreateCampaignPage() {
         <div>
           <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">Campaign Image</label>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-holo-mint/30 bg-holo-mint/10 px-4 py-2 text-sm font-medium text-holo-mint transition hover:bg-holo-mint/20">
+            <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-teal-300 bg-teal-50 px-4 py-2 text-sm font-medium text-teal-700 transition hover:bg-teal-100 dark:border-holo-mint/30 dark:bg-holo-mint/10 dark:text-holo-mint dark:hover:bg-holo-mint/20">
               {uploading ? "Uploading…" : "Upload to IPFS"}
               <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
             </label>

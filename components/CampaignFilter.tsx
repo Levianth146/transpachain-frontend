@@ -44,7 +44,7 @@ export function CampaignFilter({ onFilter, total }: Props) {
   };
 
   return (
-    <div className="mb-6 space-y-3">
+    <div className="space-y-3">
       <div className="relative">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 dark:text-white/40">🔍</span>
         <input
@@ -52,7 +52,7 @@ export function CampaignFilter({ onFilter, total }: Props) {
           placeholder="Search campaigns..."
           value={filters.search}
           onChange={(e) => update("search", e.target.value)}
-          className="w-full rounded-lg border border-slate-300/80 bg-white/70 py-2 pl-8 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-white/5 dark:text-white dark:placeholder:text-white/40 dark:focus:ring-accent-shine/50"
+          className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-8 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-white/5 dark:text-white dark:placeholder:text-white/40 dark:focus:ring-accent-shine/50"
         />
       </div>
 
@@ -69,7 +69,7 @@ export function CampaignFilter({ onFilter, total }: Props) {
                 className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                   active
                     ? "bg-emerald-600 text-white shadow-sm"
-                    : "border border-slate-300/80 text-slate-600 hover:border-slate-400 hover:text-slate-900 dark:border-slate-700 dark:text-white/70 dark:hover:border-slate-600 dark:hover:text-white"
+                    : "border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:text-slate-900 dark:border-slate-700 dark:bg-transparent dark:text-white/70 dark:hover:border-slate-600 dark:hover:text-white"
                 }`}
               >
                 {cat}
@@ -83,7 +83,7 @@ export function CampaignFilter({ onFilter, total }: Props) {
         <select
           value={filters.status}
           onChange={(e) => update("status", e.target.value)}
-          className="rounded-full border border-slate-300/80 bg-white/70 px-3 py-1 text-xs font-medium text-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-white/5 dark:text-white/70 dark:focus:ring-accent-shine/50"
+          className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/40 dark:border-slate-700 dark:bg-white/5 dark:text-white/70 dark:focus:ring-accent-shine/50"
         >
           {STATUSES.map((s) => (
             <option key={s.value} value={s.value} className="bg-white text-slate-900 dark:bg-black dark:text-white">

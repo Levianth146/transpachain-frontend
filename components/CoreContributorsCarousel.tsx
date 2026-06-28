@@ -133,7 +133,7 @@ export function CoreContributorsCarousel({
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="font-display text-xl font-bold text-slate-800 dark:text-white sm:text-2xl">
+                <span className="font-display text-xl font-semibold text-slate-900 dark:text-white sm:text-2xl">
                   {member.name}
                 </span>
                 <ArrowRight
