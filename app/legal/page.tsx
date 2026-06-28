@@ -23,7 +23,7 @@ function EtherscanLink({ address, label }: { address: string; label?: string }) 
       href={`${SEPOLIA_ETHERSCAN}/address/${address}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="font-mono text-sm text-holo-mint transition-colors hover:text-white"
+      className="font-mono text-sm text-teal-700 transition-colors hover:text-teal-900 dark:text-holo-mint dark:hover:text-white"
     >
       {label ?? address}
     </a>
@@ -38,14 +38,14 @@ export default function LegalPage() {
       description="Important information about using transpachain.site on Ethereum Sepolia testnet."
       maxWidth="3xl"
     >
-      <GlassPanel holoBorder className="space-y-6 p-8 text-white/80">
+      <GlassPanel holoBorder className="space-y-6 bg-white p-8 text-slate-700 dark:bg-slate-900/95 dark:text-slate-300">
         <p>
-          TranspaChain is a <strong className="text-white">demonstration project on Ethereum Sepolia testnet</strong>.
+          TranspaChain is a <strong className="text-slate-900 dark:text-white">demonstration project on Ethereum Sepolia testnet</strong>.
           It is not a registered charity, money transmitter, or investment platform.
         </p>
 
         <section className="space-y-2">
-          <h2 className="text-xl font-semibold text-white">Testnet only</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Testnet only</h2>
           <ul className="list-disc space-y-1 pl-5">
             <li>Do not send mainnet ETH or real assets expecting utility or returns.</li>
             <li>Sepolia tokens have no monetary value.</li>
@@ -54,7 +54,7 @@ export default function LegalPage() {
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-xl font-semibold text-white">Platform mechanics</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Platform mechanics</h2>
           <p>
             TranspaChain escrowes donations in ETH or USDC via the DonationVault contract. Organizations submit
             milestone evidence to IPFS; an admin reviews submissions before proposals become visible to donors.
@@ -65,7 +65,7 @@ export default function LegalPage() {
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-xl font-semibold text-white">Not financial advice</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Not financial advice</h2>
           <p>
             Nothing on this site constitutes financial, legal, or tax advice. Donations are
             experimental smart-contract interactions.
@@ -73,7 +73,7 @@ export default function LegalPage() {
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-xl font-semibold text-white">Impact NFTs</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Impact NFTs</h2>
           <p>
             Impact NFTs are transferable ERC-721 badges on Sepolia testnet. They are souvenirs of
             participation, not securities or guarantees of future value. Tier assignment (Bronze, Silver, Gold)
@@ -83,7 +83,7 @@ export default function LegalPage() {
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-xl font-semibold text-white">Smart contracts</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Smart contracts</h2>
           <p>
             Contracts are provided as-is without warranty. A self-assessment (Slither) is
             documented in the project repository; no paid third-party audit is claimed for testnet
@@ -92,14 +92,14 @@ export default function LegalPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-white">Transparency &amp; contract addresses</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Transparency &amp; contract addresses</h2>
           <p>
             Verify all transactions on{" "}
             <a
               href={SEPOLIA_ETHERSCAN}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-holo-mint transition-colors hover:text-white"
+              className="text-teal-700 transition-colors hover:text-teal-900 dark:text-holo-mint dark:hover:text-white"
             >
               Sepolia Etherscan
             </a>
@@ -107,9 +107,9 @@ export default function LegalPage() {
           </p>
           <ul className="space-y-3">
             {CONTRACTS.map((c) => (
-              <li key={c.name} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                <p className="font-semibold text-white">{c.name}</p>
-                <p className="mt-1 text-xs leading-relaxed text-white/60">{c.role}</p>
+              <li key={c.name} className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                <p className="font-semibold text-slate-900 dark:text-white">{c.name}</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500 dark:text-white/60">{c.role}</p>
                 <p className="mt-2">
                   <EtherscanLink address={c.address} />
                 </p>
@@ -123,7 +123,7 @@ export default function LegalPage() {
         </section>
 
         <p>
-          <Link href="/" className="text-holo-mint transition-colors hover:text-white">
+          <Link href="/" className="text-teal-700 transition-colors hover:text-teal-900 dark:text-holo-mint dark:hover:text-white">
             Back to home
           </Link>
         </p>
