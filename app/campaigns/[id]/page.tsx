@@ -31,6 +31,8 @@ import { CampaignStatus } from "@/types";
 import { deriveCampaignDisplayStatus } from "@/lib/campaignStatus";
 import { useHasActiveOrQueuedProposal } from "@/hooks/useDonationVault";
 
+const CAMPAIGN_DETAIL_BG = "/backgrounds/campaign-detail.png";
+
 interface Props { params: Promise<{ id: string }> }
 
 export default function CampaignDetailPage({ params }: Props) {
@@ -79,8 +81,13 @@ export default function CampaignDetailPage({ params }: Props) {
 
   if (loading) return <CampaignDetailSkeleton />;
   if (!campaign || campaign.error) return (
-    <AnimatedGradientBackground variant="dark" className="min-h-screen">
-      <div className="p-8 text-center text-white/70">Campaign not found</div>
+    <AnimatedGradientBackground
+      variant="subtle"
+      className="min-h-screen"
+      backgroundImage={CAMPAIGN_DETAIL_BG}
+      backgroundOverlay="light"
+    >
+      <div className="p-8 text-center text-slate-600 dark:text-white/70">Campaign not found</div>
     </AnimatedGradientBackground>
   );
 
@@ -115,7 +122,16 @@ export default function CampaignDetailPage({ params }: Props) {
   const progress  = goal > 0 && Number.isFinite(raised) ? Math.min((raised / goal) * 100, 100) : 0;
 
   if (campaignId === 0n) {
-    return <div className="p-8 text-center">Campaign data is invalid</div>;
+    return (
+      <AnimatedGradientBackground
+        variant="subtle"
+        className="min-h-screen"
+        backgroundImage={CAMPAIGN_DETAIL_BG}
+        backgroundOverlay="light"
+      >
+        <div className="p-8 text-center text-slate-600 dark:text-white/70">Campaign data is invalid</div>
+      </AnimatedGradientBackground>
+    );
   }
 
   const totalMilestones = Math.max(0, Number(campaign.totalMilestones) || 0);
@@ -136,6 +152,7 @@ export default function CampaignDetailPage({ params }: Props) {
       title={campaign.title}
       description={`by ${campaign.orgName}`}
       maxWidth="5xl"
+      backgroundImage={CAMPAIGN_DETAIL_BG}
       actions={
         <span className={`text-sm px-3 py-1 rounded-full font-medium ${badge.color}`}>
           {badge.label}
