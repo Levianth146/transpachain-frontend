@@ -348,6 +348,7 @@ export default function AdminPage() {
         <span className="font-mono text-sm text-slate-500 dark:text-white/50">{address ? truncate(address) : ""}</span>
       }
       maxWidth="3xl"
+      backgroundImage="/backgrounds/panels.png"
       actions={
         <div className="flex gap-2">
           {isAdmin    && <span className="rounded-full border border-holo-lavender/30 bg-holo-lavender/10 px-2.5 py-1 text-xs font-medium text-holo-lavender">ADMIN</span>}

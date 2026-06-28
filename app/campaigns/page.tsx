@@ -9,6 +9,7 @@ export default function CampaignsPage() {
       title="Campaigns"
       description="Transparent giving on Ethereum — every donation escrowed on-chain until donors approve milestone releases."
       maxWidth="7xl"
+      backgroundImage="/backgrounds/panels.png"
       actions={
         <Link
           href="/campaigns/create"

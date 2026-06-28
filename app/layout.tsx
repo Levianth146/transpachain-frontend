@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     "Transparent charity on Ethereum — milestone-based escrow, donor governance, and on-chain accountability at transpachain.site",
   icons: {
     icon: [
+      { url: "/logo.png", type: "image/png" },
       { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/logo.svg", type: "image/svg+xml" },
     ],
   },
 };

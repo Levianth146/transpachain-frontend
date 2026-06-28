@@ -53,6 +53,7 @@ export default function DashboardPage() {
       }
       description="Connect your wallet to view your donation history, impact NFTs, and org profile."
       maxWidth="md"
+      backgroundImage="/backgrounds/panels.png"
       className="flex min-h-[calc(100vh-14rem)] flex-col items-center justify-center pb-20 text-center"
     >
       <ConnectWallet />
@@ -97,6 +98,7 @@ export default function DashboardPage() {
         <span className="truncate font-mono text-sm text-slate-500 dark:text-slate-400">{address}</span>
       }
       maxWidth="5xl"
+      backgroundImage="/backgrounds/panels.png"
     >
       <LearnMoreLink className="mb-6" />
       <DonorNotifications />
