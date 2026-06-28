@@ -15,7 +15,7 @@ export function PageBackground({
     overlay === "hero"
       ? "bg-gradient-to-b from-white/90 via-white/80 to-white/70 dark:from-black/55 dark:via-black/50 dark:to-black/65"
       : overlay === "light"
-        ? "bg-gradient-to-b from-white/90 via-white/82 to-white/75 dark:bg-black/65"
+        ? "bg-gradient-to-b from-white/90 via-white/82 to-white/75 dark:from-black/40 dark:via-black/30 dark:to-black/50"
         : "bg-gradient-to-b from-white/88 via-white/78 to-white/68 dark:from-black/60 dark:via-black/55 dark:to-black/65";
 
   return (
