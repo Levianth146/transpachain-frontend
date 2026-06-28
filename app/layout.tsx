@@ -37,9 +37,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               TranspaChain
             </p>
             <p className="mb-2">Sepolia testnet demo — transpachain.site — not financial advice.</p>
-            <Link href="/legal" className="text-holo-mint transition-colors hover:text-slate-900 dark:hover:text-white">
-              Legal &amp; Disclaimer
-            </Link>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+              <Link href="/legal" className="text-holo-mint transition-colors hover:text-slate-900 dark:hover:text-white">
+                Legal &amp; Disclaimer
+              </Link>
+              <a
+                href="https://github.com/Levianth146/transpachain/tree/main/docs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-holo-mint transition-colors hover:text-slate-900 dark:hover:text-white"
+              >
+                Documentation
+              </a>
+            </div>
           </footer>
           <ToastContainer />
         </Providers>

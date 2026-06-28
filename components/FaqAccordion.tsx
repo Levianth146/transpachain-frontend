@@ -21,6 +21,22 @@ const FAQ_ITEMS = [
     q: "Why quadratic voting?",
     a: "Vote weight equals the square root of your donation, reducing whale dominance while still rewarding larger contributors. Splitting across wallets does not increase total influence.",
   },
+  {
+    q: "What is the 51% quorum requirement?",
+    a: "A milestone release proposal must reach at least 51% of eligible voting power (donors who contributed to that campaign) before it can be queued. This ensures a meaningful majority participates in fund releases.",
+  },
+  {
+    q: "What is the 24-hour timelock?",
+    a: "After a proposal passes quorum and is queued by an admin, a mandatory 24-hour waiting period runs before funds can be released. This gives donors time to review the outcome before execution.",
+  },
+  {
+    q: "Which network does TranspaChain use?",
+    a: "TranspaChain runs on Ethereum Sepolia testnet only (chain ID 11155111). Connect MetaMask to Sepolia and use free faucet ETH — do not send mainnet assets.",
+  },
+  {
+    q: "How do organizations get verified?",
+    a: "Submit an organization profile on your dashboard. An admin reviews the application off-chain, then calls verifyOrg on-chain to grant ORG_ROLE. Only verified wallets can create campaigns.",
+  },
 ];
 
 export function FaqAccordion() {

@@ -4,6 +4,7 @@ import { ShieldCheck, Scales, Sparkle } from "@phosphor-icons/react";
 import { PageShell } from "@/components/PageShell";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { HowItWorksBlock } from "@/components/HowItWorksBlock";
+import { RoleFlows } from "@/components/RoleFlows";
 import { TrustSecurityStrip } from "@/components/TrustSecurityStrip";
 import { FoundingTeam } from "@/components/FoundingTeam";
 
@@ -75,6 +76,14 @@ export default function AboutPage() {
         <GlassPanel holoBorder className="p-6">
           <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-white">How it works</h2>
           <HowItWorksBlock columns={6} />
+        </GlassPanel>
+
+        <GlassPanel holoBorder className="p-6">
+          <h2 className="mb-2 text-xl font-semibold text-slate-900 dark:text-white">Get started by role</h2>
+          <p className="mb-5 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+            New to TranspaChain? Pick your path below — each step links to the page where you take action.
+          </p>
+          <RoleFlows />
         </GlassPanel>
 
         <GlassPanel holoBorder className="p-6">
