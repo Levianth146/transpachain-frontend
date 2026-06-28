@@ -121,11 +121,11 @@ export function NFTGallery({ address }: { address: string }) {
 
   const emptyState = (msg: string) => (
     <GlassPanel holoBorder className="p-6 h-full">
-      <h3 className="font-display font-semibold mb-3 flex items-center gap-2 text-white">
-        <GameController size={20} className="text-holo-pink" weight="duotone" />
+      <h3 className="font-display font-semibold mb-3 flex items-center gap-2 text-slate-900 dark:text-white">
+        <GameController size={20} className="text-pink-600 dark:text-holo-pink" weight="duotone" />
         My Impact NFTs
       </h3>
-      <p className="text-sm text-white/50">{msg}</p>
+      <p className="text-sm text-slate-600 dark:text-white/50">{msg}</p>
     </GlassPanel>
   );
 
@@ -138,16 +138,16 @@ export function NFTGallery({ address }: { address: string }) {
   return (
     <GlassPanel holoBorder className="p-6 h-full">
       <div className="mb-4 flex items-center gap-2">
-        <GameController size={20} className="text-holo-pink" weight="duotone" />
-        <h3 className="font-display font-semibold text-white">My Impact NFTs</h3>
-        <span className="ml-auto rounded-full border border-holo-pink/30 bg-holo-pink/10 px-2.5 py-0.5 text-xs font-normal text-holo-pink">
+        <GameController size={20} className="text-pink-600 dark:text-holo-pink" weight="duotone" />
+        <h3 className="font-display font-semibold text-slate-900 dark:text-white">My Impact NFTs</h3>
+        <span className="ml-auto rounded-full border border-pink-300 bg-pink-100 px-2.5 py-0.5 text-xs font-medium text-pink-800 dark:border-holo-pink/30 dark:bg-holo-pink/10 dark:font-normal dark:text-holo-pink">
           {tokenIds.length} badge{tokenIds.length === 1 ? "" : "s"}
         </span>
       </div>
 
-      <p className="mb-4 text-xs leading-relaxed text-white/45">
+      <p className="mb-4 text-xs leading-relaxed text-slate-600 dark:text-white/45">
         One badge per campaign. View in MetaMask — if art doesn&apos;t appear, open the NFT menu
-        and tap <strong className="text-white/60">Refresh metadata</strong>.
+        and tap <strong className="text-slate-800 dark:text-white/60">Refresh metadata</strong>.
       </p>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-2">

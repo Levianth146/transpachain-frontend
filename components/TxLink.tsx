@@ -30,7 +30,7 @@ export function TxLink({
       href={txExplorerUrl(hash)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-holo-mint hover:underline text-xs font-mono ${className}`}
+      className={`text-teal-800 hover:text-teal-950 hover:underline text-xs font-mono dark:text-holo-mint dark:hover:text-white ${className}`}
       title={hash}
     >
       {label === "View on SepoliaScan" ? short : label}
@@ -54,7 +54,7 @@ export function AddressLink({
       href={addressExplorerUrl(address)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-holo-mint hover:underline font-mono text-xs ${className}`}
+      className={`text-teal-800 hover:text-teal-950 hover:underline font-mono text-xs dark:text-holo-mint dark:hover:text-white ${className}`}
       title={address}
     >
       {short}

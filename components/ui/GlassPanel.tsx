@@ -17,7 +17,7 @@ export function GlassPanel({
   holoBorder = false,
 }: GlassPanelProps) {
   const base =
-    "rounded-2xl border border-slate-200 bg-white text-slate-800 shadow-sm dark:border-white/10 dark:bg-slate-900/95 dark:text-slate-100 dark:shadow-black/20";
+    "rounded-2xl border border-slate-300 bg-white text-slate-800 shadow-md dark:border-white/10 dark:bg-slate-900/95 dark:text-slate-100 dark:shadow-black/20";
   const holo =
     "relative overflow-hidden dark:before:pointer-events-none dark:before:absolute dark:before:inset-0 dark:before:rounded-2xl dark:before:p-px dark:before:bg-holo-gradient dark:before:opacity-0 dark:before:transition-opacity dark:hover:before:opacity-40 dark:after:pointer-events-none dark:after:absolute dark:after:inset-0 dark:after:rounded-2xl dark:after:bg-holo-gradient-subtle dark:after:opacity-0 dark:after:transition-opacity dark:hover:after:opacity-100";
 
