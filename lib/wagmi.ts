@@ -12,12 +12,13 @@ function sepoliaTransport() {
     return fallback([
       http(`https://eth-sepolia.g.alchemy.com/v2/${key}`),
       http("https://ethereum-sepolia-rpc.publicnode.com"),
+      http("https://sepolia.drpc.org"),
     ]);
   }
 
   return fallback([
     http("https://ethereum-sepolia-rpc.publicnode.com"),
-    http("https://rpc.sepolia.org"),
+    http("https://sepolia.drpc.org"),
   ]);
 }
 
