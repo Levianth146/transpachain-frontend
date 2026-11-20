@@ -40,7 +40,7 @@ export default function GovernanceHubPage() {
       <GlassPanel holoBorder className="mb-8 p-4 text-sm text-slate-600 dark:text-slate-300">
         <p className="mb-1 font-medium text-slate-900 dark:text-slate-100">Quadratic voting & identity</p>
         <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-          Vote weight = √(ETH donated) — splitting donations across wallets does not increase total influence.
+          Vote weight = √(AVAX donated) — splitting donations across wallets does not increase total influence.
           Only wallets with an on-chain donation to the campaign can vote (Sybil resistance via escrowed stake).
           Connect your donor wallet to cast votes on active proposals.
         </p>

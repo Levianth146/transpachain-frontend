@@ -86,7 +86,7 @@ interface FlowConfig {
 const WORKFLOWS: Record<WorkflowStepId, FlowConfig> = {
   escrow: {
     nodes: [
-      { label: "Donor", sublabel: "ETH or USDC", icon: User, accent: "mint" },
+      { label: "Donor", sublabel: "AVAX or USDC", icon: User, accent: "mint" },
       { label: "DonationVault", sublabel: "Escrow lock", icon: Vault, accent: "lavender" },
       { label: "Locked funds", sublabel: "Not org wallet", icon: Lock, accent: "pink" },
     ],
@@ -146,13 +146,13 @@ const WORKFLOWS: Record<WorkflowStepId, FlowConfig> = {
   },
   tokens: {
     nodes: [
-      { label: "Select token", sublabel: "ETH or USDC", icon: Coins, accent: "teal" },
+      { label: "Select token", sublabel: "AVAX or USDC", icon: Coins, accent: "teal" },
       { label: "Correct decimals", sublabel: "18 vs 6", icon: Scales, accent: "lavender" },
       { label: "Escrow display", sublabel: "Matching unit", icon: Lock, accent: "mint" },
     ],
     detail: [
-      "Campaign creator picks payment token at launch (ETH = 0, USDC = 1).",
-      "ETH uses 18 decimals; USDC uses 6 — amounts display accordingly.",
+      "Campaign creator picks payment token at launch (AVAX = 0, USDC = 1).",
+      "AVAX uses 18 decimals; USDC uses 6 — amounts display accordingly.",
       "USDC donations require ERC-20 approve before donateUSDC().",
     ],
   },

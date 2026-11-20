@@ -20,7 +20,7 @@ export function EscrowTransparencyCard({
 
   const escrowBal = escrow as bigint | undefined;
   const refund = refundInfo as [boolean, bigint, bigint] | undefined;
-  const unit = paymentToken === 1 ? "USDC" : "ETH";
+  const unit = paymentToken === 1 ? "USDC" : "AVAX";
   const fractionDigits = paymentToken === 1 ? 2 : 4;
   const formatAmount = (value: bigint) =>
     formatCampaignAmountLabel(value, paymentToken, fractionDigits);

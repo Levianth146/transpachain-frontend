@@ -9,7 +9,7 @@ import {
 
 /**
  * Aggregate on-chain raised totals across ALL campaigns (ids 1..totalCampaigns).
- * Amounts always from getCharityProgress; paymentToken from getCampaign for ETH/USDC split.
+ * Amounts always from getCharityProgress; paymentToken from getCampaign for AVAX/USDC split.
  */
 export function useOnChainPlatformStats() {
   const { data: totalOnChain, isSuccess: totalReady } = useTotalCampaigns();

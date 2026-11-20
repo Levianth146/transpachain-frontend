@@ -30,7 +30,7 @@ const FEATURES = [
     icon: ChartLineUp,
     title: "Live on-chain stats",
     description:
-      "Raised amounts read directly from Sepolia contracts. Indexed metadata keeps the experience fast.",
+      "Raised amounts read directly from Avalanche contracts. Indexed metadata keeps the experience fast.",
     accent: "text-holo-lavender",
   },
 ];
@@ -51,7 +51,7 @@ export function LandingFeatures() {
           </h2>
           <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
             A premium giving experience — milestone escrow, quadratic voting, and collectible impact
-            badges — all verifiable on Ethereum Sepolia.
+            badges — all verifiable on Avalanche Fuji.
           </p>
         </div>
 

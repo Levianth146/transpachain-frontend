@@ -42,7 +42,7 @@ export interface Proposal {
   proofCID:         string
   proposer:         `0x${string}`
   startBlock:       bigint
-  endBlock:         bigint
+  endTime:          bigint // unix seconds — voting closes after this
   forVotes:         bigint
   againstVotes:     bigint
   abstainVotes:     bigint

@@ -37,7 +37,8 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}-${{ github.run_number }}
           build-args: |
-            NEXT_PUBLIC_ALCHEMY_KEY=${{ secrets.NEXT_PUBLIC_ALCHEMY_KEY }}
+            NEXT_PUBLIC_CHAIN_ID=43113
+            NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
             NEXT_PUBLIC_CHARITY_CORE_ADDRESS=${{ secrets.NEXT_PUBLIC_CHARITY_CORE_ADDRESS }}
             NEXT_PUBLIC_DONATION_VAULT_ADDRESS=${{ secrets.NEXT_PUBLIC_DONATION_VAULT_ADDRESS }}
             NEXT_PUBLIC_GOVERNANCE_DAO_ADDRESS=${{ secrets.NEXT_PUBLIC_GOVERNANCE_DAO_ADDRESS }}

@@ -27,7 +27,7 @@ const STEPS: (WorkflowStepMeta & {
     icon: Lock,
     title: "Donate → Escrow",
     summary: "Funds lock in DonationVault until donors approve releases.",
-    desc: "Donate in ETH or USDC — funds lock in DonationVault, not the org wallet.",
+    desc: "Donate in AVAX or USDC — funds lock in DonationVault, not the org wallet.",
     color: "text-holo-mint",
     bg: "bg-holo-mint/10",
   },
@@ -70,7 +70,7 @@ const STEPS: (WorkflowStepMeta & {
   {
     id: "tokens",
     icon: Coins,
-    title: "ETH or USDC",
+    title: "AVAX or USDC",
     summary: "Campaigns choose payment token with correct decimal display.",
     desc: "Campaigns choose their payment token; amounts and escrow display in the correct unit.",
     color: "text-teal-400",

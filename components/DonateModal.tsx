@@ -8,7 +8,8 @@ import { ADDRESSES } from "@/lib/contracts";
 import { ERC20_ABI, USDC_ADDRESS, USDC_DECIMALS } from "@/lib/erc20";
 import { HandCoins, Lock, ShieldCheck } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import { TxLink } from "@/components/TxLink";
+import { TxLink, addressExplorerUrl } from "@/components/TxLink";
+import { EXPLORER_NAME } from "@/lib/chain";
 import { tierFromEthAmount, tierImagePath, tierLabel } from "@/lib/nft";
 import Image from "next/image";
 
@@ -106,7 +107,7 @@ export function DonateModal({
   if (ethSuccess || usdcDonateSuccess) {
     const tier = successTier ?? 0;
     const txHash = ethHash ?? usdcHash;
-    const openseaUrl = `https://testnets.opensea.io/assets/sepolia/${ADDRESSES.impactNFT}`;
+    const nftExplorerUrl = addressExplorerUrl(ADDRESSES.impactNFT);
     return (
       <div className="glass-card space-y-4 p-5 text-center">
         <Image
@@ -126,12 +127,12 @@ export function DonateModal({
         <div className="flex flex-col gap-2 text-xs">
           <TxLink hash={txHash} label="View transaction" />
           <a
-            href={openseaUrl}
+            href={nftExplorerUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-holo-lavender hover:underline"
           >
-            View on OpenSea Sepolia
+            View Impact NFT on {EXPLORER_NAME}
           </a>
         </div>
       </div>
@@ -159,12 +160,12 @@ export function DonateModal({
       </div>
 
       <p className="text-xs text-white/50 mb-2">
-        Token: {isUSDC ? "USDC (Sepolia)" : "ETH"} · 1% platform fee · Net amount enters escrow.
+        Token: {isUSDC ? "USDC (Fuji)" : "AVAX"} · 1% platform fee · Net amount enters escrow.
       </p>
       <div className="flex flex-col gap-2">
         <input
           type="number"
-          placeholder={isUSDC ? "Amount in USDC" : "Amount in ETH"}
+          placeholder={isUSDC ? "Amount in USDC" : "Amount in AVAX"}
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           className="w-full border border-white/10 rounded-lg px-3 py-2 text-sm bg-black/40 text-white placeholder:text-white/30"

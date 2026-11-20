@@ -7,7 +7,7 @@ import { CaretDown } from "@phosphor-icons/react";
 const FAQ_ITEMS = [
   {
     q: "How are donations protected?",
-    a: "Every donation locks in the DonationVault smart contract on Sepolia. Funds release only after milestone proof is admin-approved and donors vote with 51% quorum plus a 24-hour timelock.",
+    a: "Every donation locks in the DonationVault smart contract on Avalanche Fuji. Funds release only after milestone proof is admin-approved and donors vote with 51% quorum plus a 24-hour timelock.",
   },
   {
     q: "What happens if a campaign fails?",
@@ -31,7 +31,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Which network does TranspaChain use?",
-    a: "TranspaChain runs on Ethereum Sepolia testnet only (chain ID 11155111). Connect MetaMask to Sepolia and use free faucet ETH — do not send mainnet assets.",
+    a: "TranspaChain runs on Avalanche Fuji testnet (C-Chain, chain ID 43113). Connect MetaMask or Core wallet, switch to Fuji, and use free faucet AVAX — do not send mainnet assets.",
   },
   {
     q: "How do organizations get verified?",

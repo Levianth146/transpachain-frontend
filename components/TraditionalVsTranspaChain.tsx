@@ -5,7 +5,7 @@ import { Check, X } from "@phosphor-icons/react";
 const ROWS = [
   { label: "Fund custody", traditional: "Org holds funds directly", transpachain: "Locked in on-chain escrow vault" },
   { label: "Release trigger", traditional: "Internal approval", transpachain: "DAO vote after milestone proof" },
-  { label: "Transparency", traditional: "Periodic reports", transpachain: "Every tx & vote on Sepolia explorer" },
+  { label: "Transparency", traditional: "Periodic reports", transpachain: "Every tx & vote on Snowtrace explorer" },
   { label: "Failed campaign", traditional: "Refund policy varies", transpachain: "Automatic refund eligibility on-chain" },
   { label: "Donor proof", traditional: "Receipt email", transpachain: "Impact NFT + tx hash" },
 ];

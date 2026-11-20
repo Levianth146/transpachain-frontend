@@ -130,7 +130,7 @@ export function CampaignList() {
       <p className="text-5xl mb-4">📋</p>
       <h3 className="mb-2 text-xl font-display font-semibold text-slate-900 dark:text-white">No campaigns yet</h3>
       <p className="text-sm leading-relaxed text-slate-600 dark:text-white/60">
-        Campaigns appear here after a verified organization creates one on-chain via Sepolia.
+        Campaigns appear here after a verified organization creates one on-chain on Avalanche Fuji.
         Each campaign locks donations in escrow until donors approve milestone releases.
       </p>
       <p className="mt-4 text-sm text-slate-500 dark:text-white/50">

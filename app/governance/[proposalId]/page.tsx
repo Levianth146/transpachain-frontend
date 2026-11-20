@@ -66,7 +66,7 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
   const abstainVotes = BigInt(String(p?.abstainVotes ?? 0));
   const totalVotingPower = BigInt(String(p?.totalVotingPower ?? 0));
   const executeAfter = Number(p?.executeAfter ?? 0);
-  const endBlock = Number(p?.endBlock ?? 0);
+  const endTime = Number(p?.endTime ?? 0);
 
   const stateNum = Number(state ?? p?.state ?? 0);
   const badge = STATE_LABEL[stateNum] ?? STATE_LABEL[0];
@@ -184,11 +184,16 @@ export default function ProposalPage({ params }: { params: Promise<{ proposalId:
           </li>
           <li className="flex items-center gap-2">
             <span className={`w-3.5 h-3.5 rounded-full ${stateNum >= 1 ? "bg-blue-500" : "bg-slate-300 dark:bg-gray-300"}`} />
-            Voting period (ends block {endBlock.toLocaleString()})
+            Voting period
+            {endTime > 0 && (
+              <span className="text-xs text-slate-500 dark:text-slate-400">
+                ({endTime > now ? "ends" : "ended"} {new Date(endTime * 1000).toLocaleString()})
+              </span>
+            )}
           </li>
           <li className="flex items-center gap-2">
             <span className={`w-3.5 h-3.5 rounded-full ${stateNum >= 3 ? "bg-yellow-500" : "bg-slate-300 dark:bg-gray-300"}`} />
-            Queued with 24h timelock
+            Queued with timelock
             {executeAfter > 0 && (
               <span className="text-xs text-slate-500 dark:text-slate-400">
                 (after {new Date(executeAfter * 1000).toLocaleString()})

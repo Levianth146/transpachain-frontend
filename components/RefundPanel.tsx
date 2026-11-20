@@ -35,7 +35,7 @@ export function RefundPanel({
   const formatted =
     paymentToken === 1
       ? `${formatUnits(amount, 6)} USDC`
-      : `${formatEther(amount)} ETH`;
+      : `${formatEther(amount)} AVAX`;
 
   const isRefundableStatus =
     campaignStatus === CampaignStatus.Failed || campaignStatus === CampaignStatus.Cancelled;

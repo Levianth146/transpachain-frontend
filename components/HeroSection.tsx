@@ -79,7 +79,7 @@ export function HeroSection() {
             className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium px-3 py-1.5 rounded-full mb-6"
           >
             <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-            Live on Ethereum Sepolia
+            Live on Avalanche Fuji
           </motion.div>
 
           {/* Heading */}
@@ -145,7 +145,7 @@ export function HeroSection() {
             </div>
             <div>
               <div className="text-3xl font-bold text-emerald-400">
-                <AnimatedCounter value={ethDonated} suffix=" ETH" />
+                <AnimatedCounter value={ethDonated} suffix=" AVAX" />
               </div>
               <div className="text-slate-400 text-sm mt-1 flex items-center gap-1">
                 <Coins size={14} weight="duotone" /> Total Donated

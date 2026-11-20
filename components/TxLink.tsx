@@ -1,22 +1,24 @@
 "use client";
 
-const SEPOLIA_BASE = "https://sepolia.etherscan.io";
+import { EXPLORER_NAME, EXPLORER_URL } from "@/lib/chain";
+
+const DEFAULT_TX_LABEL = `View on ${EXPLORER_NAME}`;
 
 export function txExplorerUrl(hash: string) {
-  return `${SEPOLIA_BASE}/tx/${hash}`;
+  return `${EXPLORER_URL}/tx/${hash}`;
 }
 
 export function addressExplorerUrl(address: string) {
-  return `${SEPOLIA_BASE}/address/${address}`;
+  return `${EXPLORER_URL}/address/${address}`;
 }
 
 export function tokenExplorerUrl(address: string, tokenId: string | number) {
-  return `${SEPOLIA_BASE}/nft/${address}/${tokenId}`;
+  return `${EXPLORER_URL}/nft/${address}/${tokenId}`;
 }
 
 export function TxLink({
   hash,
-  label = "View on SepoliaScan",
+  label = DEFAULT_TX_LABEL,
   className = "",
 }: {
   hash?: string | null;
@@ -33,7 +35,7 @@ export function TxLink({
       className={`text-teal-800 hover:text-teal-950 hover:underline text-xs font-mono dark:text-holo-mint dark:hover:text-white ${className}`}
       title={hash}
     >
-      {label === "View on SepoliaScan" ? short : label}
+      {label === DEFAULT_TX_LABEL ? short : label}
     </a>
   );
 }

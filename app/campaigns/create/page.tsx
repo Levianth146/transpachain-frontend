@@ -92,7 +92,7 @@ export default function CreateCampaignPage() {
     <PageShell
       eyebrow="Success"
       title="Campaign Created!"
-      description="Your campaign has been deployed on Sepolia."
+      description="Your campaign has been deployed on Avalanche Fuji."
       maxWidth="2xl"
     >
       <div className="text-center">
@@ -167,7 +167,7 @@ export default function CreateCampaignPage() {
             <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">Payment Token</label>
             <select name="paymentToken" value={form.paymentToken} onChange={handleChange}
               className={INPUT_CLASS}>
-              <option value="0">ETH</option>
+              <option value="0">AVAX</option>
               <option value="1">USDC</option>
             </select>
           </div>

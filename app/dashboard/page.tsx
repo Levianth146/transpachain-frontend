@@ -70,14 +70,14 @@ export default function DashboardPage() {
 
   const stats = summary ? [
     {
-      label: "ETH Donated (net)",
+      label: "AVAX Donated (net)",
       value: ethDonated,
       sub: totals.ethGross > totals.ethNet ? "Gross incl. 1% fee tracked separately" : undefined,
     },
     {
       label: "USDC Donated (net)",
       value: usdcDonated,
-      sub: totals.usdcNet > 0n ? "Sepolia test USDC" : "No USDC donations yet",
+      sub: totals.usdcNet > 0n ? "Fuji test USDC" : "No USDC donations yet",
     },
     {
       label: "Campaigns Supported",

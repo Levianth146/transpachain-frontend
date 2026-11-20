@@ -16,7 +16,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "TranspaChain — Transparent Giving Platform",
   description:
-    "Transparent charity on Ethereum — milestone-based escrow, donor governance, and on-chain accountability at transpachain.site",
+    "Transparent charity on Avalanche — milestone-based escrow, donor governance, and on-chain accountability at transpachain.site",
   icons: {
     icon: [
       { url: "/logo.png", type: "image/png" },
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <p className="mb-1 font-display font-medium text-holo">
               TranspaChain
             </p>
-            <p className="mb-2">Sepolia testnet demo — transpachain.site — not financial advice.</p>
+            <p className="mb-2">Avalanche Fuji testnet demo — transpachain.site — not financial advice.</p>
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
               <Link href="/legal" className="text-holo-mint transition-colors hover:text-slate-900 dark:hover:text-white">
                 Legal &amp; Disclaimer

@@ -111,7 +111,7 @@ export function Web3HeroAnimated() {
     donationReceived: (data) => {
       loadDonorCount();
       if (data?.campaignId != null && data?.donor) {
-        const token = data.tokenType === 1 ? "USDC" : "ETH";
+        const token = data.tokenType === 1 ? "USDC" : "AVAX";
         const amount =
           data.tokenType === 1
             ? (Number(data.netAmount ?? data.amount ?? 0) / 1e6).toFixed(0)
@@ -147,7 +147,7 @@ export function Web3HeroAnimated() {
       icon: Coins,
       color: "text-teal-700 dark:text-accent-shine",
       decimals: 2,
-      suffix: " ETH",
+      suffix: " AVAX",
     },
     {
       value: onChain.ready ? usdcDonated : 0,

@@ -1,3 +1,4 @@
+import { NATIVE_SYMBOL } from "./chain";
 import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
 
 /** Decimals for display — use everywhere list + detail show raised/goal */
@@ -5,13 +6,13 @@ export function getCampaignFractionDigits(paymentToken: number): number {
   return paymentToken === 1 ? 2 : 4;
 }
 
-/** Decimals for campaign payment token (0 = ETH, 1 = USDC) */
+/** Decimals for campaign payment token (0 = native AVAX, 1 = USDC) */
 export function getPaymentTokenDecimals(paymentToken: number): 6 | 18 {
   return paymentToken === 1 ? 6 : 18;
 }
 
-export function getPaymentTokenLabel(paymentToken: number): "ETH" | "USDC" {
-  return paymentToken === 1 ? "USDC" : "ETH";
+export function getPaymentTokenLabel(paymentToken: number): string {
+  return paymentToken === 1 ? "USDC" : NATIVE_SYMBOL;
 }
 
 /** Format on-chain campaign amount for the given payment token */
@@ -63,7 +64,7 @@ export function formatQuadraticVoteWeight(value: string | number | bigint | unde
   }
 }
 
-/** Format vote weight stored as wei (string or number) to human-readable ETH */
+/** Format vote weight stored as wei (string or number) to human-readable native token units */
 export function formatVoteWeight(value: string | number | bigint | undefined | null): string {
   if (value === undefined || value === null) return "0";
   try {

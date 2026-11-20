@@ -7,7 +7,7 @@ export default function CampaignsPage() {
     <PageShell
       eyebrow="Browse"
       title="Campaigns"
-      description="Transparent giving on Ethereum — every donation escrowed on-chain until donors approve milestone releases."
+      description="Transparent giving on Avalanche — every donation escrowed on-chain until donors approve milestone releases."
       maxWidth="7xl"
       backgroundImage="/backgrounds/panels.png"
       actions={

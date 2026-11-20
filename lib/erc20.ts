@@ -1,3 +1,4 @@
+import { NETWORK } from "./chain";
 export const ERC20_ABI = [
   {
     name: "approve",
@@ -21,9 +22,8 @@ export const ERC20_ABI = [
   },
 ] as const;
 
-/** Circle USDC on Ethereum Sepolia */
+/** Circle test USDC on the active network (Fuji by default) */
 export const USDC_ADDRESS =
-  (process.env.NEXT_PUBLIC_USDC_ADDRESS ||
-    "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238") as `0x${string}`;
+  (process.env.NEXT_PUBLIC_USDC_ADDRESS || NETWORK.defaultUsdc) as `0x${string}`;
 
 export const USDC_DECIMALS = 6;

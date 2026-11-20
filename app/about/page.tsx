@@ -6,7 +6,6 @@ import { GlassPanel } from "@/components/ui/GlassPanel";
 import { HowItWorksBlock } from "@/components/HowItWorksBlock";
 import { RoleFlows } from "@/components/RoleFlows";
 import { TrustSecurityStrip } from "@/components/TrustSecurityStrip";
-import { FoundingTeam } from "@/components/FoundingTeam";
 
 const ANTI_ABUSE = [
   {
@@ -15,7 +14,7 @@ const ANTI_ABUSE = [
   },
   {
     title: "Escrow until proof + vote",
-    desc: "Funds stay in DonationVault (ETH or USDC) until milestone proof is submitted, admin-approved, and donors vote via DAO.",
+    desc: "Funds stay in DonationVault (AVAX or USDC) until milestone proof is submitted, admin-approved, and donors vote via DAO.",
   },
   {
     title: "Quadratic voting + admin gate",
@@ -57,7 +56,7 @@ export default function AboutPage() {
           About TranspaChain
         </span>
       }
-      description="TranspaChain is a transparent giving platform on Ethereum where every donation is escrowed in ETH or USDC, every release is voted on by donors using quadratic weighting, and every transaction is verifiable on-chain."
+      description="TranspaChain is a transparent giving platform on Avalanche where every donation is escrowed in AVAX or USDC, every release is voted on by donors using quadratic weighting, and every transaction is verifiable on-chain."
       maxWidth="4xl"
       backgroundImage="/backgrounds/about.png"
     >
@@ -66,7 +65,7 @@ export default function AboutPage() {
           <h2 className="mb-3 text-xl font-semibold text-teal-800 dark:text-holo-mint">Our mission</h2>
           <p className="leading-relaxed text-slate-600 dark:text-slate-300">
             We bridge the trust gap between donors and charitable organizations. Instead of sending funds
-            directly to an org wallet, donations lock in a smart-contract escrow vault — in ETH or USDC.
+            directly to an org wallet, donations lock in a smart-contract escrow vault — in AVAX or USDC.
             Organizations earn trust by submitting milestone proof reviewed by admin; donors retain control
             through decentralized governance with √donation vote weight. Failed campaigns trigger refund
             eligibility — accountability built into the protocol.
@@ -115,7 +114,6 @@ export default function AboutPage() {
           </div>
         </GlassPanel>
 
-        <FoundingTeam />
       </div>
     </PageShell>
   );

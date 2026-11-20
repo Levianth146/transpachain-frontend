@@ -2,7 +2,7 @@
 import { ShieldCheck, Lock, Scales, ArrowCounterClockwise, FileMagnifyingGlass, Prohibit } from "@phosphor-icons/react";
 
 const CALLOUTS = [
-  { icon: Lock, label: "Escrow vault", detail: "ETH or USDC locked until milestone approval" },
+  { icon: Lock, label: "Escrow vault", detail: "AVAX or USDC locked until milestone approval" },
   { icon: Scales, label: "Quadratic voting", detail: "Vote weight = √donation; admin gates proposals first" },
   { icon: FileMagnifyingGlass, label: "Evidence review", detail: "Admin approves milestone proof before public vote" },
   { icon: Prohibit, label: "Admin safeguards", detail: "Suspicious proposals can be closed on-chain (closeProposal)" },

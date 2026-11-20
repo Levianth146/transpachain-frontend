@@ -47,7 +47,7 @@ const ROLES: RoleFlow[] = [
     steps: [
       {
         title: "Connect wallet",
-        desc: "Link MetaMask on Sepolia testnet from the nav or dashboard.",
+        desc: "Link MetaMask or Core wallet on Avalanche Fuji testnet from the nav or dashboard.",
         href: "/dashboard",
         icon: Wallet,
       },
@@ -59,7 +59,7 @@ const ROLES: RoleFlow[] = [
       },
       {
         title: "Donate to escrow",
-        desc: "Send ETH or USDC — funds lock in DonationVault, not the org wallet.",
+        desc: "Send AVAX or USDC — funds lock in DonationVault, not the org wallet.",
         href: "/campaigns",
         icon: HandCoins,
       },
@@ -93,7 +93,7 @@ const ROLES: RoleFlow[] = [
       },
       {
         title: "Create a campaign",
-        desc: "Set goals, milestones, deadline, and payment token (ETH or USDC).",
+        desc: "Set goals, milestones, deadline, and payment token (AVAX or USDC).",
         href: "/campaigns/create",
         icon: Buildings,
       },
