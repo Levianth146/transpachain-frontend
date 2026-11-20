@@ -288,7 +288,11 @@ export default function CampaignDetailPage({ params }: Props) {
       )}
 
       {tab === "yield" && (
-        <CampaignYieldTab campaignId={campaignId} paymentToken={paymentToken} />
+        <CampaignYieldTab
+          campaignId={campaignId}
+          paymentToken={paymentToken}
+          orgAddress={campaign.orgAddress}
+        />
       )}
     </PageShell>
   );

@@ -30,6 +30,22 @@ type LedgerEntry = {
   timestamp?: string;
 };
 
+type Reconciliation = {
+  asOfBlock?: number;
+  indexed?: Totals;
+  onChain?: {
+    liquidEscrow?: string | null;
+    invested?: string | null;
+    positionValue?: string | null;
+    error?: string | null;
+  };
+  delta?: {
+    indexedNav?: string;
+    onChainNav?: string;
+    diff?: string;
+  } | null;
+};
+
 export function CampaignFinanceTab({
   campaignId,
   paymentToken,
@@ -39,6 +55,8 @@ export function CampaignFinanceTab({
 }) {
   const [totals, setTotals] = useState<Totals | null>(null);
   const [entries, setEntries] = useState<LedgerEntry[]>([]);
+  const [recon, setRecon] = useState<Reconciliation | null>(null);
+  const [reconError, setReconError] = useState<string | null>(null);
   const [meta, setMeta] = useState<{ chainId?: number; asOfBlock?: number; syncStatus?: string }>({});
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,8 +67,16 @@ export function CampaignFinanceTab({
     Promise.all([
       api.getCampaignFinancialSummary(campaignId),
       api.getCampaignLedger(campaignId, undefined, 40),
+      api.getCampaignReconciliation(campaignId).catch((err) => {
+        // Soft-fail: finance ledger can still render without reconcile
+        if (!cancelled) {
+          setReconError(err instanceof Error ? err.message : "Reconciliation unavailable");
+          setRecon(null);
+        }
+        return null;
+      }),
     ])
-      .then(([summary, ledger]) => {
+      .then(([summary, ledger, reconciliation]) => {
         if (cancelled) return;
         setTotals((summary.totals as Totals) || null);
         setEntries((ledger.entries as LedgerEntry[]) || []);
@@ -59,6 +85,10 @@ export function CampaignFinanceTab({
           asOfBlock: summary.asOfBlock as number | undefined,
           syncStatus: summary.syncStatus as string | undefined,
         });
+        if (reconciliation) {
+          setRecon(reconciliation as Reconciliation);
+          setReconError(null);
+        }
         setError(null);
       })
       .catch((err) => {
@@ -142,6 +172,58 @@ export function CampaignFinanceTab({
           value={`${totals?.milestoneApprovedCount ?? 0} / ${totals?.expenseRequestedCount ?? 0}`}
         />
       </div>
+
+      <GlassPanel className="p-5">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="font-semibold text-white">Đối soát (indexed ↔ on-chain)</h3>
+          <MockYieldBadge />
+        </div>
+        {reconError && !recon ? (
+          <p className="text-sm text-rose-400">{reconError}</p>
+        ) : recon ? (
+          <div className="space-y-3 text-sm text-white/70">
+            <p className="text-xs text-white/40">
+              asOfBlock {recon.asOfBlock ?? meta.asOfBlock ?? "—"} · NAV identity: net donations −
+              expenses − refunds ± P&amp;L ≈ liquid + yield position
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <Stat label="Indexed NAV proxy" value={fmt(recon.delta?.indexedNav ?? totals?.navProxy)} />
+              <Stat label="On-chain NAV (liquid+pos)" value={fmt(recon.delta?.onChainNav)} />
+              <Stat
+                label="Diff (indexed − on-chain)"
+                value={
+                  recon.delta?.diff != null
+                    ? (() => {
+                        try {
+                          const d = BigInt(recon.delta.diff);
+                          const sign = d < 0n ? "−" : d > 0n ? "+" : "";
+                          return sign + fmt(d < 0n ? (-d).toString() : d.toString());
+                        } catch {
+                          return recon.delta.diff;
+                        }
+                      })()
+                    : "—"
+                }
+              />
+              <Stat label="On-chain liquid escrow" value={fmt(recon.onChain?.liquidEscrow ?? undefined)} />
+              <Stat label="On-chain invested bucket" value={fmt(recon.onChain?.invested ?? undefined)} badge />
+              <Stat
+                label="On-chain position value"
+                value={fmt(recon.onChain?.positionValue ?? undefined)}
+                badge
+              />
+            </div>
+            {recon.onChain?.error && (
+              <p className="text-xs text-amber-300">On-chain read: {recon.onChain.error}</p>
+            )}
+            {recon.delta?.diff === "0" && (
+              <p className="text-xs text-holo-mint">Indexed NAV matches on-chain NAV at this block.</p>
+            )}
+          </div>
+        ) : (
+          <p className="text-sm text-white/50">No reconciliation data yet.</p>
+        )}
+      </GlassPanel>
 
       <GlassPanel className="p-5">
         <h3 className="mb-3 font-semibold text-white">Ledger (indexed)</h3>

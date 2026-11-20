@@ -14,6 +14,7 @@ const FALLBACK_BY_CHAIN: Record<
     disbursementController: string;
     yieldManager: string;
     disbursementSafe: string;
+    mockErc4626Vault: string;
   }
 > = {
   // Avalanche Fuji V2 — deployed 2026-11-20 at block 61364951
@@ -25,6 +26,7 @@ const FALLBACK_BY_CHAIN: Record<
     disbursementController: "0xb61c688D64564960958181Dfc5cD4164730125E6",
     yieldManager: "0x64b5B7e14000FFAF68f84f11Ec4685812eC9deF9",
     disbursementSafe: "0xf2dD6eF266E9775a9fC9Cf934b3bC2680076737A",
+    mockErc4626Vault: "0xDefbf3f47c1e15bb4A875daADbB469Fa115bC75A",
   },
   // Legacy Ethereum Sepolia v3
   11155111: {
@@ -35,6 +37,7 @@ const FALLBACK_BY_CHAIN: Record<
     disbursementController: ZERO,
     yieldManager: ZERO,
     disbursementSafe: ZERO,
+    mockErc4626Vault: ZERO,
   },
 };
 const FALLBACK_ADDRESSES = FALLBACK_BY_CHAIN[ACTIVE_CHAIN.id] ?? FALLBACK_BY_CHAIN[43113];
@@ -72,6 +75,10 @@ export const ADDRESSES = {
   disbursementSafe: envOrFallback(
     process.env.NEXT_PUBLIC_DISBURSEMENT_SAFE,
     FALLBACK_ADDRESSES.disbursementSafe
+  ),
+  mockErc4626Vault: envOrFallback(
+    process.env.NEXT_PUBLIC_MOCK_ERC4626_VAULT_ADDRESS,
+    FALLBACK_ADDRESSES.mockErc4626Vault
   ),
 } as const;
 
@@ -182,8 +189,18 @@ export const YIELD_MANAGER_ABI = [
   { name: "positionValue", type: "function", stateMutability: "view", inputs: [{ name: "cid", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
   { name: "getPosition", type: "function", stateMutability: "view", inputs: [{ name: "cid", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "shares", type: "uint256" }, { name: "principal", type: "uint256" }, { name: "realizedPnl", type: "int256" }, { name: "enabled", type: "bool" }] }] },
   { name: "policy", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "tuple", components: [{ name: "minLiquidReserveBps", type: "uint16" }, { name: "maxAllocationBps", type: "uint16" }, { name: "maxAssetsPerTx", type: "uint256" }, { name: "paused", type: "bool" }] }] },
+  { name: "owner", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "address" }] },
+  { name: "operators", type: "function", stateMutability: "view", inputs: [{ name: "account", type: "address" }], outputs: [{ name: "", type: "bool" }] },
   { name: "YieldAllocated", type: "event", inputs: [{ name: "cid", type: "uint256", indexed: true }, { name: "vault", type: "address", indexed: true }, { name: "assets", type: "uint256", indexed: false }, { name: "shares", type: "uint256", indexed: false }] },
   { name: "YieldRedeemed", type: "event", inputs: [{ name: "cid", type: "uint256", indexed: true }, { name: "vault", type: "address", indexed: true }, { name: "assets", type: "uint256", indexed: false }, { name: "shares", type: "uint256", indexed: false }, { name: "realizedPnl", type: "int256", indexed: false }] },
+] as const;
+
+/** MockERC4626Vault — testnet yield/loss simulation (controller = owner) */
+export const MOCK_ERC4626_ABI = [
+  { name: "simulateYield", type: "function", stateMutability: "nonpayable", inputs: [{ name: "assets", type: "uint256" }], outputs: [] },
+  { name: "simulateLoss", type: "function", stateMutability: "nonpayable", inputs: [{ name: "assets", type: "uint256" }], outputs: [] },
+  { name: "owner", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "address" }] },
+  { name: "asset", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "address" }] },
 ] as const;
 
 /** Minimal Gnosis Safe ABI for owner signing + execTransaction */
