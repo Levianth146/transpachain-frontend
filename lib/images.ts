@@ -46,3 +46,21 @@ export function getCategoryFallbackGradient(category?: string): string {
   };
   return map[category ?? ""] ?? "from-emerald-400 via-teal-500 to-emerald-600";
 }
+
+/** Demo Fuji campaigns 1–3 use static covers when IPFS/indexer image is missing. */
+const DEMO_CAMPAIGN_COVERS: Record<number, string> = {
+  1: "/campaigns/1.jpg",
+  2: "/campaigns/2.jpg",
+  3: "/campaigns/3.jpg",
+};
+
+export function getCampaignCoverUrl(
+  campaignId?: number | string | null,
+  imageUrl?: string | null
+): string | null {
+  const normalized = normalizeImageUrl(imageUrl);
+  if (normalized) return normalized;
+  const id = Number(campaignId);
+  if (Number.isFinite(id) && DEMO_CAMPAIGN_COVERS[id]) return DEMO_CAMPAIGN_COVERS[id];
+  return null;
+}

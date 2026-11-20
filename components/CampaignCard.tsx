@@ -94,6 +94,7 @@ export function CampaignCard({
       >
         <CampaignImage
           imageUrl={campaign.imageUrl}
+          campaignId={campaign.campaignId}
           title={campaign.title}
           category={campaign.category}
           className="relative overflow-hidden h-48"

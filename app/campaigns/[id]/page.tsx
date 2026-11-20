@@ -202,6 +202,7 @@ export default function CampaignDetailPage({ params }: Props) {
         <>
           <CampaignImage
             imageUrl={campaign.imageUrl}
+            campaignId={campaign.campaignId}
             title={campaign.title}
             category={campaign.category}
             className="w-full h-64 rounded-xl mb-6 overflow-hidden"

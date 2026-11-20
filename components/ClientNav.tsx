@@ -56,7 +56,7 @@ export function ClientNav() {
     <div className="flex items-center gap-3">
       <nav
         aria-label="Primary"
-        className="flex max-w-[min(58vw,44rem)] items-center gap-0.5 overflow-x-auto rounded-full border p-1"
+        className="flex max-w-[min(72vw,52rem)] items-center gap-0.5 overflow-x-auto rounded-full border p-1 scrollbar-none"
         style={{ borderColor: "var(--border-glass)", background: "var(--surface-glass)" }}
       >
         {links.map(({ href, label }) => {
@@ -65,7 +65,7 @@ export function ClientNav() {
             <Link
               key={href}
               href={href}
-              className={`min-h-9 shrink-0 cursor-pointer rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors duration-200 ${
+              className={`min-h-9 shrink-0 cursor-pointer rounded-full px-2.5 py-1.5 text-[12px] font-medium transition-colors duration-200 xl:px-3 xl:text-[13px] ${
                 active
                   ? "bg-[var(--color-primary)] text-[var(--color-on-primary)]"
                   : "text-[var(--page-fg-muted)] hover:bg-[var(--color-muted)] hover:text-[var(--page-fg)]"

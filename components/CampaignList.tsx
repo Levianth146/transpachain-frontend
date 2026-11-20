@@ -272,12 +272,6 @@ export function CampaignList() {
 
   return (
     <div>
-      {usingChainFallback && (
-        <div className="mb-4 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-900 dark:text-amber-200">
-          Showing <strong>{allCampaigns.length}</strong> campaign(s) from live Fuji contract reads.
-          Indexed metadata (titles/images) is temporarily unavailable — backend Mongo/indexer is down.
-        </div>
-      )}
       <GlassPanel hover={false} className="mb-6 p-4">
         <CampaignFilter onFilter={handleFilter} total={filtered.length} />
       </GlassPanel>

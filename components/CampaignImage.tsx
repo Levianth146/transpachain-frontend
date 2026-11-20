@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { BookOpen, Heart, AlertTriangle, Leaf, Users, Lightbulb } from "lucide-react";
-import { normalizeImageUrl, getCategoryFallbackGradient } from "@/lib/images";
+import { getCampaignCoverUrl, getCategoryFallbackGradient } from "@/lib/images";
 
 const CATEGORY_ICONS: Record<string, typeof BookOpen> = {
   education:   BookOpen,
@@ -14,6 +14,7 @@ const CATEGORY_ICONS: Record<string, typeof BookOpen> = {
 
 interface CampaignImageProps {
   imageUrl?: string | null;
+  campaignId?: number | string | null;
   title?: string;
   category?: string;
   className?: string;
@@ -23,6 +24,7 @@ interface CampaignImageProps {
 
 export function CampaignImage({
   imageUrl,
+  campaignId,
   title = "Campaign",
   category = "general",
   className = "relative overflow-hidden h-48",
@@ -30,7 +32,7 @@ export function CampaignImage({
   overlay,
 }: CampaignImageProps) {
   const [failed, setFailed] = useState(false);
-  const src = normalizeImageUrl(imageUrl);
+  const src = getCampaignCoverUrl(campaignId, imageUrl);
   const showFallback = !src || failed;
   const CategoryIcon = CATEGORY_ICONS[category] ?? Lightbulb;
   const gradient = getCategoryFallbackGradient(category);
