@@ -35,7 +35,7 @@ export function AnimatedGradientBackground({
           }`}
           style={{
             background:
-              "conic-gradient(from 0deg, #5eead4, #c4b5fd, #f9a8d4, #e2e8f0, #5eead4)",
+              "conic-gradient(from 0deg, #22d3ee, #0891b2, #fb923c, #67e8f9, #22d3ee)",
           }}
           animate={{ rotate: 360 }}
           transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
@@ -45,8 +45,8 @@ export function AnimatedGradientBackground({
             hasBackgroundImage
               ? "opacity-0 dark:opacity-100 dark:bg-holo-mint/10"
               : vivid
-                ? "bg-teal-400/20 dark:bg-holo-mint/25"
-                : "bg-teal-400/15 dark:bg-holo-mint/15"
+                ? "bg-cyan-400/20 dark:bg-holo-mint/25"
+                : "bg-cyan-400/15 dark:bg-holo-mint/15"
           }`}
           animate={{ x: [0, -30, 0], y: [0, 20, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -54,10 +54,10 @@ export function AnimatedGradientBackground({
         <motion.div
           className={`absolute bottom-0 -left-1/4 h-[400px] w-[400px] rounded-full blur-3xl ${
             hasBackgroundImage
-              ? "opacity-0 dark:opacity-100 dark:bg-holo-lavender/8"
+              ? "opacity-0 dark:opacity-100 dark:bg-accent-cyan/8"
               : vivid
-                ? "bg-violet-400/15 dark:bg-holo-lavender/20"
-                : "bg-violet-400/10 dark:bg-holo-lavender/10"
+                ? "bg-teal-400/15 dark:bg-accent-cyan/20"
+                : "bg-teal-400/10 dark:bg-accent-cyan/10"
           }`}
           animate={{ x: [0, 25, 0], y: [0, -15, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -65,10 +65,10 @@ export function AnimatedGradientBackground({
         <motion.div
           className={`absolute top-0 left-1/3 h-[300px] w-[300px] rounded-full blur-3xl ${
             hasBackgroundImage
-              ? "opacity-0 dark:opacity-100 dark:bg-holo-pink/6"
+              ? "opacity-0 dark:opacity-100 dark:bg-accent-amber/6"
               : vivid
-                ? "bg-pink-400/12 dark:bg-holo-pink/15"
-                : "bg-pink-400/8 dark:bg-holo-pink/8"
+                ? "bg-orange-400/12 dark:bg-accent-amber/15"
+                : "bg-orange-400/8 dark:bg-accent-amber/8"
           }`}
           animate={{ x: [0, 15, 0], y: [0, 10, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}

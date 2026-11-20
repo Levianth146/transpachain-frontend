@@ -13,7 +13,7 @@ export function ConnectWallet() {
 
   if (!mounted) {
     return (
-      <button className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white opacity-0">
+      <button className="btn-primary !px-4 !py-2 opacity-0" aria-hidden>
         Connect Wallet
       </button>
     );
@@ -49,7 +49,7 @@ export function ConnectWallet() {
   return (
     <button
       onClick={() => connect({ connector: metaMask() })}
-      className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
+      className="btn-primary !px-4 !py-2"
     >
       Connect Wallet
     </button>

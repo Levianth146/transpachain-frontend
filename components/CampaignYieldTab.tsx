@@ -290,41 +290,43 @@ export function CampaignYieldTab({
 
   if (!usdcOnly) {
     return (
-      <GlassPanel className="p-5">
-        <div className="mb-2 flex items-center gap-2">
-          <h3 className="font-semibold text-white">Yield</h3>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-slate-900 dark:text-white">Yield</h3>
           <MockYieldBadge />
         </div>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-slate-600 dark:text-white/60">
           Yield is USDC-only and disabled for AVAX campaigns.
         </p>
-      </GlassPanel>
+      </div>
     );
   }
 
   if (!ymReady) {
     return (
-      <GlassPanel className="p-5">
-        <div className="mb-2 flex items-center gap-2">
-          <h3 className="font-semibold text-white">Yield</h3>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-slate-900 dark:text-white">Yield</h3>
           <MockYieldBadge />
         </div>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-slate-600 dark:text-white/60">
           YieldManager not configured. Set{" "}
-          <code className="text-xs text-holo-mint">NEXT_PUBLIC_YIELD_MANAGER_ADDRESS</code> after V2
-          deploy. No mock APY figures are shown.
+          <code className="text-xs text-teal-700 dark:text-holo-mint">
+            NEXT_PUBLIC_YIELD_MANAGER_ADDRESS
+          </code>{" "}
+          after V2 deploy. No mock APY figures are shown.
         </p>
-      </GlassPanel>
+      </div>
     );
   }
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-2">
-        <h3 className="font-semibold text-white">Yield position</h3>
+        <h3 className="font-semibold text-slate-900 dark:text-white">Yield position</h3>
         <MockYieldBadge />
       </div>
-      <p className="text-xs text-white/50">
+      <p className="text-xs text-slate-500 dark:text-white/50">
         Mock ERC-4626 on Fuji — figures are on-chain reads only, not marketed APY. Connected wallet:{" "}
         {roleHint}.
       </p>
@@ -350,8 +352,8 @@ export function CampaignYieldTab({
         />
       </div>
 
-      <GlassPanel className="space-y-4 p-5">
-        <h4 className="font-medium text-white">Actions</h4>
+      <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50/80 p-5 dark:border-white/10 dark:bg-black/30">
+        <h4 className="font-medium text-slate-900 dark:text-white">Actions</h4>
 
         <div className="flex flex-wrap gap-2">
           <ActionButton
@@ -368,7 +370,7 @@ export function CampaignYieldTab({
         </div>
 
         <div className="flex flex-wrap items-end gap-2">
-          <label className="flex flex-col gap-1 text-xs text-white/50">
+          <label className="flex flex-col gap-1 text-xs text-slate-500 dark:text-white/50">
             Allocate amount (USDC)
             <input
               type="text"
@@ -376,7 +378,7 @@ export function CampaignYieldTab({
               placeholder={investableBi > 0n ? fmt(investableBi) : "0"}
               value={allocateInput}
               onChange={(e) => setAllocateInput(e.target.value)}
-              className="w-40 rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white"
+              className="w-40 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-white/10 dark:bg-black/40 dark:text-white"
             />
           </label>
           <ActionButton
@@ -387,14 +389,14 @@ export function CampaignYieldTab({
         </div>
 
         <div className="flex flex-wrap items-end gap-2">
-          <label className="flex flex-col gap-1 text-xs text-white/50">
+          <label className="flex flex-col gap-1 text-xs text-slate-500 dark:text-white/50">
             Simulate yield (USDC from your wallet)
             <input
               type="text"
               inputMode="decimal"
               value={simulateInput}
               onChange={(e) => setSimulateInput(e.target.value)}
-              className="w-40 rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white"
+              className="w-40 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-white/10 dark:bg-black/40 dark:text-white"
             />
           </label>
           <ActionButton
@@ -411,24 +413,26 @@ export function CampaignYieldTab({
             label="Settle (for refund)"
             tone="warn"
           />
-          <p className="mt-2 text-xs text-white/40">
+          <p className="mt-2 text-xs text-slate-500 dark:text-white/40">
             Permissionless. Required before refunds when the campaign has yield shares
             (Failed/Cancelled).
           </p>
         </div>
 
         {pendingLabel && (
-          <p className="text-sm text-holo-mint">
+          <p className="text-sm text-teal-700 dark:text-holo-mint">
             {txPending ? `Confirming: ${pendingLabel}…` : `Submitted: ${pendingLabel}…`}
           </p>
         )}
         {txHash && (
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-slate-600 dark:text-white/60">
             Tx: <TxLink hash={txHash} />
           </p>
         )}
-        {actionError && <p className="text-sm text-rose-400 break-all">{actionError}</p>}
-      </GlassPanel>
+        {actionError && (
+          <p className="break-all text-sm text-rose-600 dark:text-rose-400">{actionError}</p>
+        )}
+      </div>
     </div>
   );
 }
@@ -446,10 +450,10 @@ function ActionButton({
 }) {
   const cls =
     tone === "warn"
-      ? "border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/20"
+      ? "border-amber-500/40 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20 dark:text-amber-200"
       : tone === "muted"
-        ? "border-white/20 bg-white/5 text-white/80 hover:bg-white/10"
-        : "border-holo-mint/40 bg-holo-mint/10 text-holo-mint hover:bg-holo-mint/20";
+        ? "border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-200 dark:border-white/20 dark:bg-white/5 dark:text-white/80 dark:hover:bg-white/10"
+        : "border-teal-500/40 bg-teal-500/10 text-teal-800 hover:bg-teal-500/20 dark:border-holo-mint/40 dark:bg-holo-mint/10 dark:text-holo-mint";
   return (
     <button
       type="button"
@@ -474,10 +478,10 @@ function Metric({
   return (
     <GlassPanel className="p-4">
       <div className="mb-1 flex flex-wrap items-center gap-2">
-        <p className="text-xs text-white/50">{label}</p>
+        <p className="text-xs text-slate-500 dark:text-white/50">{label}</p>
         {badge && <MockYieldBadge />}
       </div>
-      <p className="text-lg font-semibold text-white">{value}</p>
+      <p className="text-lg font-semibold text-slate-900 dark:text-white">{value}</p>
     </GlassPanel>
   );
 }

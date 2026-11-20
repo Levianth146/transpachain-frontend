@@ -6,25 +6,12 @@ import { Menu, X } from "lucide-react";
 import { ConnectWallet } from "./ConnectWallet";
 import { ThemeToggle } from "./ThemeToggle";
 
+import { PRIMARY_NAV, isNavActive } from "@/lib/nav";
+
 const LINKS = [
-  { href: "/campaigns", label: "Campaigns" },
-  { href: "/campaigns/create", label: "Create" },
-  { href: "/transparency", label: "Transparency" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/governance", label: "Governance" },
-  { href: "/about", label: "About" },
+  ...PRIMARY_NAV.map((l) => ({ href: l.href, label: l.label })),
   { href: "/admin", label: "Admin" },
 ];
-
-function isNavActive(pathname: string, href: string): boolean {
-  if (href === "/campaigns") {
-    return (
-      pathname === "/campaigns" ||
-      (pathname.startsWith("/campaigns/") && !pathname.startsWith("/campaigns/create"))
-    );
-  }
-  return pathname === href;
-}
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -35,8 +22,9 @@ export function MobileNav() {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="rounded-full border border-slate-300 p-2 text-slate-700 transition-colors hover:text-slate-900 dark:border-gray-700 dark:text-white/80 dark:hover:text-white"
+        className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full border border-slate-300 p-2 text-slate-700 transition-colors hover:text-slate-900 dark:border-gray-700 dark:text-white/80 dark:hover:text-white"
         aria-label="Menu"
+        aria-expanded={open}
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>

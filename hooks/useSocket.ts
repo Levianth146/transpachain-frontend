@@ -7,10 +7,7 @@ let socket: Socket | null = null;
 function getSocket() {
   if (typeof window === "undefined") return null;
   if (!socket) {
-    const url =
-      window.location.hostname === "localhost"
-        ? process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001"
-        : window.location.origin;
+    const url = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
     socket = io(url, { path: "/socket.io", transports: ["websocket", "polling"] });
   }
   return socket;

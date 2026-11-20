@@ -169,9 +169,8 @@ export function Web3HeroAnimated() {
 
   return (
     <section className="relative isolate min-h-screen overflow-hidden text-slate-900 dark:text-white">
-      <PageBackground image="/backgrounds/landing.png" overlay="hero" />
-      {/* Unified mesh + vault accent overlays (CSS only, no second image layer) */}
-      <div aria-hidden className="absolute inset-0 z-[1] mesh-bg opacity-35" />
+      <PageBackground overlay="hero" />
+      <div aria-hidden className="absolute inset-0 z-[1] mesh-bg opacity-80" />
       <div
         aria-hidden
         className="absolute inset-0 z-[1] bg-[linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_30%,black,transparent)] dark:bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)]"

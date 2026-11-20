@@ -4,3 +4,8 @@ node_modules/
 .env.local
 out/
 node_modules
+.vercel
+.env*
+
+.cursor/
+*.tsbuildinfo

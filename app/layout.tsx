@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Lexend, Source_Sans_3 } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { Providers } from "./providers";
 import { ToastContainer } from "@/components/Toast";
 import { ConditionalNav } from "@/components/ConditionalNav";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const spaceGrotesk = Space_Grotesk({
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+});
+
+const lexend = Lexend({
   subsets: ["latin"],
   variable: "--font-display",
   weight: ["400", "500", "600", "700"],
@@ -17,6 +22,7 @@ export const metadata: Metadata = {
   title: "TranspaChain — Transparent Giving Platform",
   description:
     "Transparent charity on Avalanche — milestone-based escrow, donor governance, and on-chain accountability at transpachain.site",
+  metadataBase: new URL("https://transpachain.site"),
   icons: {
     icon: [
       { url: "/logo.png", type: "image/png" },
@@ -28,24 +34,30 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans`} suppressHydrationWarning>
+      <body className={`${sourceSans.variable} ${lexend.variable} font-sans`} suppressHydrationWarning>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <Providers>
           <ConditionalNav />
-          {children}
-          <footer className="border-t border-slate-200 bg-white px-6 py-8 text-center text-sm text-slate-500 dark:border-white/10 dark:bg-black dark:text-white/50">
-            <p className="mb-1 font-display font-medium text-holo">
-              TranspaChain
+          <div id="main">{children}</div>
+          <footer className="border-t px-6 py-8 text-center text-sm" style={{ borderColor: "var(--border-glass)", color: "var(--page-fg-muted)" }}>
+            <p className="mb-1 font-display text-base font-semibold">
+              <span className="text-holo">TranspaChain</span>
             </p>
-            <p className="mb-2">Avalanche Fuji testnet demo — transpachain.site — not financial advice.</p>
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-              <Link href="/legal" className="text-holo-mint transition-colors hover:text-slate-900 dark:hover:text-white">
+            <p className="mb-3">Avalanche Fuji testnet demo — transpachain.site — not financial advice.</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs">
+              <Link href="/legal" className="cursor-pointer text-[var(--color-primary)] hover:underline">
                 Legal &amp; Disclaimer
+              </Link>
+              <Link href="/transparency" className="cursor-pointer text-[var(--color-primary)] hover:underline">
+                Transparency
               </Link>
               <a
                 href="https://github.com/Levianth146/transpachain/tree/main/docs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-holo-mint transition-colors hover:text-slate-900 dark:hover:text-white"
+                className="cursor-pointer text-[var(--color-primary)] hover:underline"
               >
                 Documentation
               </a>

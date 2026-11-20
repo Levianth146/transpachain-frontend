@@ -1,7 +1,5 @@
-const BACKEND_URL =
-  typeof window !== "undefined" && window.location.hostname !== "localhost"
-    ? "/api"
-    : process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+/** Prefer explicit env (Vercel → Render). Avoid same-origin `/api` unless a Next rewrite exists. */
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
 
 /** Absolute or same-origin backend base (for CSV download links). */
 export function getBackendBase(): string {

@@ -12,6 +12,15 @@ export function addressExplorerUrl(address: string) {
   return `${EXPLORER_URL}/address/${address}`;
 }
 
+/** Snowtrace / explorer “Read Contract” tab for manual verification. */
+export function contractReadUrl(address: string) {
+  return `${EXPLORER_URL}/address/${address}#readContract`;
+}
+
+export function contractCodeUrl(address: string) {
+  return `${EXPLORER_URL}/address/${address}#code`;
+}
+
 export function tokenExplorerUrl(address: string, tokenId: string | number) {
   return `${EXPLORER_URL}/nft/${address}/${tokenId}`;
 }
