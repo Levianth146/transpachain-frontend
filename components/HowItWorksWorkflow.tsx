@@ -20,6 +20,7 @@ export type WorkflowStepId =
   | "escrow"
   | "evidence"
   | "dao"
+  | "yield"
   | "refund"
   | "nft"
   | "tokens";
@@ -111,13 +112,25 @@ const WORKFLOWS: Record<WorkflowStepId, FlowConfig> = {
   dao: {
     nodes: [
       { label: "√ weight", sublabel: "Quadratic vote", icon: Scales, accent: "mint" },
-      { label: "51% quorum", sublabel: "Donor majority", icon: CheckCircle, accent: "lavender" },
-      { label: "24h timelock", sublabel: "Then release", icon: Clock, accent: "pink" },
+      { label: "Timelock", sublabel: "Then Safe 3/5", icon: Clock, accent: "lavender" },
+      { label: "Safe payout", sublabel: "Multi-sign", icon: ShieldCheck, accent: "pink" },
     ],
     detail: [
       "Vote weight = √(total donated) — large donors have diminishing influence.",
-      "Proposal must reach 51% quorum of eligible voting power.",
-      "After vote passes, a 24-hour timelock runs before funds release.",
+      "After quorum + timelock, GovernanceDAO approves the release path.",
+      "Outward payout still needs Safe 3-of-5 signatures before escrow leaves DonationVault.",
+    ],
+  },
+  yield: {
+    nodes: [
+      { label: "Idle USDC", sublabel: "In escrow", icon: Coins, accent: "teal" },
+      { label: "YieldManager", sublabel: "Allocate / redeem", icon: Vault, accent: "lavender" },
+      { label: "Mock ERC-4626", sublabel: "Demo vault only", icon: CheckCircle, accent: "mint" },
+    ],
+    detail: [
+      "Optional for USDC campaigns: idle escrow can sit in MockERC4626Vault.",
+      "YieldManager handles allocate / redeem; NAV is demo math — not real DeFi yield.",
+      "UI always labels this Mock Yield so donors never confuse it with production APY.",
     ],
   },
   refund: {

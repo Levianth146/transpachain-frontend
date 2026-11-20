@@ -8,6 +8,7 @@ import {
   ArrowCounterClockwise,
   Medal,
   Coins,
+  ChartLineUp,
 } from "@phosphor-icons/react";
 import type { Icon } from "@phosphor-icons/react";
 import {
@@ -43,11 +44,20 @@ const STEPS: (WorkflowStepMeta & {
   {
     id: "dao",
     icon: Scales,
-    title: "Quadratic DAO vote",
-    summary: "√donation weight, quorum, and timelock govern fund release.",
-    desc: "Admin approves proposals off-chain; donors vote with √donation weight. 51% quorum + 24h timelock.",
+    title: "Vote → Safe payout",
+    summary: "√donation vote, timelock, then Safe 3/5 multi-sign before funds leave escrow.",
+    desc: "Donors vote with √donation weight. After quorum + timelock, DAO approves; Safe 3-of-5 must sign the disbursement.",
     color: "text-holo-pink",
     bg: "bg-holo-pink/10",
+  },
+  {
+    id: "yield",
+    icon: ChartLineUp,
+    title: "Mock Yield (USDC)",
+    summary: "Optional idle USDC can sit in a mock ERC-4626 vault — demo only.",
+    desc: "USDC campaigns may allocate idle escrow to MockERC4626Vault. Always labeled Mock Yield — not real APY.",
+    color: "text-cyan-400",
+    bg: "bg-cyan-400/10",
   },
   {
     id: "refund",
@@ -80,16 +90,18 @@ const STEPS: (WorkflowStepMeta & {
 
 const STEP_IDS: WorkflowStepId[] = STEPS.map((s) => s.id);
 
-export function HowItWorksBlock({ columns = 5 }: { columns?: 3 | 5 | 6 }) {
+export function HowItWorksBlock({ columns = 5 }: { columns?: 3 | 5 | 6 | 7 }) {
   const visibleSteps = STEPS.slice(0, columns);
   const [selectedId, setSelectedId] = useState<WorkflowStepId>(visibleSteps[0]?.id ?? "escrow");
 
   const gridCols =
     columns === 3
       ? "md:grid-cols-3"
-      : columns === 6
-        ? "md:grid-cols-3 lg:grid-cols-6"
-        : "md:grid-cols-3 lg:grid-cols-5";
+      : columns === 7
+        ? "md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7"
+        : columns === 6
+          ? "md:grid-cols-3 lg:grid-cols-6"
+          : "md:grid-cols-3 lg:grid-cols-5";
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent, index: number) => {
