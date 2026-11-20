@@ -1,26 +1,43 @@
 import { ACTIVE_CHAIN } from "./chain";
 
+const ZERO = "0x0000000000000000000000000000000000000000" as `0x${string}`;
+
 // Contract addresses — prefer NEXT_PUBLIC_* env, fallback to the known deployment for the active chain.
 // This prevents production builds from silently breaking if NEXT_PUBLIC_* vars are missing.
-const FALLBACK_BY_CHAIN: Record<number, { charityCore: string; donationVault: string; governanceDAO: string; impactNFT: string }> = {
-  // Avalanche Fuji — deployed 2026-11-20 at block 61361175
+const FALLBACK_BY_CHAIN: Record<
+  number,
+  {
+    charityCore: string;
+    donationVault: string;
+    governanceDAO: string;
+    impactNFT: string;
+    disbursementController: string;
+    yieldManager: string;
+    disbursementSafe: string;
+  }
+> = {
+  // Avalanche Fuji V2 — deployed 2026-11-20 at block 61364951
   43113: {
-    charityCore:   "0xB1dE316be780D4c779f93A5EE37A9D44d3344de9",
-    donationVault: "0xf1A52fa0fA5d88387a00B59aa35040E48b7a709C",
-    governanceDAO: "0xeb5C41b35111943AF1395Da6337B3147c3f5cCa3",
-    impactNFT:     "0xD52B2385a3853e4C97928e59E8012569723C50DF",
+    charityCore: "0xFc71b91e360DB771F81aD3594023Be35D85C613b",
+    donationVault: "0x671bE113Cd8C1981D19910Bea2718aa73DC83D5b",
+    governanceDAO: "0xC8f15c5eE83998897615b851a03f044712b0e016",
+    impactNFT: "0x0fA0613bD0Ef0520851f1F515C894D7D80Df2210",
+    disbursementController: "0xb61c688D64564960958181Dfc5cD4164730125E6",
+    yieldManager: "0x64b5B7e14000FFAF68f84f11Ec4685812eC9deF9",
+    disbursementSafe: "0xf2dD6eF266E9775a9fC9Cf934b3bC2680076737A",
   },
-  // Avalanche Fuji — legacy v3 deployment
+  // Legacy Ethereum Sepolia v3
   11155111: {
-    charityCore:   "0xCE017838BfE2785CB2458bb205770663bEB9b0B8",
+    charityCore: "0xCE017838BfE2785CB2458bb205770663bEB9b0B8",
     donationVault: "0xEb421D07E885EeB2B8E9ea408FF284013F872Db1",
     governanceDAO: "0xd655d85ddACc386901487CE8E1ec45BD4F872A19",
-    impactNFT:     "0xF2556FcccaE36A6d8Da0C75a863CA7368FC6761a",
+    impactNFT: "0xF2556FcccaE36A6d8Da0C75a863CA7368FC6761a",
+    disbursementController: ZERO,
+    yieldManager: ZERO,
+    disbursementSafe: ZERO,
   },
 };
 const FALLBACK_ADDRESSES = FALLBACK_BY_CHAIN[ACTIVE_CHAIN.id] ?? FALLBACK_BY_CHAIN[43113];
-
-const ZERO = "0x0000000000000000000000000000000000000000" as `0x${string}`;
 
 function envOrFallback(env: string | undefined, fallback: string): `0x${string}` {
   const v = (env || fallback || ZERO).trim();
@@ -44,15 +61,18 @@ export const ADDRESSES = {
     process.env.NEXT_PUBLIC_IMPACT_NFT_ADDRESS,
     FALLBACK_ADDRESSES.impactNFT
   ),
-  /** V2 Module A — zero until deployed; UI gates on isContractConfigured() */
   disbursementController: envOrFallback(
     process.env.NEXT_PUBLIC_DISBURSEMENT_CONTROLLER_ADDRESS,
-    ZERO
+    FALLBACK_ADDRESSES.disbursementController
   ),
-  /** V2 Module C */
-  yieldManager: envOrFallback(process.env.NEXT_PUBLIC_YIELD_MANAGER_ADDRESS, ZERO),
-  /** Gnosis Safe 3/5 that executes disbursements */
-  disbursementSafe: envOrFallback(process.env.NEXT_PUBLIC_DISBURSEMENT_SAFE, ZERO),
+  yieldManager: envOrFallback(
+    process.env.NEXT_PUBLIC_YIELD_MANAGER_ADDRESS,
+    FALLBACK_ADDRESSES.yieldManager
+  ),
+  disbursementSafe: envOrFallback(
+    process.env.NEXT_PUBLIC_DISBURSEMENT_SAFE,
+    FALLBACK_ADDRESSES.disbursementSafe
+  ),
 } as const;
 
 export function isContractConfigured(addr: `0x${string}` | string | undefined): boolean {
