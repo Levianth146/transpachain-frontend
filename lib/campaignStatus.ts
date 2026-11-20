@@ -14,13 +14,20 @@ export interface CampaignDisplayStatus {
   color: string;
 }
 
+// High-contrast badges for light campaign images AND dark UI (PR-07).
 const COLORS = {
-  active: "bg-holo-mint/20 text-holo-mint ring-1 ring-holo-mint/30",
-  funded: "bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-500/30",
-  voting: "bg-blue-500/20 text-blue-300 ring-1 ring-blue-500/30",
-  completed: "bg-holo-lavender/20 text-holo-lavender ring-1 ring-holo-lavender/30",
-  failed: "bg-red-500/20 text-red-300 ring-1 ring-red-500/30",
-  cancelled: "bg-gray-500/20 text-gray-300 ring-1 ring-gray-500/30",
+  active:
+    "bg-teal-950/85 text-teal-100 ring-1 ring-teal-300/50 shadow-sm backdrop-blur-sm",
+  funded:
+    "bg-emerald-950/85 text-emerald-100 ring-1 ring-emerald-300/50 shadow-sm backdrop-blur-sm",
+  voting:
+    "bg-blue-950/85 text-blue-100 ring-1 ring-blue-300/50 shadow-sm backdrop-blur-sm",
+  completed:
+    "bg-violet-950/85 text-violet-100 ring-1 ring-violet-300/50 shadow-sm backdrop-blur-sm",
+  failed:
+    "bg-red-950/85 text-red-100 ring-1 ring-red-300/50 shadow-sm backdrop-blur-sm",
+  cancelled:
+    "bg-slate-950/85 text-slate-100 ring-1 ring-slate-300/50 shadow-sm backdrop-blur-sm",
 } as const;
 
 export function deriveCampaignDisplayStatus(input: {
