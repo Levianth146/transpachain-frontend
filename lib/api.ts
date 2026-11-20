@@ -86,7 +86,12 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body:    JSON.stringify(metadata),
     });
-    return res.json();
+    const data = await res.json().catch(() => ({}));
+    // Never let an empty CID reach createCampaign (contract reverts "CharityCore: empty CID").
+    if (!res.ok || !data?.cid) {
+      throw new Error(data?.error || `IPFS metadata upload failed (HTTP ${res.status}) — check PINATA keys in backend/.env`);
+    }
+    return data as { cid: string };
   },
 
   uploadFile: async (file: File) => {

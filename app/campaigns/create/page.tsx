@@ -11,6 +11,7 @@ import { GlassPanel } from "@/components/ui/GlassPanel";
 import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { normalizeImageUrl } from "@/lib/images";
 import { getPaymentTokenLabel } from "@/lib/format";
+import { addToast } from "@/components/Toast";
 
 const INPUT_CLASS = "input-glass";
 
@@ -59,14 +60,20 @@ export default function CreateCampaignPage() {
     if (!isConnected) return;
 
     const normalizedImage = normalizeImageUrl(form.imageUrl) ?? "";
-    const { cid } = await api.uploadMetadata({
-      title:       form.title,
-      description: form.description,
-      category:    form.category,
-      imageUrl:    normalizedImage,
-      orgName:     form.orgName,
-      goalAmount:  form.goalAmount,
-    });
+    let cid: string;
+    try {
+      ({ cid } = await api.uploadMetadata({
+        title:       form.title,
+        description: form.description,
+        category:    form.category,
+        imageUrl:    normalizedImage,
+        orgName:     form.orgName,
+        goalAmount:  form.goalAmount,
+      }));
+    } catch (err) {
+      addToast({ type: "error", title: "Metadata upload failed", message: (err as Error).message });
+      return;
+    }
 
     const deadline = BigInt(
       Math.floor(Date.now() / 1000) + Number(form.daysUntilDeadline) * 24 * 3600
