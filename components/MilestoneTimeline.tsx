@@ -22,18 +22,21 @@ function MilestoneItem({
     releaseAmount?: bigint;
     released?: boolean;
     proposalId?: bigint;
+    approved?: boolean;
   } | undefined;
 
   const proposalId = milestone?.proposalId ?? 0n;
   const { data: proposal } = useProposal(proposalId, { enabled: proposalId > 0n });
   const proposalState = (proposal as { state?: number } | undefined)?.state;
 
-  const statusLabel = getMilestoneDisplayStatus({
-    released: milestone?.released,
-    proposalId,
-    proposalState,
-    isNextToSubmit: index === completedMilestones,
-  });
+  const statusLabel = milestone?.approved && !milestone?.released
+    ? "DAO approved — awaiting Safe disbursement"
+    : getMilestoneDisplayStatus({
+        released: milestone?.released,
+        proposalId,
+        proposalState,
+        isNextToSubmit: index === completedMilestones,
+      });
 
   return (
     <div className={`flex items-start gap-3 rounded-lg p-3 ${milestone?.released ? "bg-emerald-500/10" : "bg-white/[0.03]"}`}>

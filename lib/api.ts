@@ -1,4 +1,25 @@
-const BACKEND_URL = typeof window !== "undefined" && window.location.hostname !== "localhost" ? "/api" : (process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001");
+const BACKEND_URL =
+  typeof window !== "undefined" && window.location.hostname !== "localhost"
+    ? "/api"
+    : process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+
+/** Absolute or same-origin backend base (for CSV download links). */
+export function getBackendBase(): string {
+  return BACKEND_URL;
+}
+
+/**
+ * Module B routes are mounted under `/api/...` on the Express app.
+ * Legacy routes stay at `/campaigns`, `/ipfs`, etc.
+ * When the browser already uses BACKEND_URL=`/api` (non-localhost proxy), do not double-prefix.
+ */
+function moduleB(path: string): string {
+  const p = path.startsWith("/") ? path : `/${path}`;
+  if (BACKEND_URL === "/api" || BACKEND_URL.endsWith("/api")) {
+    return `${BACKEND_URL}${p}`;
+  }
+  return `${BACKEND_URL}/api${p}`;
+}
 
 async function parseJsonResponse(res: Response): Promise<Record<string, unknown>> {
   try {
@@ -183,5 +204,59 @@ export const api = {
     const res = await fetch(`${BACKEND_URL}/admin/verified-orgs`);
     if (!res.ok) throw new Error("Failed to fetch verified orgs");
     return res.json();
+  },
+
+  // ── Module B: transparency / finance / expenses / Safe sigs ─────────────
+
+  getTransparencySummary: async () => {
+    const res = await fetch(moduleB("/transparency/summary"));
+    return assertOk(res, "Failed to load transparency summary");
+  },
+
+  getCampaignFinancialSummary: async (id: number) => {
+    const res = await fetch(moduleB(`/campaigns/${id}/financial-summary`));
+    return assertOk(res, "Failed to load financial summary");
+  },
+
+  getCampaignLedger: async (id: number, cursor?: string, limit = 50) => {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (cursor) params.set("cursor", cursor);
+    const res = await fetch(moduleB(`/campaigns/${id}/ledger?${params}`));
+    return assertOk(res, "Failed to load ledger");
+  },
+
+  getCampaignExpenses: async (id: number) => {
+    const res = await fetch(moduleB(`/campaigns/${id}/expenses`));
+    return assertOk(res, "Failed to load expenses");
+  },
+
+  getCampaignReconciliation: async (id: number) => {
+    const res = await fetch(moduleB(`/campaigns/${id}/reconciliation`));
+    return assertOk(res, "Failed to load reconciliation");
+  },
+
+  /** URL for CSV download (browser navigates / creates blob). */
+  campaignStatementCsvUrl: (id: number) => moduleB(`/campaigns/${id}/statement.csv`),
+
+  getExpense: async (requestId: number) => {
+    const res = await fetch(moduleB(`/expenses/${requestId}`));
+    return assertOk(res, "Failed to load expense");
+  },
+
+  getSafeSignatures: async (requestId: number) => {
+    const res = await fetch(moduleB(`/safe/${requestId}/signatures`));
+    return assertOk(res, "Failed to load Safe signatures");
+  },
+
+  postSafeSignature: async (
+    requestId: number,
+    body: { signer: string; signature: string; safeTxHash: string }
+  ) => {
+    const res = await fetch(moduleB(`/safe/${requestId}/signatures`), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return assertOk(res, "Failed to store Safe signature");
   },
 };

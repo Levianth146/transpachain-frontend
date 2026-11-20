@@ -3,7 +3,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import {
   formatCampaignAmount,
-  formatCampaignAmountLabel,
   getCampaignFractionDigits,
   getPaymentTokenLabel,
 } from "@/lib/format";
@@ -26,12 +25,24 @@ import { LearnMoreLink } from "@/components/LearnMoreLink";
 import { OnChainChecking } from "@/components/OnChainChecking";
 import { ContractExplorer } from "@/components/ContractExplorer";
 import { EvidencePanel } from "@/components/EvidencePanel";
+import { CampaignFinanceTab } from "@/components/CampaignFinanceTab";
+import { CampaignExpensesTab } from "@/components/CampaignExpensesTab";
+import { CampaignYieldTab } from "@/components/CampaignYieldTab";
 import { useSocketEvents } from "@/hooks/useSocket";
 import { CampaignStatus } from "@/types";
 import { deriveCampaignDisplayStatus } from "@/lib/campaignStatus";
 import { useHasActiveOrQueuedProposal } from "@/hooks/useDonationVault";
 
 const CAMPAIGN_DETAIL_BG = "/backgrounds/campaign-detail.png";
+
+type TabId = "overview" | "finance" | "expenses" | "yield";
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: "overview", label: "Overview" },
+  { id: "finance", label: "Finance" },
+  { id: "expenses", label: "Expenses" },
+  { id: "yield", label: "Yield" },
+];
 
 interface Props { params: Promise<{ id: string }> }
 
@@ -40,6 +51,7 @@ export default function CampaignDetailPage({ params }: Props) {
 
   const [campaign, setCampaign] = useState<any>(null);
   const [loading, setLoading]   = useState(true);
+  const [tab, setTab] = useState<TabId>("overview");
 
   const load = () => {
     setLoading(true);
@@ -136,6 +148,7 @@ export default function CampaignDetailPage({ params }: Props) {
 
   const totalMilestones = Math.max(0, Number(campaign.totalMilestones) || 0);
   const completedMilestones = Math.max(0, Number(campaign.completedMilestones) || 0);
+  const numericId = Number(campaign.campaignId ?? resolvedParams.id);
 
   const badge = deriveCampaignDisplayStatus({
     status: campaign.status ?? CampaignStatus.Active,
@@ -159,77 +172,124 @@ export default function CampaignDetailPage({ params }: Props) {
         </span>
       }
     >
-      <CampaignImage
-        imageUrl={campaign.imageUrl}
-        title={campaign.title}
-        category={campaign.category}
-        className="w-full h-64 rounded-xl mb-6 overflow-hidden"
-        imgClassName="w-full h-full object-cover"
-      />
-
-      <LearnMoreLink className="mb-4" />
-
-      <p className="mb-6 text-white/70">{campaign.description}</p>
-
-      <GlassPanel holoBorder className="p-5 mb-6">
-        <div className="mb-2 flex justify-between text-sm text-white/60">
-          <div>
-            <span className="text-lg font-bold text-white">
-              {raised.toFixed(fractionDigits)} {tokenLabel} raised
-            </span>
-            <span className="ml-2 text-[10px] uppercase tracking-wide text-holo-mint/80">
-              {onChainRaisedWei !== undefined ? "on-chain · net after fee" : "indexed · may lag"}
-            </span>
-          </div>
-          <span>Goal: {goal.toFixed(fractionDigits)} {tokenLabel}</span>
-        </div>
-        <div className="mb-2 h-3 w-full rounded-full bg-white/10">
-          <div className="h-3 rounded-full bg-holo-gradient transition-all"
-            style={{ width: `${progress}%` }} />
-        </div>
-        <div className="mb-3 flex justify-between text-sm text-white/60">
-          <span>{progress.toFixed(0)}% funded</span>
-          <span>{campaign.donorCount} donors · 1% platform fee on donations</span>
-        </div>
-        <DonorAvatars campaignId={Number(campaign.campaignId)} />
-      </GlassPanel>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 space-y-4">
-          <CampaignStatusTimeline
-            status={campaign.status ?? 0}
-            completedMilestones={completedMilestones}
-            totalMilestones={totalMilestones}
-            deadline={Number(campaign.deadline) || 0}
-          />
-          <OnChainChecking campaignId={campaignId} paymentToken={paymentToken} />
-          <ContractExplorer campaignId={campaignId} paymentToken={paymentToken} />
-          <EvidencePanel campaignId={Number(campaign.campaignId)} />
-          <MilestoneTimeline campaignId={campaignId} campaign={campaign} />
-          <OrgCampaignActions
-            campaignId={campaignId}
-            orgAddress={campaign.orgAddress ?? ""}
-            status={campaign.status ?? 0}
-            deadline={Number(campaign.deadline) || 0}
-            totalMilestones={totalMilestones}
-            completedMilestones={completedMilestones}
-          />
-        </div>
-        <div className="space-y-4">
-          <EscrowTransparencyCard
-            campaignId={campaignId}
-            paymentToken={paymentToken}
-          />
-          <DonateModal campaignId={campaignId} paymentToken={paymentToken} />
-          <RefundPanel
-            campaignId={campaignId}
-            paymentToken={paymentToken}
-            campaignStatus={campaign.status ?? CampaignStatus.Active}
-          />
-          <VotingPanel campaignId={campaignId} onRefresh={load} />
-        </div>
+      <div
+        className="mb-6 flex flex-wrap gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1.5"
+        role="tablist"
+        aria-label="Campaign sections"
+      >
+        {TABS.map((t) => {
+          const active = tab === t.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => setTab(t.id)}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                active
+                  ? "bg-holo-gradient-subtle text-white ring-1 ring-white/15"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              {t.label}
+            </button>
+          );
+        })}
       </div>
 
+      {tab === "overview" && (
+        <>
+          <CampaignImage
+            imageUrl={campaign.imageUrl}
+            title={campaign.title}
+            category={campaign.category}
+            className="w-full h-64 rounded-xl mb-6 overflow-hidden"
+            imgClassName="w-full h-full object-cover"
+          />
+
+          <LearnMoreLink className="mb-4" />
+
+          <p className="mb-6 text-white/70">{campaign.description}</p>
+
+          <GlassPanel holoBorder className="p-5 mb-6">
+            <div className="mb-2 flex justify-between text-sm text-white/60">
+              <div>
+                <span className="text-lg font-bold text-white">
+                  {raised.toFixed(fractionDigits)} {tokenLabel} raised
+                </span>
+                <span className="ml-2 text-[10px] uppercase tracking-wide text-holo-mint/80">
+                  {onChainRaisedWei !== undefined ? "on-chain · net after fee" : "indexed · may lag"}
+                </span>
+              </div>
+              <span>Goal: {goal.toFixed(fractionDigits)} {tokenLabel}</span>
+            </div>
+            <div className="mb-2 h-3 w-full rounded-full bg-white/10">
+              <div className="h-3 rounded-full bg-holo-gradient transition-all"
+                style={{ width: `${progress}%` }} />
+            </div>
+            <div className="mb-3 flex justify-between text-sm text-white/60">
+              <span>{progress.toFixed(0)}% funded</span>
+              <span>{campaign.donorCount} donors · 1% platform fee on donations</span>
+            </div>
+            <DonorAvatars campaignId={Number(campaign.campaignId)} />
+          </GlassPanel>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div className="lg:col-span-2 space-y-4">
+              <CampaignStatusTimeline
+                status={campaign.status ?? 0}
+                completedMilestones={completedMilestones}
+                totalMilestones={totalMilestones}
+                deadline={Number(campaign.deadline) || 0}
+              />
+              <OnChainChecking campaignId={campaignId} paymentToken={paymentToken} />
+              <ContractExplorer campaignId={campaignId} paymentToken={paymentToken} />
+              <EvidencePanel campaignId={Number(campaign.campaignId)} />
+              <MilestoneTimeline campaignId={campaignId} campaign={campaign} />
+              <OrgCampaignActions
+                campaignId={campaignId}
+                orgAddress={campaign.orgAddress ?? ""}
+                status={campaign.status ?? 0}
+                deadline={Number(campaign.deadline) || 0}
+                totalMilestones={totalMilestones}
+                completedMilestones={completedMilestones}
+              />
+            </div>
+            <div className="space-y-4">
+              <EscrowTransparencyCard
+                campaignId={campaignId}
+                paymentToken={paymentToken}
+              />
+              <DonateModal campaignId={campaignId} paymentToken={paymentToken} />
+              <RefundPanel
+                campaignId={campaignId}
+                paymentToken={paymentToken}
+                campaignStatus={campaign.status ?? CampaignStatus.Active}
+              />
+              <VotingPanel campaignId={campaignId} onRefresh={load} />
+            </div>
+          </div>
+        </>
+      )}
+
+      {tab === "finance" && (
+        <CampaignFinanceTab campaignId={numericId} paymentToken={paymentToken} />
+      )}
+
+      {tab === "expenses" && (
+        <CampaignExpensesTab
+          campaignId={numericId}
+          orgAddress={campaign.orgAddress ?? ""}
+          paymentToken={paymentToken}
+          totalMilestones={totalMilestones}
+          completedMilestones={completedMilestones}
+        />
+      )}
+
+      {tab === "yield" && (
+        <CampaignYieldTab campaignId={campaignId} paymentToken={paymentToken} />
+      )}
     </PageShell>
   );
 }
