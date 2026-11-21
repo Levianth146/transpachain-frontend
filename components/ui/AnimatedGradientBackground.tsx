@@ -18,6 +18,7 @@ export function AnimatedGradientBackground({
   backgroundOverlay = "dark",
 }: Props) {
   const vivid = variant === "vivid";
+  const darkVariant = variant === "dark";
   const hasBackgroundImage = Boolean(backgroundImage);
 
   return (
@@ -76,9 +77,13 @@ export function AnimatedGradientBackground({
 
         {!hasBackgroundImage && (
           <>
-            <div className="absolute inset-0 mesh-bg opacity-90 dark:opacity-100" />
-            <div className="absolute inset-0 bg-slate-50/80 dark:bg-black/92 backdrop-blur-[1px]" />
-            <div className="absolute inset-0 bg-panel-glow opacity-40 dark:opacity-60" />
+            <div className={`absolute inset-0 mesh-bg ${darkVariant ? "opacity-100" : "opacity-90 dark:opacity-100"}`} />
+            <div
+              className={`absolute inset-0 backdrop-blur-[1px] ${
+                darkVariant ? "bg-slate-950/92" : "bg-slate-50/80 dark:bg-black/92"
+              }`}
+            />
+            <div className={`absolute inset-0 bg-panel-glow ${darkVariant ? "opacity-50" : "opacity-40 dark:opacity-60"}`} />
           </>
         )}
       </div>
