@@ -78,6 +78,19 @@ export default function TransparencyPage() {
       .getTransparencySummary()
       .then((data) => {
         if (cancelled) return;
+        if (data?._fallback || data?._source === "unavailable") {
+          setTotals(null);
+          setCampaignCount(null);
+          setPayouts([]);
+          setActivity([]);
+          setMeta({
+            chainId: data.chainId as number | undefined,
+            asOfBlock: data.asOfBlock as number | undefined,
+            syncStatus: "indexer unavailable — using live on-chain panel above",
+          });
+          setError(null);
+          return;
+        }
         setTotals((data.totals as Totals) || null);
         setCampaignCount(
           typeof data.campaignCount === "number" ? data.campaignCount : null
@@ -91,11 +104,14 @@ export default function TransparencyPage() {
         });
         setError(null);
       })
-      .catch((err) => {
+      .catch(() => {
         if (!cancelled) {
-          setError(
-            err instanceof Error ? err.message : "Failed to load transparency data"
-          );
+          setTotals(null);
+          setCampaignCount(null);
+          setPayouts([]);
+          setActivity([]);
+          setError(null);
+          setMeta({ syncStatus: "indexer unavailable — using live on-chain panel above" });
         }
       })
       .finally(() => {
